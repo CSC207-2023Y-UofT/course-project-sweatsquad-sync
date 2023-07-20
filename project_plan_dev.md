@@ -115,6 +115,7 @@ viewSchedule method (no input) is overridden to return information for all class
 ##### Has additional methods than a RegisteredUser to create and schedule classes, add new instructors + rooms, etc.
 
 [Feature 1.4.1] GymAdmin Attributes:
+
 inherits attributes (and methods) from User class and would have access to additional methods by means of the GUI that the Instructor and RegisteredUser objects wouldn’t (e.g., createClass, scheduleClass, addInstructor, addRoom)
 
 ### Workout Class
