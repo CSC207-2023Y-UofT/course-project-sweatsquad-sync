@@ -123,30 +123,39 @@ inherits attributes (and methods) from User class and would have access to addit
 ##### A data structure that holds class information, accessible by methods that get / set class details, and has certificate validation
 
 [Feature 2.1.1] Workout Attributes:
+
 workouts have corresponding DateTime objects, name attributes, list of certificate strings required to teach the class, a maximum capacity, an instructor list, and a room assignment.
 
 [Feature 2.1.2] Set Timing for Workout Object:
+
 setDateTime method (DateTime object input) allows for DateTime objects to be associated with a Workout object
 
 [Feature 2.1.3] Get Timing for Workout Object:
+
 getDateTime method (DateTime object input) returns DateTime object that is associated with a Workout object
 
 [Feature 2.1.4] Set Name for Workout Object:
+
 setName method (String input) allows for a Workout to be assigned a string
 
 [Feature 2.1.5] Get Name for Workout Object:
+
 getName method (String input) returns the name string attribute associated with a Workout
 		
 [Feature 2.1.6] Add Requirement for Workout Object:
+
 requireCert method (String input) adds a certificate to the list associated with a Workout that is required by an instructor to teach the class
 
 [Feature 2.1.7] Remove Requirement for Workout Object:
+
 deleteCert method (String input) deletes an existing certificate from the list associated with a Workout (the one that outlines certificates an instructor is required to possess to teach the class)
 
 [Feature 2.1.8] Get Certificates for Workout Object:
+
 getCerts method (no input) returns list of certificates required by an instructor to teach the Workout
 
 [Feature 2.1.9] Validate Certificates for Workout Object:
+
 validateCert method (Instructor object input) returns boolean indicating whether or not the Instructor object’s certificates are sufficient to teach the class (contains all certificate strings in the Workout object’s certificate attributes)
 
 
