@@ -5,13 +5,13 @@ import java.util.Objects;
 import java.util.Set;
 
 public class Workout {
-    private static int count;
+    private static int count = 0;
     private int id;
     public String name;
     public Set<String> requiredCerts;
 
     public Workout(String name) {
-        id = count++;
+        this.id = count++;
         this.name = name;
         this.requiredCerts = new HashSet<>();
     }
@@ -42,6 +42,6 @@ public class Workout {
 
     @Override
     public int hashCode() {
-        return name.hashCode();
+        return id;
     }
 }

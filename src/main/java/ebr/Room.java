@@ -3,9 +3,12 @@ package ebr;
 import java.util.Objects;
 
 public class Room {
+    static private int count = 0;
     public final String name;
+    private int id;
 
     public Room(String name) {
+        this.id = count++;
         this.name = name;
     }
 
@@ -19,6 +22,6 @@ public class Room {
 
     @Override
     public int hashCode() {
-        return name.hashCode();
+        return id;
     }
 }
