@@ -1,11 +1,20 @@
 package ebr;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 public class Workout {
+    private static int count;
+    private int id;
     public String name;
     public Set<String> requiredCerts;
+
+    public Workout(String name) {
+        id = count++;
+        this.name = name;
+        this.requiredCerts = new HashSet<>();
+    }
 
     public Set<String> getRequiredCerts() {
         return requiredCerts;
@@ -23,8 +32,16 @@ public class Workout {
         requiredCerts.remove(cert);
     }
 
-    public Workout(String name) {
-        this.name = name;
-        this.requiredCerts = new HashSet<>();
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Workout workout = (Workout) o;
+        return Objects.equals(name, workout.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode();
     }
 }
