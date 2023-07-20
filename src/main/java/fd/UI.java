@@ -1,76 +1,117 @@
 package fd;
 
+import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-// UserInterface Class
-public class UI {
+public class UI extends JFrame implements ActionListener {
 
-    // Constructor for UI
-    public UI() {
-        new DefaultUI();
+    private CardLayout cardLayout = new CardLayout();
+    private JButton loginButton, signupButton, registerButton;
+    private JTextField usernameField, emailField;
+    private JPasswordField passwordField, confirmPasswordField;
+    private JPanel loginPanel, signupPanel;
+
+    // Entry point of the program; creates instance of the UI class
+    public static void main(String[] args) {
+        new UI();
     }
 
-    // UI for attendees - default user
-    public static class DefaultUI extends JFrame implements ActionListener {
-        // UI elements and features for default users - 2.1.1
-        private JTextField usernameField;
-        private JPasswordField passwordField;
-        private JButton loginButton;
-        private JButton signupButton;
+    public UI() {
+        setTitle("User Interface");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(800, 600);
+        setResizable(false);
+        setLayout(cardLayout);
 
-        public DefaultUI() {
-            // init UI elements for everyone
+        // Define component width and height
+        int compWidth = 200;
+        int compHeight = 30;
 
-            // for the window itself
-            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            setSize(800, 600);
-            setLayout(null);
-            setTitle("Login");
+        // Calculate horizontal and vertical offset for centering
+        int xOffset = (getWidth() - compWidth) / 2;
+        int yOffset = (getHeight() - compHeight) / 2;
 
-            // username field
-            usernameField = new JTextField(20);
-            usernameField.setBounds(50, 30, 200, 30);
+        // Login panel
+        loginPanel = new JPanel();
+        loginPanel.setLayout(null);
 
-            // passcode field
-            passwordField = new JPasswordField(20);
-            passwordField.setBounds(50, 70, 200, 30);
+        // Username field
+        usernameField = new JTextField(20);
+        usernameField.setBounds(xOffset, yOffset - 80, compWidth, compHeight);
+        loginPanel.add(usernameField);
 
-            // login button
-            loginButton = new JButton("Login");
-            loginButton.setBounds(50, 110, 80, 30);
-            loginButton.addActionListener(this);
+        // Password field
+        passwordField = new JPasswordField(20);
+        passwordField.setBounds(xOffset, yOffset - 40, compWidth, compHeight);
+        loginPanel.add(passwordField);
 
-            // signup button
-            signupButton = new JButton("Signup");
-            signupButton.setBounds(170, 110, 80, 30);
-            signupButton.addActionListener(this);
+        // Login button
+        loginButton = new JButton("Login");
+        loginButton.setBounds(xOffset, yOffset, 80, compHeight);
+        loginButton.addActionListener(this);
+        loginPanel.add(loginButton);
 
-            // adds all components to the current JFrame
-            add(usernameField);
-            add(passwordField);
-            add(loginButton);
-            add(signupButton);
+        // Signup button
+        signupButton = new JButton("Signup");
+        signupButton.setBounds(xOffset + 120, yOffset, 80, compHeight);
+        signupButton.addActionListener(this);
+        loginPanel.add(signupButton);
 
-            // sets visibility so it can be seen
-            setVisible(true);
+        // Signup panel
+        signupPanel = new JPanel();
+        signupPanel.setLayout(null);
+
+        // Username field
+        usernameField = new JTextField(20);
+        usernameField.setBounds(xOffset, yOffset - 140, compWidth, compHeight);
+        signupPanel.add(usernameField);
+
+        // Email field
+        emailField = new JTextField(20);
+        emailField.setBounds(xOffset, yOffset - 100, compWidth, compHeight);
+        signupPanel.add(emailField);
+
+        // Password field
+        passwordField = new JPasswordField(20);
+        passwordField.setBounds(xOffset, yOffset - 60, compWidth, compHeight);
+        signupPanel.add(passwordField);
+
+        // Confirm password field
+        confirmPasswordField = new JPasswordField(20);
+        confirmPasswordField.setBounds(xOffset, yOffset - 20, compWidth, compHeight);
+        signupPanel.add(confirmPasswordField);
+
+        // Register button
+        registerButton = new JButton("Register");
+        registerButton.setBounds(xOffset, yOffset + 20, 100, compHeight);
+        registerButton.addActionListener(this);
+        signupPanel.add(registerButton);
+
+        add(loginPanel, "Login");
+        add(signupPanel, "Signup");
+
+        setVisible(true);
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == loginButton) {
+            // login logic is missing
+            System.out.println("doesn't work yet lol");
+        } else if (e.getSource() == signupButton) {
+            cardLayout.show(getContentPane(), "Signup");
+        } else if (e.getSource() == registerButton) {
+            String username = usernameField.getText();
+            String email = emailField.getText();
+            String password = new String(passwordField.getPassword());
+            String confirmPassword = new String(confirmPasswordField.getPassword());
+
+            System.out.println("Username: " + username);
+            System.out.println("Email: " + email);
+            System.out.println("Password: " + password);
+            System.out.println("Confirm Password: " + confirmPassword);
+
+            cardLayout.show(getContentPane(), "Login");
         }
-
-        // actionPerformed handles user actions
-        public void actionPerformed(ActionEvent e) {
-            // handle actions from input components
-            if (e.getSource() == loginButton) {
-                // logic for login button
-            } else if (e.getSource() == signupButton) {
-                // logic for signup button
-            }
-        }
-    } // DefaultUI end bracket
-
-    // other classes
-
-    public static void main(String[] args) {
-        // Entry point of the program; creates instance of the UI class
-        new UI();
     }
 }
