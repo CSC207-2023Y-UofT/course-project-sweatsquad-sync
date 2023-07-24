@@ -13,7 +13,7 @@ _Accepts input and displays output._
     - [Database] ClassData (6.1.2, 6.1.3, 6.1.4, 6.1.7)
 
 ### Interface Adapters 
-_Translates betwwwn outer and inner layers + prepares data display in UI._
+_Translates between outer and inner layers + prepares data display in UI._
 - Controller.java
     - [Controller] UserController
     - [Controller] RoomController (1.1.1, 5.1.3)
