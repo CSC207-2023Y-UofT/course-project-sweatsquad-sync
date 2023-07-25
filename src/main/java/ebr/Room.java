@@ -1,8 +1,9 @@
 package ebr;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Room {
+public class Room implements Serializable {
     static private int count = 0;
     public final String name;
     private int id;

@@ -1,10 +1,11 @@
 package ebr;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-public class Workout {
+public class Workout implements Serializable {
     private static int count = 0;
     private int id;
     public String name;

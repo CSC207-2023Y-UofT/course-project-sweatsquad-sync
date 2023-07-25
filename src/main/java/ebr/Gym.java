@@ -1,10 +1,11 @@
 package ebr;
 
+import java.io.*;
 import java.util.HashSet;
 import java.util.Set;
 
 // TODO serialization??
-public class Gym {
+public class Gym implements Serializable  {
     public String name;
     private Set<Room> rooms;
     private Set<User> members;
@@ -67,5 +68,18 @@ public class Gym {
 
     public void scheduleClass() {
         // TODO
+    }
+
+    public void save() throws IOException {
+        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("file.txt"));
+        oos.writeObject(this);
+        oos.close();
+    }
+
+    public Gym load() throws IOException, ClassNotFoundException {
+        ObjectInputStream ois = new ObjectInputStream(new FileInputStream("file.txt"));
+        Gym g = (Gym)ois.readObject();
+        ois.close();
+        return g;
     }
 }

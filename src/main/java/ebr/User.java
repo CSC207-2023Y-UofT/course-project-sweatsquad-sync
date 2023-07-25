@@ -1,8 +1,9 @@
 package ebr;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class User {
+public class User implements Serializable {
     private static int count = 0;
     public String name;
     private String password;
