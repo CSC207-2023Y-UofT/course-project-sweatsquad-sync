@@ -11,11 +11,13 @@ public class UI extends JFrame implements ActionListener {
     // declaring UI components / layout
     private CardLayout cardLayout = new CardLayout();
     private JButton loginButton, signupButton, registerButton, back2loginBtn;
-    private JButton returnLoginBtn, authenticateBtn;
+    private JButton returnLoginBtn, authenticateBtn, registerButtonIR;
     private JTextField usernameField, userField, emailField, authField;
-    private JTextField firstNameField, lastNameField;
+    private JTextField firstNameField, lastNameField, firstNameFieldIR;
+    private JTextField lastNameFieldIR, emailFieldIR, userFieldIR;
     private JPasswordField passcodeField, passField, confirmPassField;
-    private JPanel loginPanel, signupPanel, authCodePanel;
+    private JPasswordField passFieldIR, confirmPassFieldIR;
+    private JPanel loginPanel, signupPanel, authCodePanel, instrRegPanel;
     private JLabel haveCodeLabel;
     private RoundBtn roundBtn = new RoundBtn();
 
@@ -301,9 +303,114 @@ public class UI extends JFrame implements ActionListener {
         authLabelBig.setBounds(189, 25, 422, 47);
         authCodePanel.add(authLabelBig);
 
+        // instructor registration code panel
+        instrRegPanel = new JPanel();
+        instrRegPanel.setLayout(null);
+        instrRegPanel.setBackground(Color.decode("#DADADA"));
+
+        // first name label
+        JLabel firstNameLabelIR = new JLabel("First Name");
+        firstNameLabelIR.setFont(new Font("Monsterrat", Font.BOLD, 15));
+        firstNameLabelIR.setBounds(189, 98, 422, 25);
+        instrRegPanel.add(firstNameLabelIR);
+
+        // first name field
+        firstNameFieldIR = new JTextField(20); // 20 is default -negligible
+        firstNameFieldIR.setBounds(189, 123, 198, 45);
+        firstNameFieldIR.setBorder(new EmptyBorder(0, 20, 0, 20)); // removes bord.
+        firstNameFieldIR.setFont(new Font("Comfortaa", Font.BOLD, 18));
+        instrRegPanel.add(firstNameFieldIR);
+
+        // last name label
+        JLabel lastNameLabelIR = new JLabel("Last Name");
+        lastNameLabelIR.setFont(new Font("Monsterrat", Font.BOLD, 15));
+        lastNameLabelIR.setBounds(413, 98, 422, 25);
+        instrRegPanel.add(lastNameLabelIR);
+
+        // last name field
+        lastNameFieldIR = new JTextField(20); // 20 is default -negligible
+        lastNameFieldIR.setBounds(413, 123, 198, 45);
+        lastNameFieldIR.setBorder(new EmptyBorder(0, 20, 0, 20)); // removes bord.
+        lastNameFieldIR.setFont(new Font("Comfortaa", Font.BOLD, 18));
+        instrRegPanel.add(lastNameFieldIR);
+
+        // email label
+        JLabel emailLabelIR = new JLabel("Email");
+        emailLabelIR.setFont(new Font("Monsterrat", Font.BOLD, 15));
+        emailLabelIR.setBounds(189, 185, 422, 25);
+        instrRegPanel.add(emailLabelIR);
+
+        // email field
+        emailFieldIR = new JTextField(20); // 20 is default -negligible
+        emailFieldIR.setBounds(189, 210, 422, 45);
+        emailFieldIR.setBorder(new EmptyBorder(0, 20, 0, 20)); // removes bord.
+        emailFieldIR.setFont(new Font("Comfortaa", Font.BOLD, 18));
+        instrRegPanel.add(emailFieldIR);
+
+        // username label
+        JLabel signupUsernameLabelIR = new JLabel("Username");
+        signupUsernameLabelIR.setFont(new Font("Monsterrat", Font.BOLD, 15));
+        signupUsernameLabelIR.setBounds(189, 272, 422, 25);
+        instrRegPanel.add(signupUsernameLabelIR);
+
+        // username field
+        userFieldIR = new JTextField(20); // 20 is default -negligible
+        userFieldIR.setBounds(189, 297, 422, 45);
+        userFieldIR.setBorder(new EmptyBorder(0, 20, 0, 20)); // removes bord.
+        userFieldIR.setFont(new Font("Comfortaa", Font.BOLD, 18));
+        instrRegPanel.add(userFieldIR);
+
+        // password label
+        JLabel signupPasswordLabelIR = new JLabel("Password");
+        signupPasswordLabelIR.setFont(new Font("Monsterrat", Font.BOLD, 15));
+        signupPasswordLabelIR.setBounds(189, 359, 422, 25);
+        instrRegPanel.add(signupPasswordLabelIR);
+
+        // password field
+        passFieldIR = new JPasswordField(20); // 20 is default -negligible
+        passFieldIR.setBounds(189, 384, 198, 45);
+        passFieldIR.setBorder(new EmptyBorder(0, 20, 0, 20)); // removes bord.
+        passFieldIR.setFont(new Font("Comfortaa", Font.BOLD, 18));
+        instrRegPanel.add(passFieldIR);
+
+        // confirm password label
+        JLabel confirmPasswordLabelIR = new JLabel("Password");
+        confirmPasswordLabelIR.setFont(new Font("Monsterrat", Font.BOLD, 15));
+        confirmPasswordLabelIR.setBounds(189, 359, 422, 25);
+        instrRegPanel.add(confirmPasswordLabelIR);
+
+        // confirm password field
+        confirmPassFieldIR = new JPasswordField(20); // 20 is default -negligible
+        confirmPassFieldIR.setBounds(413, 384, 198, 45);
+        confirmPassFieldIR.setBorder(new EmptyBorder(0, 20, 0, 20)); // removes bord.
+        confirmPassFieldIR.setFont(new Font("Comfortaa", Font.BOLD, 18));
+        instrRegPanel.add(confirmPassFieldIR);
+
+        // register button UPDATED (round button)
+        registerButtonIR = roundBtn.genRoundBtn("Register", 50, "#001561", false);
+        registerButtonIR.setFont(new Font("Monsterrat", Font.BOLD, 13));
+        registerButtonIR.setForeground(Color.decode("#FFFFFF"));
+        registerButtonIR.setBounds(189, 450, 422, 50);
+        registerButtonIR.addActionListener(this);
+        instrRegPanel.add(registerButtonIR);
+
+        // login indicator bar JLabel
+        JLabel regIndicatorIR = new JLabel("");
+        regIndicatorIR.setIcon(new ImageIcon("images/00301-auth-indicator.png"));
+        regIndicatorIR.setBounds(189, 65, 422, 9);
+        instrRegPanel.add(regIndicatorIR);
+
+        // Sign In JLabel
+        JLabel instrRegText = new JLabel("Instructor Registration", SwingConstants.CENTER);
+        instrRegText.setFont(new Font("Monsterrat", Font.BOLD, 16));
+        instrRegText.setForeground(Color.decode("#001561"));
+        instrRegText.setBounds(189, 25, 422, 47);
+        instrRegPanel.add(instrRegText);
+
         add(loginPanel, "Login"); // adds panel to the card "deck"
-        add(signupPanel, "Signup");  // adds panel to the card "deck"
-        add(authCodePanel, "AuthCode");  // adds panel to the card "deck"
+        add(signupPanel, "Signup"); // adds panel to the card "deck"
+        add(authCodePanel, "AuthCode"); // adds panel to the card "deck"
+        add(instrRegPanel, "InstrReg"); // adds panel to the card "deck"
 
         setVisible(true);
     }
@@ -409,9 +516,57 @@ public class UI extends JFrame implements ActionListener {
             if(database.validateAuthCode(inputCode)) {
                 System.out.println("Success! Valid code.");
                 authField.setText("");
-                cardLayout.show(getContentPane(), "Login");
+                cardLayout.show(getContentPane(), "InstrReg");
             } else {
                 System.out.println("Failure. Invalid code.");
+            }
+        } else if (e.getSource() == registerButtonIR) {
+            // gets text from respective JTextField components
+            String firstName = firstNameFieldIR.getText();
+            String lastName = lastNameFieldIR.getText();
+            String username = userFieldIR.getText();
+            String email = emailFieldIR.getText();
+            String password = new String(passFieldIR.getPassword());
+            String confirmPassword = new String(confirmPassFieldIR.getPassword());
+
+            if (username.length() < 3) {
+                System.out.println("Username must be at least " +
+                        "3 characters long");
+                return;
+            }
+
+            if (firstName.isEmpty() || lastName.isEmpty()) {
+                System.out.println("First and last name fields " +
+                        "must not be empty");
+                return;
+            }
+
+            if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+                System.out.println("Invalid email format");
+                return;
+            }
+
+            if (!password.equals(confirmPassword)) {
+                System.out.println("Passwords do not match, try again");
+                return;
+            }
+
+            if(database.register(firstName, lastName, username,
+                    email, password)) { // checks for uniqueness
+                System.out.println("Instructor registered successfully"); // console msg
+
+                // console messages for testing
+                System.out.println("Username: " + username);
+                System.out.println("Email: " + email);
+                System.out.println("Password: " + password);
+                System.out.println("Confirm Password: " + confirmPassword);
+
+                // Switch the card layout back to the login panel + reset JTFs
+                usernameField.setText("");
+                passcodeField.setText("");
+                cardLayout.show(getContentPane(), "Login");
+            } else {
+                System.out.println("Username already exists"); // F console msg
             }
         }
     }

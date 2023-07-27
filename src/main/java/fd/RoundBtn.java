@@ -12,10 +12,10 @@ import java.awt.geom.RoundRectangle2D;
 
 // RoundBtn class
 public class RoundBtn extends JFrame { // implements ActionListener; REMOVED
-    // declare components / layout
-    private CardLayout cardLayout = new CardLayout();
-    private JButton roundedButton;
-    private JPanel thePanel;
+    /* declare components / layout
+    // private CardLayout cardLayout = new CardLayout();
+    // private JButton roundedButton;
+    // private JPanel thePanel;*/
 
     // constructor
     public RoundBtn() {
