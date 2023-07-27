@@ -11,6 +11,7 @@ public class UI extends JFrame implements ActionListener {
     // declaring UI components / layout
     private CardLayout cardLayout = new CardLayout();
     private JButton loginButton, signupButton, registerButton, back2loginBtn;
+    private JButton registerTransparentBtn, signupTransparentBtn;
     private JButton returnLoginBtn, authenticateBtn, registerButtonIR;
     private JTextField usernameField, userField, emailField, authField;
     private JTextField firstNameField, lastNameField, firstNameFieldIR;
@@ -20,6 +21,7 @@ public class UI extends JFrame implements ActionListener {
     private JPanel loginPanel, signupPanel, authCodePanel, instrRegPanel;
     private JLabel haveCodeLabel;
     private RoundBtn roundBtn = new RoundBtn();
+    private RoundField roundField = new RoundField();
 
     // declaring the database instance (database.java)
     private Database database;
@@ -55,9 +57,9 @@ public class UI extends JFrame implements ActionListener {
         loginPanel.add(usernameLabel);
 
         // username field
-        usernameField = new JTextField(20); // 20 is default -negligible
+        usernameField = roundField.genRoundTextField("", 30, "#FFFFFF", false);
+        usernameField.setFont(new Font("Arial", Font.PLAIN, 16));
         usernameField.setBounds(189, 123, 422, 45);
-        usernameField.setBorder(new EmptyBorder(0, 20, 0, 20)); // removes bord.
         usernameField.setFont(new Font("Comfortaa", Font.BOLD, 18));
         loginPanel.add(usernameField);
 
@@ -68,9 +70,9 @@ public class UI extends JFrame implements ActionListener {
         loginPanel.add(passwordLabel);
 
         // passcode field
-        passcodeField = new JPasswordField(20); // 20 is default -negligible
+        passcodeField = roundField.genRoundPasswordField("", 20, "#FFFFFF", false);
+        passcodeField.setFont(new Font("Arial", Font.PLAIN, 16));
         passcodeField.setBounds(189, 210, 422, 45);
-        passcodeField.setBorder(new EmptyBorder(0, 20, 0, 20)); // removes bord.
         loginPanel.add(passcodeField);
 
         // login button UPDATED (round button)
@@ -109,6 +111,27 @@ public class UI extends JFrame implements ActionListener {
         registerTextLI.setForeground(Color.decode("#000000"));
         registerTextLI.setBounds(400, 27, 211, 47);
         loginPanel.add(registerTextLI);
+
+        // Register Transparent Button
+        registerTransparentBtn = new JButton("");
+        registerTransparentBtn.setBounds(400, 27, 211, 47);
+        registerTransparentBtn.setOpaque(false);
+        registerTransparentBtn.setContentAreaFilled(false);
+        registerTransparentBtn.setBorderPainted(false);
+        registerTransparentBtn.addActionListener(this);
+        // adds a mouse listener
+        registerTransparentBtn.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                setCursor(Cursor.getDefaultCursor());
+            }
+        });
+        loginPanel.add(registerTransparentBtn);
 
         // signup panel
         signupPanel = new JPanel();
@@ -243,6 +266,27 @@ public class UI extends JFrame implements ActionListener {
         signInTextSU.setForeground(Color.decode("#000000"));
         signInTextSU.setBounds(189, 27, 211, 47);
         signupPanel.add(signInTextSU);
+
+        // Register Transparent Button
+        signupTransparentBtn = new JButton("");
+        signupTransparentBtn.setBounds(189, 27, 211, 47);
+        signupTransparentBtn.setOpaque(false);
+        signupTransparentBtn.setContentAreaFilled(false);
+        signupTransparentBtn.setBorderPainted(false);
+        signupTransparentBtn.addActionListener(this);
+        // adds a mouse listener
+        signupTransparentBtn.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                setCursor(Cursor.getDefaultCursor());
+            }
+        });
+        signupPanel.add(signupTransparentBtn);
 
         // Register JLabel
         JLabel registerTextSU = new JLabel("Register", SwingConstants.CENTER);
@@ -430,7 +474,8 @@ public class UI extends JFrame implements ActionListener {
                 System.out.println("Invalid credentials"); // failed console msg
             }
 
-        } else if (e.getSource() == signupButton) { // signup logic if pressed
+        } else if ((e.getSource() == signupButton) ||
+                   (e.getSource() == registerTransparentBtn)) { // signup logic if pressed
             cardLayout.show(getContentPane(), "Signup"); // switches to SU panel
             // resets fields (signup screen)
             firstNameField.setText("");
@@ -489,7 +534,8 @@ public class UI extends JFrame implements ActionListener {
             } else {
                 System.out.println("Username already exists"); // F console msg
             }
-        } else if (e.getSource() == back2loginBtn) { // if back button clicked
+        } else if ((e.getSource() == back2loginBtn) ||
+                   (e.getSource() == signupTransparentBtn)) { // if back button clicked
             // clears all the fields
             usernameField.setText("");
             passcodeField.setText("");
