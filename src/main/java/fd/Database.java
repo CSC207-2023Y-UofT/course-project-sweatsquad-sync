@@ -1,6 +1,10 @@
 package fd;
 
 // import statements
+import ebr.Gym;
+import ebr.Instructor;
+import ebr.User;
+
 import java.util.*;
 import java.io.*;
 import java.security.MessageDigest;
@@ -9,42 +13,34 @@ import java.security.NoSuchAlgorithmException;
 public class Database {
 
     // declares database vars - hashmap, txt file, and hash toggle
-    private HashMap<String, String> users;
-    private HashMap<String, String> authCodes;
     private final String filename = "user_credentials.txt";
-    private final String authFilename = "authenticate_codes.txt";
-    private boolean hashPass = true; // can be toggled between T/F to hash
-    private boolean hashCodes = false; // can be toggled between T/F to hash codes
+    private Gym gym;
 
     // database constructor
     public Database() {
-        users = new HashMap<>(); // initializes the hashmap
-        authCodes = new HashMap<>(); // initializes the auth codes hashmap
-        loadUsers(); // loads existing users into hashmap
-        loadAuthCodes(); // loads existing auth codes into hashmap
+        try {
+            gym = load();
+        }
+        catch (IOException e) {
+            gym = new Gym("Gym");
+        }
+        catch (ClassNotFoundException e) {
+            System.err.println("File is corrupt, creating new gym");
+            gym = new Gym("Gym");
+        }
     }
 
-    // method to load credentials from the "user_credentials.txt" file
-    private void loadUsers() {
-        try { // try-catch block to handle any IO  exceptions
-            File file = new File(filename); // creating a file object for u_c
-            if (file.exists()) { // checks if the file exists
-                Scanner reader = new Scanner(file); // creates scanner to read
-                while (reader.hasNextLine()) { // iterates through lines in file
-                    // splits line at the comma (between user and pass)
-                    String[] credentials = reader.nextLine().split(",");
-                    // adds credentials onto the hashmap
-                    users.put(credentials[0], credentials[1] + "," +
-                            credentials[2] + "," + credentials[3] + "," +
-                            credentials[4] + "," + credentials[5]);
-                }
-                reader.close(); // closes scanner once done using
-            } else {
-                file.createNewFile(); // creates file if it doesn't exist
-            }
-        } catch (IOException e) { // catches any IO exception
-            e.printStackTrace(); // throws/prints error to console
-        }
+    public void save(Gym g) throws IOException {
+        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename));
+        oos.writeObject(g);
+        oos.close();
+    }
+
+    public Gym load() throws IOException, ClassNotFoundException {
+        ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename));
+        Gym g = (Gym)ois.readObject();
+        ois.close();
+        return g;
     }
 
     // method to register new user, returns T if successful, F if already exists
@@ -53,60 +49,32 @@ public class Database {
         if (!validateInput(username) || !validateInput(passcode)) {
             System.out.println("Invalid input");
             return false;
-        } else if(users.containsKey(username)) {
-            System.out.println("Username already exists");
-            return false;
-        } else {
-            if (hashPass) {
-                passcode = hashPassword(passcode);
-            }
-            users.put(username, firstName + "," + lastName + "," + email + "," +
-                      passcode + "," + level);
-            saveUsers();
-            return true;
         }
-    }
 
-    // method to load auth codes from the "authenticate_codes.txt" file
-    private void loadAuthCodes() {
-        try { // try-catch block to handle any IO exceptions
-            File file = new File(authFilename); // creating a file object for authenticate_codes
-            if (file.exists()) { // checks if the file exists
-                Scanner reader = new Scanner(file); // creates scanner to read
-                while (reader.hasNextLine()) { // iterates through lines in file
-                    String code = reader.nextLine();
-                    if (hashCodes) {
-                        code = hashPassword(code); // use the same hashing function as for passwords
-                    }
-                    authCodes.put(code, ""); // adds code to the hashmap
-                }
-                reader.close(); // closes scanner once done using
-            } else {
-                file.createNewFile(); // creates file if it doesn't exist
+        for (User u : gym.getUsers()) {
+            if (u.name.equals(username)) {
+                 System.out.println("Username already exists");
+                return false;
             }
-        } catch (IOException e) { // catches any IO exception
-            e.printStackTrace(); // throws/prints error to console
         }
+
+        gym.addUser(new User(username, hashPassword(passcode)));
+        return true;
     }
 
     // method to check if login credentials are valid
     public boolean validateLogin(String username, String password) {
-        if(users.containsKey(username)) {
-            String storedPassword = users.get(username).split(",")[3];
-            if (hashPass) { //checks for hash toggle
-                password = hashPassword(password);
-            }
-            if (storedPassword.equals(password)) {
-                System.out.println("Logged in successfully");
-                return true;
-            } else {
-                System.out.println("Incorrect password");
-                return false;
-            }
-        } else {
-            System.out.println("User does not exist");
-            return false;
-        }
+        for (User u : gym.getUsers())
+            if (u.name.equals(username))
+                if (u.passHash.equals(hashPassword(password))) {
+                    System.out.println("Logged in successfully");
+                    return true;
+                } else {
+                    System.out.println("Incorrect password");
+                    return false;
+                }
+        System.out.println("User does not exist");
+        return false;
     }
 
     // checks if input's valid
@@ -117,32 +85,16 @@ public class Database {
 
     // method to check if auth code is valid
     public boolean validateAuthCode(String code) {
-        if (hashCodes) {
-            code = hashPassword(code);
-        }
-        if (authCodes.containsKey(code)) {
-            System.out.println("Authentication code is valid");
-            return true;
-        } else {
-            System.out.println("Authentication code is not valid");
-            return false;
-        }
-    }
+        for (User u : gym.getUsers())
+            if (u instanceof Instructor && ((Instructor) u).tempAuth != null)
+                if (((Instructor) u).tempAuth.equals(hashPassword(code))) {
+                    System.out.println("Authentication code is valid");
+                    return true;
+                }
 
-    // saves hashmap to the file
-    private void saveUsers() {
-        try { // to catch IO exceptions
-            FileWriter writer = new FileWriter(filename); // file-writer init
 
-            // loops through each entry in the hashmap
-            for (Map.Entry<String, String> entry : users.entrySet()) {
-                // writes each entry to the file, separated w/ comma
-                writer.write(entry.getKey() + "," + entry.getValue() + "\n");
-            }
-            writer.close(); // closes the FileWriter
-        } catch (IOException e) { // catches IO exception
-            e.printStackTrace(); // throws/prints stack trace
-        }
+        System.out.println("Authentication code is not valid");
+        return false;
     }
 
     private String hashPassword(String password) {
@@ -159,7 +111,7 @@ public class Database {
             return sb.toString();
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
-            return password;
+            throw new RuntimeException("Cannot use SHA-256"); // Don't fail silently
         }
     }
 }

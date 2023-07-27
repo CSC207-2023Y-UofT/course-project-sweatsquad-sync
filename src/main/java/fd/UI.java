@@ -77,7 +77,8 @@ public class UI extends JFrame implements ActionListener {
         loginButton = roundBtn.genRoundBtn("Login", 50, "#001561", false);
         loginButton.setFont(new Font("Monsterrat", Font.BOLD, 13));
         loginButton.setForeground(Color.decode("#FFFFFF"));
-        loginButton.setBounds(189, 292, 196, 50);
+//        loginButton.setBounds(189, 292, 196, 50);
+        loginButton.setBounds(413, 292, 196, 50);
         loginButton.addActionListener(this);
         loginPanel.add(loginButton);
 
@@ -86,7 +87,8 @@ public class UI extends JFrame implements ActionListener {
                                             false);
         signupButton.setFont(new Font("Monsterrat", Font.BOLD, 13));
         signupButton.setForeground(Color.decode("#FFFFFF"));
-        signupButton.setBounds(413, 292, 196, 50);
+//        signupButton.setBounds(413, 292, 196, 50);
+        signupButton.setBounds(400, 27, 211, 47);
         signupButton.addActionListener(this);
         loginPanel.add(signupButton);
 
@@ -104,11 +106,11 @@ public class UI extends JFrame implements ActionListener {
         loginPanel.add(signInTextLI);
 
         // Register JLabel
-        JLabel registerTextLI = new JLabel("Register", SwingConstants.CENTER);
-        registerTextLI.setFont(new Font("Monsterrat", Font.BOLD, 14));
-        registerTextLI.setForeground(Color.decode("#000000"));
-        registerTextLI.setBounds(400, 27, 211, 47);
-        loginPanel.add(registerTextLI);
+//        JLabel registerTextLI = new JLabel("Register", SwingConstants.CENTER);
+//        registerTextLI.setFont(new Font("Monsterrat", Font.BOLD, 14));
+//        registerTextLI.setForeground(Color.decode("#000000"));
+//        registerTextLI.setBounds(400, 27, 211, 47);
+//        loginPanel.add(registerTextLI);
 
         // signup panel
         signupPanel = new JPanel();
@@ -194,10 +196,10 @@ public class UI extends JFrame implements ActionListener {
         signupPanel.add(confirmPassField);
 
         // back button UPDATED (round button)
-        back2loginBtn = roundBtn.genRoundBtn("Back", 50, "#001561", false);
+        back2loginBtn = roundBtn.genRoundBtn("Sign In", 50, "#001561", false);
         back2loginBtn.setFont(new Font("Monsterrat", Font.BOLD, 13));
         back2loginBtn.setForeground(Color.decode("#FFFFFF"));
-        back2loginBtn.setBounds(189, 450, 196, 50);
+        back2loginBtn.setBounds(189, 27, 211, 47);
         back2loginBtn.addActionListener(this);
         signupPanel.add(back2loginBtn);
 
@@ -238,11 +240,11 @@ public class UI extends JFrame implements ActionListener {
         signupPanel.add(regIndicator);
 
         // Sign In JLabel
-        JLabel signInTextSU = new JLabel("Sign In", SwingConstants.CENTER);
-        signInTextSU.setFont(new Font("Monsterrat", Font.BOLD, 14));
-        signInTextSU.setForeground(Color.decode("#000000"));
-        signInTextSU.setBounds(189, 27, 211, 47);
-        signupPanel.add(signInTextSU);
+//        JLabel signInTextSU = new JLabel("Sign In", SwingConstants.CENTER);
+//        signInTextSU.setFont(new Font("Monsterrat", Font.BOLD, 14));
+//        signInTextSU.setForeground(Color.decode("#000000"));
+//        signInTextSU.setBounds(189, 27, 211, 47);
+//        signupPanel.add(signInTextSU);
 
         // Register JLabel
         JLabel registerTextSU = new JLabel("Register", SwingConstants.CENTER);
@@ -417,6 +419,18 @@ public class UI extends JFrame implements ActionListener {
 
     // button action listener response function
     public void actionPerformed(ActionEvent e) {
+        Runnable clearFields = () -> {
+            firstNameField.setText("");
+            lastNameField.setText("");
+            userField.setText("");
+            emailField.setText("");
+            passField.setText("");
+            confirmPassField.setText("");
+
+            usernameField.setText("");
+            passcodeField.setText("");
+            authField.setText("");
+        };
         if (e.getSource() == loginButton) { // checks 4 loginButton; login logic
 
             // fetches username + passcode from JTextField components
@@ -433,13 +447,7 @@ public class UI extends JFrame implements ActionListener {
         } else if (e.getSource() == signupButton) { // signup logic if pressed
             cardLayout.show(getContentPane(), "Signup"); // switches to SU panel
             // resets fields (signup screen)
-            firstNameField.setText("");
-            lastNameField.setText("");
-            userField.setText("");
-            emailField.setText("");
-            passField.setText("");
-            confirmPassField.setText("");
-
+            clearFields.run();
         } else if (e.getSource() == registerButton) { // register logic
             // gets text from respective JTextField components
             String firstName = firstNameField.getText();
@@ -491,25 +499,15 @@ public class UI extends JFrame implements ActionListener {
             }
         } else if (e.getSource() == back2loginBtn) { // if back button clicked
             // clears all the fields
-            usernameField.setText("");
-            passcodeField.setText("");
-            userField.setText("");
-            emailField.setText("");
-            passField.setText("");
-            confirmPassField.setText("");
+            clearFields.run();
+
 
             // switches the card layout back to log-in panel
             cardLayout.show(getContentPane(), "Login");
         } else if (e.getSource() == returnLoginBtn) {
             // clears all the fields
-            usernameField.setText("");
-            passcodeField.setText("");
-            userField.setText("");
-            emailField.setText("");
-            passField.setText("");
-            confirmPassField.setText("");
-            authField.setText("");
 
+            clearFields.run();
             // switches the card layout back to log-in panel
             cardLayout.show(getContentPane(), "Login");
         } else if (e.getSource() == authenticateBtn) {
