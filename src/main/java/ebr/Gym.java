@@ -13,7 +13,8 @@ public class Gym implements Serializable  {
     private Set<GymAdmin> admins;
     private Set<Workout> workouts;
 
-    public Gym() {
+    public Gym(String name) {
+        this.name = name;
         this.rooms = new HashSet<>();
         this.members = new HashSet<>();
         this.instructors = new HashSet<>();
@@ -66,8 +67,8 @@ public class Gym implements Serializable  {
         // TODO remove all refs to that room here
     }
 
-    public void scheduleClass() {
-        // TODO
+    public String getRooms() {
+        return this.rooms.toString();
     }
 
     public void save() throws IOException {

@@ -1,9 +1,9 @@
 package ebr;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.time.Duration;
+import java.time.LocalTime;
+import java.util.*;
 
 public class Workout implements Serializable {
     private static int count = 0;
@@ -11,10 +11,29 @@ public class Workout implements Serializable {
     public String name;
     public Set<String> requiredCerts;
 
+    enum Weekday {
+        Monday, Tuesday, Wednesday, Thursday, Friday
+    }
+
+    static public class Offering {
+        Weekday day;
+        LocalTime start;
+        Duration duration;
+        private Offering() {}
+        public Offering(Weekday day, LocalTime start, Duration duration) {
+            this.day = day;
+            this.start = start;
+            this.duration = duration;
+        }
+    }
+
+    public List<Offering> offerings;
+
     public Workout(String name) {
         this.id = count++;
         this.name = name;
         this.requiredCerts = new HashSet<>();
+        this.offerings = new ArrayList<>();
     }
 
     public Set<String> getRequiredCerts() {
@@ -31,6 +50,14 @@ public class Workout implements Serializable {
 
     public void deleteCert(String cert) {
         requiredCerts.remove(cert);
+    }
+
+    public void addOffering(Weekday day, LocalTime start, Duration duration) {
+        this.offerings.add(new Offering(day, start, duration));
+    }
+
+    public void removeOffering(int index) {
+        this.offerings.remove(index);
     }
 
     @Override
