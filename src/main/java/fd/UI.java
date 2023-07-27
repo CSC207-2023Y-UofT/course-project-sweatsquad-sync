@@ -79,8 +79,7 @@ public class UI extends JFrame implements ActionListener {
         loginButton = roundBtn.genRoundBtn("Login", 50, "#001561", false);
         loginButton.setFont(new Font("Monsterrat", Font.BOLD, 13));
         loginButton.setForeground(Color.decode("#FFFFFF"));
-//        loginButton.setBounds(189, 292, 196, 50);
-        loginButton.setBounds(413, 292, 196, 50);
+        loginButton.setBounds(189, 292, 196, 50);
         loginButton.addActionListener(this);
         loginPanel.add(loginButton);
 
@@ -89,8 +88,7 @@ public class UI extends JFrame implements ActionListener {
                                             false);
         signupButton.setFont(new Font("Monsterrat", Font.BOLD, 13));
         signupButton.setForeground(Color.decode("#FFFFFF"));
-//        signupButton.setBounds(413, 292, 196, 50);
-        signupButton.setBounds(400, 27, 211, 47);
+        signupButton.setBounds(413, 292, 196, 50);
         signupButton.addActionListener(this);
         loginPanel.add(signupButton);
 
@@ -108,32 +106,11 @@ public class UI extends JFrame implements ActionListener {
         loginPanel.add(signInTextLI);
 
         // Register JLabel
-//        JLabel registerTextLI = new JLabel("Register", SwingConstants.CENTER);
-//        registerTextLI.setFont(new Font("Monsterrat", Font.BOLD, 14));
-//        registerTextLI.setForeground(Color.decode("#000000"));
-//        registerTextLI.setBounds(400, 27, 211, 47);
-//        loginPanel.add(registerTextLI);
-
-        // Register Transparent Button
-        registerTransparentBtn = new JButton("");
-        registerTransparentBtn.setBounds(400, 27, 211, 47);
-        registerTransparentBtn.setOpaque(false);
-        registerTransparentBtn.setContentAreaFilled(false);
-        registerTransparentBtn.setBorderPainted(false);
-        registerTransparentBtn.addActionListener(this);
-        // adds a mouse listener
-        registerTransparentBtn.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                setCursor(Cursor.getDefaultCursor());
-            }
-        });
-        loginPanel.add(registerTransparentBtn);
+        JLabel registerTextLI = new JLabel("Register", SwingConstants.CENTER);
+        registerTextLI.setFont(new Font("Monsterrat", Font.BOLD, 14));
+        registerTextLI.setForeground(Color.decode("#000000"));
+        registerTextLI.setBounds(400, 27, 211, 47);
+        loginPanel.add(registerTextLI);
 
         // Register Transparent Button
         registerTransparentBtn = new JButton("");
@@ -240,10 +217,10 @@ public class UI extends JFrame implements ActionListener {
         signupPanel.add(confirmPassField);
 
         // back button UPDATED (round button)
-        back2loginBtn = roundBtn.genRoundBtn("Sign In", 50, "#001561", false);
+        back2loginBtn = roundBtn.genRoundBtn("Back", 50, "#001561", false);
         back2loginBtn.setFont(new Font("Monsterrat", Font.BOLD, 13));
         back2loginBtn.setForeground(Color.decode("#FFFFFF"));
-        back2loginBtn.setBounds(189, 27, 211, 47);
+        back2loginBtn.setBounds(189, 450, 196, 50);
         back2loginBtn.addActionListener(this);
         signupPanel.add(back2loginBtn);
 
@@ -284,32 +261,11 @@ public class UI extends JFrame implements ActionListener {
         signupPanel.add(regIndicator);
 
         // Sign In JLabel
-//        JLabel signInTextSU = new JLabel("Sign In", SwingConstants.CENTER);
-//        signInTextSU.setFont(new Font("Monsterrat", Font.BOLD, 14));
-//        signInTextSU.setForeground(Color.decode("#000000"));
-//        signInTextSU.setBounds(189, 27, 211, 47);
-//        signupPanel.add(signInTextSU);
-
-        // Register Transparent Button
-        signupTransparentBtn = new JButton("");
-        signupTransparentBtn.setBounds(189, 27, 211, 47);
-        signupTransparentBtn.setOpaque(false);
-        signupTransparentBtn.setContentAreaFilled(false);
-        signupTransparentBtn.setBorderPainted(false);
-        signupTransparentBtn.addActionListener(this);
-        // adds a mouse listener
-        signupTransparentBtn.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                setCursor(Cursor.getDefaultCursor());
-            }
-        });
-        signupPanel.add(signupTransparentBtn);
+        JLabel signInTextSU = new JLabel("Sign In", SwingConstants.CENTER);
+        signInTextSU.setFont(new Font("Monsterrat", Font.BOLD, 14));
+        signInTextSU.setForeground(Color.decode("#000000"));
+        signInTextSU.setBounds(189, 27, 211, 47);
+        signupPanel.add(signInTextSU);
 
         // Register Transparent Button
         signupTransparentBtn = new JButton("");
@@ -505,18 +461,6 @@ public class UI extends JFrame implements ActionListener {
 
     // button action listener response function
     public void actionPerformed(ActionEvent e) {
-        Runnable clearFields = () -> {
-            firstNameField.setText("");
-            lastNameField.setText("");
-            userField.setText("");
-            emailField.setText("");
-            passField.setText("");
-            confirmPassField.setText("");
-
-            usernameField.setText("");
-            passcodeField.setText("");
-            authField.setText("");
-        };
         if (e.getSource() == loginButton) { // checks 4 loginButton; login logic
 
             // fetches username + passcode from JTextField components
@@ -534,7 +478,13 @@ public class UI extends JFrame implements ActionListener {
                    (e.getSource() == registerTransparentBtn)) { // signup logic if pressed
             cardLayout.show(getContentPane(), "Signup"); // switches to SU panel
             // resets fields (signup screen)
-            clearFields.run();
+            firstNameField.setText("");
+            lastNameField.setText("");
+            userField.setText("");
+            emailField.setText("");
+            passField.setText("");
+            confirmPassField.setText("");
+
         } else if (e.getSource() == registerButton) { // register logic
             // gets text from respective JTextField components
             String firstName = firstNameField.getText();
@@ -587,15 +537,25 @@ public class UI extends JFrame implements ActionListener {
         } else if ((e.getSource() == back2loginBtn) ||
                    (e.getSource() == signupTransparentBtn)) { // if back button clicked
             // clears all the fields
-            clearFields.run();
-
+            usernameField.setText("");
+            passcodeField.setText("");
+            userField.setText("");
+            emailField.setText("");
+            passField.setText("");
+            confirmPassField.setText("");
 
             // switches the card layout back to log-in panel
             cardLayout.show(getContentPane(), "Login");
         } else if (e.getSource() == returnLoginBtn) {
             // clears all the fields
+            usernameField.setText("");
+            passcodeField.setText("");
+            userField.setText("");
+            emailField.setText("");
+            passField.setText("");
+            confirmPassField.setText("");
+            authField.setText("");
 
-            clearFields.run();
             // switches the card layout back to log-in panel
             cardLayout.show(getContentPane(), "Login");
         } else if (e.getSource() == authenticateBtn) {
@@ -638,10 +598,9 @@ public class UI extends JFrame implements ActionListener {
                 return;
             }
 
-            if(database.register(firstName, lastName, username,
+            if (database.register(firstName, lastName, username,
                     email, password, 2)) { // checks for uniqueness
                 System.out.println("Instructor registered successfully"); // console msg
-
                 // console messages for testing
                 System.out.println("Name: " + firstName + " " + lastName);
                 System.out.println("Username: " + username);
