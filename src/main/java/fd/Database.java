@@ -8,17 +8,21 @@ import java.security.NoSuchAlgorithmException;
 
 public class Database {
 
-    // declares database vars -hashmap, txt file, and hash toggle
+    // declares database vars - hashmap, txt file, and hash toggle
     private HashMap<String, String> users;
+    private HashMap<String, String> authCodes;
     private final String filename = "user_credentials.txt";
-    private boolean useHashing = false; // can be toggled between T/F to hash
+    private final String authFilename = "authenticate_codes.txt";
+    private boolean hashPass = true; // can be toggled between T/F to hash
+    private boolean hashCodes = false; // can be toggled between T/F to hash codes
 
     // database constructor
     public Database() {
         users = new HashMap<>(); // initializes the hashmap
+        authCodes = new HashMap<>(); // initializes the auth codes hashmap
         loadUsers(); // loads existing users into hashmap
+        loadAuthCodes(); // loads existing auth codes into hashmap
     }
-
 
     // method to load credentials from the "user_credentials.txt" file
     private void loadUsers() {
@@ -29,8 +33,10 @@ public class Database {
                 while (reader.hasNextLine()) { // iterates through lines in file
                     // splits line at the comma (between user and pass)
                     String[] credentials = reader.nextLine().split(",");
-                    // adds username and passcode to the hashmap
-                    users.put(credentials[0], credentials[4]);
+                    // adds credentials onto the hashmap
+                    users.put(credentials[0], credentials[1] + "," +
+                            credentials[2] + "," + credentials[3] + "," +
+                            credentials[4]);
                 }
                 reader.close(); // closes scanner once done using
             } else {
@@ -51,21 +57,43 @@ public class Database {
             System.out.println("Username already exists");
             return false;
         } else {
-            if (useHashing) {
+            if (hashPass) {
                 passcode = hashPassword(passcode);
             }
-            users.put(username, firstName + "," + lastName + "," +
-                    email + "," + passcode);
+            users.put(username, firstName + "," + lastName + "," + email + "," +
+                      passcode);
             saveUsers();
             return true;
+        }
+    }
+
+    // method to load auth codes from the "authenticate_codes.txt" file
+    private void loadAuthCodes() {
+        try { // try-catch block to handle any IO exceptions
+            File file = new File(authFilename); // creating a file object for authenticate_codes
+            if (file.exists()) { // checks if the file exists
+                Scanner reader = new Scanner(file); // creates scanner to read
+                while (reader.hasNextLine()) { // iterates through lines in file
+                    String code = reader.nextLine();
+                    if (hashCodes) {
+                        code = hashPassword(code); // use the same hashing function as for passwords
+                    }
+                    authCodes.put(code, ""); // adds code to the hashmap
+                }
+                reader.close(); // closes scanner once done using
+            } else {
+                file.createNewFile(); // creates file if it doesn't exist
+            }
+        } catch (IOException e) { // catches any IO exception
+            e.printStackTrace(); // throws/prints error to console
         }
     }
 
     // method to check if login credentials are valid
     public boolean validateLogin(String username, String password) {
         if(users.containsKey(username)) {
-            String storedPassword = users.get(username);
-            if (useHashing) { //checks for hash toggle
+            String storedPassword = users.get(username).split(",")[3];
+            if (hashPass) { //checks for hash toggle
                 password = hashPassword(password);
             }
             if (storedPassword.equals(password)) {
@@ -85,6 +113,20 @@ public class Database {
     private boolean validateInput(String input) {
         // returns T iff letters (both UC + LC), digits, and underscores, else F
         return input.matches("\\w+");
+    }
+
+    // method to check if auth code is valid
+    public boolean validateAuthCode(String code) {
+        if (hashCodes) {
+            code = hashPassword(code);
+        }
+        if (authCodes.containsKey(code)) {
+            System.out.println("Authentication code is valid");
+            return true;
+        } else {
+            System.out.println("Authentication code is not valid");
+            return false;
+        }
     }
 
     // saves hashmap to the file
