@@ -135,6 +135,27 @@ public class UI extends JFrame implements ActionListener {
         });
         loginPanel.add(registerTransparentBtn);
 
+        // Register Transparent Button
+        registerTransparentBtn = new JButton("");
+        registerTransparentBtn.setBounds(400, 27, 211, 47);
+        registerTransparentBtn.setOpaque(false);
+        registerTransparentBtn.setContentAreaFilled(false);
+        registerTransparentBtn.setBorderPainted(false);
+        registerTransparentBtn.addActionListener(this);
+        // adds a mouse listener
+        registerTransparentBtn.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                setCursor(Cursor.getDefaultCursor());
+            }
+        });
+        loginPanel.add(registerTransparentBtn);
+
         // signup panel
         signupPanel = new JPanel();
         signupPanel.setLayout(null);
@@ -268,6 +289,27 @@ public class UI extends JFrame implements ActionListener {
 //        signInTextSU.setForeground(Color.decode("#000000"));
 //        signInTextSU.setBounds(189, 27, 211, 47);
 //        signupPanel.add(signInTextSU);
+
+        // Register Transparent Button
+        signupTransparentBtn = new JButton("");
+        signupTransparentBtn.setBounds(189, 27, 211, 47);
+        signupTransparentBtn.setOpaque(false);
+        signupTransparentBtn.setContentAreaFilled(false);
+        signupTransparentBtn.setBorderPainted(false);
+        signupTransparentBtn.addActionListener(this);
+        // adds a mouse listener
+        signupTransparentBtn.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                setCursor(Cursor.getDefaultCursor());
+            }
+        });
+        signupPanel.add(signupTransparentBtn);
 
         // Register Transparent Button
         signupTransparentBtn = new JButton("");
