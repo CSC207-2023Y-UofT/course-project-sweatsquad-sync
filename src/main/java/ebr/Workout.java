@@ -6,8 +6,6 @@ import java.time.LocalTime;
 import java.util.*;
 
 public class Workout implements Serializable {
-    private static int count = 0;
-    private int id;
     public String name;
     public Set<String> requiredCerts;
 
@@ -20,17 +18,19 @@ public class Workout implements Serializable {
         LocalTime start;
         Duration duration;
         Instructor instructor;
-        private Offering() {}
-        public Offering(Weekday day, LocalTime start, Duration duration) {
+        Room room;
+        public Offering(Weekday day, LocalTime start, Duration duration, Room room) {
             this.day = day;
             this.start = start;
             this.duration = duration;
+            this.room = room;
             this.instructor = null;
         }
-        public Offering(Weekday day, LocalTime start, Duration duration, Instructor instructor) {
+        public Offering(Weekday day, LocalTime start, Duration duration, Room room, Instructor instructor) {
             this.day = day;
             this.start = start;
             this.duration = duration;
+            this.room = room;
             this.instructor = instructor;
         }
     }
@@ -38,7 +38,6 @@ public class Workout implements Serializable {
     public List<Offering> offerings;
 
     public Workout(String name) {
-        this.id = count++;
         this.name = name;
         this.requiredCerts = new HashSet<>();
         this.offerings = new ArrayList<>();
@@ -70,6 +69,6 @@ public class Workout implements Serializable {
 
     @Override
     public int hashCode() {
-        return id;
+        return name.hashCode();
     }
 }

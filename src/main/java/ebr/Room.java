@@ -4,12 +4,9 @@ import java.io.Serializable;
 import java.util.Objects;
 
 public class Room implements Serializable {
-    static private int count = 0;
     public final String name;
-    private int id;
 
     public Room(String name) {
-        this.id = count++;
         this.name = name;
     }
 
@@ -23,6 +20,6 @@ public class Room implements Serializable {
 
     @Override
     public int hashCode() {
-        return id;
+        return name.hashCode();
     }
 }
