@@ -19,11 +19,19 @@ public class Workout implements Serializable {
         Weekday day;
         LocalTime start;
         Duration duration;
+        Instructor instructor;
         private Offering() {}
         public Offering(Weekday day, LocalTime start, Duration duration) {
             this.day = day;
             this.start = start;
             this.duration = duration;
+            this.instructor = null;
+        }
+        public Offering(Weekday day, LocalTime start, Duration duration, Instructor instructor) {
+            this.day = day;
+            this.start = start;
+            this.duration = duration;
+            this.instructor = instructor;
         }
     }
 
@@ -50,14 +58,6 @@ public class Workout implements Serializable {
 
     public void deleteCert(String cert) {
         requiredCerts.remove(cert);
-    }
-
-    public void addOffering(Weekday day, LocalTime start, Duration duration) {
-        this.offerings.add(new Offering(day, start, duration));
-    }
-
-    public void removeOffering(int index) {
-        this.offerings.remove(index);
     }
 
     @Override

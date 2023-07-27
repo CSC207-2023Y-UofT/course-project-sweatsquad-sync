@@ -1,6 +1,7 @@
 package ebr;
 
 import java.io.*;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -31,6 +32,10 @@ public class Gym implements Serializable  {
         // TODO remove all refs to that user here
     }
 
+    public Set<User> getUsers() {
+        return Collections.unmodifiableSet(this.members);
+    }
+
     public void addInstructor(Instructor u) {
         instructors.add(u);
     }
@@ -38,6 +43,10 @@ public class Gym implements Serializable  {
     public void removeInstructor(Instructor u) {
         instructors.remove(u);
         // TODO remove all refs to that instructor here
+    }
+
+    public Set<Instructor> getInstructors() {
+        return Collections.unmodifiableSet(this.instructors);
     }
 
     public void addAdmin(GymAdmin u) {
@@ -49,6 +58,10 @@ public class Gym implements Serializable  {
         // TODO remove all refs to that admin here
     }
 
+    public Set<GymAdmin> getAdmins() {
+        return Collections.unmodifiableSet(this.admins);
+    }
+
     public void addWorkout(Workout u) {
         workouts.add(u);
     }
@@ -56,6 +69,10 @@ public class Gym implements Serializable  {
     public void removeWorkout(Workout u) {
         workouts.remove(u);
         // TODO remove all refs to that workout here
+    }
+
+    public Set<Workout> getWorkouts() {
+        return Collections.unmodifiableSet(this.workouts);
     }
 
     public void addRoom(Room r) {
@@ -67,8 +84,8 @@ public class Gym implements Serializable  {
         // TODO remove all refs to that room here
     }
 
-    public String getRooms() {
-        return this.rooms.toString();
+    public Set<Room> getRooms() {
+        return Collections.unmodifiableSet(this.rooms);
     }
 
     public void save() throws IOException {

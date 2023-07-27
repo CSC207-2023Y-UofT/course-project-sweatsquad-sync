@@ -13,18 +13,18 @@ public class EBRTest {
         Room r1 = new Room("d");
         Room r2 = new Room("e");
         g.addRoom(r1);
-        Assertions.assertEquals(g.getRooms(), "[ebr.Room@0]");
+        Assertions.assertEquals(g.getRooms().toString(), "[ebr.Room@0]");
         g.removeRooms(r2);
-        Assertions.assertEquals(g.getRooms(), "[ebr.Room@0]");
+        Assertions.assertEquals(g.getRooms().toString(), "[ebr.Room@0]");
         g.addRoom(r2);
-        Assertions.assertEquals(g.getRooms(), "[ebr.Room@0, ebr.Room@1]");
+        Assertions.assertEquals(g.getRooms().toString(), "[ebr.Room@0, ebr.Room@1]");
         g.removeRooms(r1);
-        Assertions.assertEquals(g.getRooms(), "[ebr.Room@1]");
+        Assertions.assertEquals(g.getRooms().toString(), "[ebr.Room@1]");
     }
     @Test
     public void WorkoutOfferingTest() {
         Workout w = new Workout("asdf");
-        w.addOffering(Workout.Weekday.Monday, LocalTime.of(10, 0), Duration.ofMinutes(30));
+        w.offerings.add(new Workout.Offering(Workout.Weekday.Monday, LocalTime.of(10, 0), Duration.ofMinutes(30)));
         System.out.println(w.offerings);
     }
 }
