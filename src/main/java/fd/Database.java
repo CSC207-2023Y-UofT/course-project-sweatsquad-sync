@@ -36,7 +36,7 @@ public class Database {
                     // adds credentials onto the hashmap
                     users.put(credentials[0], credentials[1] + "," +
                             credentials[2] + "," + credentials[3] + "," +
-                            credentials[4]);
+                            credentials[4] + "," + credentials[5]);
                 }
                 reader.close(); // closes scanner once done using
             } else {
@@ -49,7 +49,7 @@ public class Database {
 
     // method to register new user, returns T if successful, F if already exists
     public boolean register(String firstName, String lastName, String username,
-                            String email, String passcode) {
+                            String email, String passcode, int level) {
         if (!validateInput(username) || !validateInput(passcode)) {
             System.out.println("Invalid input");
             return false;
@@ -61,7 +61,7 @@ public class Database {
                 passcode = hashPassword(passcode);
             }
             users.put(username, firstName + "," + lastName + "," + email + "," +
-                      passcode);
+                      passcode + "," + level);
             saveUsers();
             return true;
         }
