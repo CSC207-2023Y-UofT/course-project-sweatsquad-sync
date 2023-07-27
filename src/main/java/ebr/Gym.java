@@ -10,16 +10,12 @@ public class Gym implements Serializable  {
     public String name;
     private Set<Room> rooms;
     private Set<User> members;
-    private Set<Instructor> instructors;
-    private Set<GymAdmin> admins;
     private Set<Workout> workouts;
 
     public Gym(String name) {
         this.name = name;
         this.rooms = new HashSet<>();
         this.members = new HashSet<>();
-        this.instructors = new HashSet<>();
-        this.admins = new HashSet<>();
         this.workouts = new HashSet<>();
     }
 
@@ -30,36 +26,12 @@ public class Gym implements Serializable  {
     public void removeUser(User u) {
         members.remove(u);
         // TODO remove all refs to that user here
+        if (u instanceof RegisteredUser) {}
+        if (u instanceof Instructor) {}
     }
 
     public Set<User> getUsers() {
         return Collections.unmodifiableSet(this.members);
-    }
-
-    public void addInstructor(Instructor u) {
-        instructors.add(u);
-    }
-
-    public void removeInstructor(Instructor u) {
-        instructors.remove(u);
-        // TODO remove all refs to that instructor here
-    }
-
-    public Set<Instructor> getInstructors() {
-        return Collections.unmodifiableSet(this.instructors);
-    }
-
-    public void addAdmin(GymAdmin u) {
-        admins.add(u);
-    }
-
-    public void removeAdmin(GymAdmin u) {
-        admins.remove(u);
-        // TODO remove all refs to that admin here
-    }
-
-    public Set<GymAdmin> getAdmins() {
-        return Collections.unmodifiableSet(this.admins);
     }
 
     public void addWorkout(Workout u) {
@@ -86,18 +58,5 @@ public class Gym implements Serializable  {
 
     public Set<Room> getRooms() {
         return Collections.unmodifiableSet(this.rooms);
-    }
-
-    public void save() throws IOException {
-        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("file.txt"));
-        oos.writeObject(this);
-        oos.close();
-    }
-
-    public Gym load() throws IOException, ClassNotFoundException {
-        ObjectInputStream ois = new ObjectInputStream(new FileInputStream("file.txt"));
-        Gym g = (Gym)ois.readObject();
-        ois.close();
-        return g;
     }
 }

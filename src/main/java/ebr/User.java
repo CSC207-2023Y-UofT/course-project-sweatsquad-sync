@@ -1,32 +1,20 @@
 package ebr;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 public class User implements Serializable {
-    private static int count = 0;
     public String name;
-    private String password;
-    private int id;
+    public String passHash;
 
-    protected User() {};
+    protected User() {}
 
-    public User(String name, String password) {
-        this.id = count++;
+    public User(String name, String passHash) {
         this.name = name;
-        this.password = password;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return id == user.id;
+        this.passHash = passHash;
     }
 
     @Override
     public int hashCode() {
-        return id;
+        return name.hashCode();
     }
 }
