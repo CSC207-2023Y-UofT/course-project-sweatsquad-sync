@@ -472,10 +472,11 @@ public class UI extends JFrame implements ActionListener {
             }
 
             if(database.register(firstName, lastName, username,
-                    email, password)) { // checks for uniqueness
+                    email, password, 0)) { // checks for uniqueness
                 System.out.println("Registered successfully"); // console msg
 
                 // console messages for testing
+                System.out.println("Name: " + firstName + " " + lastName);
                 System.out.println("Username: " + username);
                 System.out.println("Email: " + email);
                 System.out.println("Password: " + password);
@@ -552,10 +553,11 @@ public class UI extends JFrame implements ActionListener {
             }
 
             if(database.register(firstName, lastName, username,
-                    email, password)) { // checks for uniqueness
+                    email, password, 2)) { // checks for uniqueness
                 System.out.println("Instructor registered successfully"); // console msg
 
                 // console messages for testing
+                System.out.println("Name: " + firstName + " " + lastName);
                 System.out.println("Username: " + username);
                 System.out.println("Email: " + email);
                 System.out.println("Password: " + password);
