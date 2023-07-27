@@ -160,40 +160,71 @@ public class UI extends JFrame implements ActionListener {
         signupPanel.add(lastNameField);
 
         // email label
-        JLabel emailLabel = new JLabel("Email:");
+        JLabel emailLabel = new JLabel("Email");
         emailLabel.setFont(new Font("Monsterrat", Font.BOLD, 15));
         emailLabel.setBounds(189, 185, 422, 25);
         signupPanel.add(emailLabel);
 
-        // passcode field
+        // email field
         emailField = new JTextField(20); // 20 is default -negligible
         emailField.setBounds(189, 210, 422, 45);
         emailField.setBorder(new EmptyBorder(0, 20, 0, 20)); // removes bord.
         emailField.setFont(new Font("Comfortaa", Font.BOLD, 18));
         signupPanel.add(emailField);
 
-        // username label + field
+        /* username label + field
         JLabel signupUsernameLabel = new JLabel("Username");
         signupUsernameLabel.setBounds(500, 145, 200, 30);
         signupPanel.add(signupUsernameLabel);
         userField = new JTextField(20);
         userField.setBounds(500, 165, 200, 30);
+        signupPanel.add(userField);*/
+
+        // username label
+        JLabel signupUsernameLabel = new JLabel("Username");
+        signupUsernameLabel.setFont(new Font("Monsterrat", Font.BOLD, 15));
+        signupUsernameLabel.setBounds(189, 272, 422, 25);
+        signupPanel.add(signupUsernameLabel);
+
+        // username field
+        userField = new JTextField(20); // 20 is default -negligible
+        userField.setBounds(189, 297, 422, 45);
+        userField.setBorder(new EmptyBorder(0, 20, 0, 20)); // removes bord.
+        userField.setFont(new Font("Comfortaa", Font.BOLD, 18));
         signupPanel.add(userField);
 
-        // passcode label + field
+        /* passcode label + field
         JLabel signupPasswordLabel = new JLabel("Password");
         signupPasswordLabel.setBounds(500, 205, 200, 30);
         signupPanel.add(signupPasswordLabel);
         passField = new JPasswordField(20);
         passField.setBounds(500, 225, 200, 30);
+        signupPanel.add(passField);*/
+
+        // password label
+        JLabel signupPasswordLabel = new JLabel("Password");
+        signupPasswordLabel.setFont(new Font("Monsterrat", Font.BOLD, 15));
+        signupPasswordLabel.setBounds(189, 359, 422, 25);
+        signupPanel.add(signupPasswordLabel);
+
+        // password field
+        passField = new JPasswordField(20); // 20 is default -negligible
+        passField.setBounds(189, 384, 198, 45);
+        passField.setBorder(new EmptyBorder(0, 20, 0, 20)); // removes bord.
+        passField.setFont(new Font("Comfortaa", Font.BOLD, 18));
         signupPanel.add(passField);
 
-        // confirm passcode label + field
-        JLabel confirmPasswordLabel = new JLabel("Confirm Password:");
-        confirmPasswordLabel.setBounds(500, 265, 200, 30);
+        // confirm password label
+        JLabel confirmPasswordLabel = new JLabel("Password");
+        confirmPasswordLabel.setFont(new Font("Monsterrat", Font.BOLD, 15));
+        confirmPasswordLabel.setBounds(189, 359, 422, 25);
         signupPanel.add(confirmPasswordLabel);
-        confirmPassField = new JPasswordField(20);
-        confirmPassField.setBounds(500, 285, 200, 30);
+
+        // confirm password field
+        confirmPassField = new JPasswordField(20); // 20 is default -negligible
+        confirmPassField.setBounds(413, 384, 198, 45);
+        confirmPassField.setBorder(new EmptyBorder(0, 20, 0, 20)); // removes bord.
+        confirmPassField.setFont(new Font("Comfortaa", Font.BOLD, 18));
         signupPanel.add(confirmPassField);
 
         // register button
