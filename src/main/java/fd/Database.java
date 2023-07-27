@@ -5,6 +5,7 @@ import ebr.Gym;
 import ebr.Instructor;
 import ebr.User;
 
+import java.util.*;
 import java.io.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -78,6 +79,7 @@ public class Database {
 
     // checks if input's valid
     private boolean validateInput(String input) {
+        // returns T iff letters (both UC + LC), digits, and underscores, else F
         return input.matches("\\w+");
     }
 

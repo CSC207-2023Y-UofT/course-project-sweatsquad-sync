@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-// TODO serialization??
 public class Gym implements Serializable  {
     public String name;
     private Set<Room> rooms;

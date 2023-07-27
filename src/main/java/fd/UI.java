@@ -3,7 +3,6 @@ package fd;
 // import statements
 import java.awt.*;
 import java.awt.event.*;
-import java.util.function.Function;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
@@ -432,7 +431,6 @@ public class UI extends JFrame implements ActionListener {
             passcodeField.setText("");
             authField.setText("");
         };
-
         if (e.getSource() == loginButton) { // checks 4 loginButton; login logic
 
             // fetches username + passcode from JTextField components
@@ -503,11 +501,13 @@ public class UI extends JFrame implements ActionListener {
             // clears all the fields
             clearFields.run();
 
+
             // switches the card layout back to log-in panel
             cardLayout.show(getContentPane(), "Login");
         } else if (e.getSource() == returnLoginBtn) {
             // clears all the fields
 
+            clearFields.run();
             // switches the card layout back to log-in panel
             cardLayout.show(getContentPane(), "Login");
         } else if (e.getSource() == authenticateBtn) {
