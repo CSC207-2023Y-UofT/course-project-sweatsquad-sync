@@ -19,7 +19,7 @@ public class RoundBtn extends JFrame { // implements ActionListener; REMOVED
 
     // constructor
     public RoundBtn() {
-        /* deprecated
+        /* deprecated; REMOVED
         setTitle("TestGUI - RoundBtn");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(200, 75);
@@ -37,11 +37,11 @@ public class RoundBtn extends JFrame { // implements ActionListener; REMOVED
         // set the bounds manually for the rounded button
         roundedButton.setBounds(10, 10, 230, 50);
 
-        thePanel.add(roundedButton); // Adding the button to the panel
-        add(thePanel); // Adding the panel to the JFrame's content pane
+        thePanel.add(roundedButton); // adding the button to the panel
+        add(thePanel); // adding the panel to the JFrame's content pane
 
-        pack(); // Adjusting the JFrame size to fit its contents
-        setVisible(true); // Making the JFrame visible
+        pack(); // adjusting the JFrame size to fit its contents
+        setVisible(true); // making the JFrame visible
         */
     }
 
@@ -142,7 +142,7 @@ public class RoundBtn extends JFrame { // implements ActionListener; REMOVED
         }
     } */
 
-    /* this is unnecessary
+    /* this is unnecessary; REMOVED
     public static void main(String[] args) {
         new RoundBtn();
     }*/

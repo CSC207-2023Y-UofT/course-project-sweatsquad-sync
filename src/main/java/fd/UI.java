@@ -41,21 +41,10 @@ public class UI extends JFrame implements ActionListener {
         setLayout(cardLayout); // layout form, switches between cards
         setLocationRelativeTo(null); // centers ui if left 'null'
 
-        // define component width and height
-        int compW = 200; // dictates text field length
-        int compH = 30; // dictates text field height
-
-        // horizontal and vertical offset variable assignment for centering
-        int xOffset = (getWidth() - compW) / 2;
-        int spacing = 50; // define the space between the two columns
-        int xOffsetLeft = (getWidth() - 2 * compW - spacing) / 2;
-        int xOffsetRight = xOffsetLeft + compW + spacing;
-        int yOffset = (getHeight() - compH) / 2;
-
         // Login panel
         loginPanel = new JPanel();
         loginPanel.setLayout(null);
-        loginPanel.setBackground(Color.decode("#F5F4F2")); // pantone cool 25%
+        loginPanel.setBackground(Color.decode("#DADADA"));
 
         // username label
         JLabel usernameLabel = new JLabel("Username:");
@@ -82,7 +71,7 @@ public class UI extends JFrame implements ActionListener {
         passcodeField.setBorder(new EmptyBorder(0, 20, 0, 20)); // removes bord.
         loginPanel.add(passcodeField);
 
-        // login button (round button)
+        // login button UPDATED (round button)
         loginButton = roundBtn.genRoundBtn("Login", 50, "#001561", false);
         loginButton.setFont(new Font("Monsterrat", Font.BOLD, 13));
         loginButton.setForeground(Color.decode("#FFFFFF"));
@@ -90,7 +79,7 @@ public class UI extends JFrame implements ActionListener {
         loginButton.addActionListener(this);
         loginPanel.add(loginButton);
 
-        // signup button
+        // signup button UPDATED (round button)
         signupButton = roundBtn.genRoundBtn("Create Account", 50, "#001561",
                                             false);
         signupButton.setFont(new Font("Monsterrat", Font.BOLD, 13));
@@ -122,16 +111,7 @@ public class UI extends JFrame implements ActionListener {
         // signup panel
         signupPanel = new JPanel();
         signupPanel.setLayout(null);
-
-        /* first name label + field
-        JLabel firstNameLabel = new JLabel("First Name:");
-        firstNameLabel.setBounds(200, 145, 200, 30);
-        signupPanel.add(firstNameLabel);
-
-        // first name field
-        firstNameField = new JTextField(20);
-        firstNameField.setBounds(200, 165, 200, 30);
-        signupPanel.add(firstNameField);*/
+        signupPanel.setBackground(Color.decode("#DADADA"));
 
         // first name label
         JLabel firstNameLabel = new JLabel("First Name");
@@ -172,14 +152,6 @@ public class UI extends JFrame implements ActionListener {
         emailField.setFont(new Font("Comfortaa", Font.BOLD, 18));
         signupPanel.add(emailField);
 
-        /* username label + field
-        JLabel signupUsernameLabel = new JLabel("Username");
-        signupUsernameLabel.setBounds(500, 145, 200, 30);
-        signupPanel.add(signupUsernameLabel);
-        userField = new JTextField(20);
-        userField.setBounds(500, 165, 200, 30);
-        signupPanel.add(userField);*/
-
         // username label
         JLabel signupUsernameLabel = new JLabel("Username");
         signupUsernameLabel.setFont(new Font("Monsterrat", Font.BOLD, 15));
@@ -192,14 +164,6 @@ public class UI extends JFrame implements ActionListener {
         userField.setBorder(new EmptyBorder(0, 20, 0, 20)); // removes bord.
         userField.setFont(new Font("Comfortaa", Font.BOLD, 18));
         signupPanel.add(userField);
-
-        /* passcode label + field
-        JLabel signupPasswordLabel = new JLabel("Password");
-        signupPasswordLabel.setBounds(500, 205, 200, 30);
-        signupPanel.add(signupPasswordLabel);
-        passField = new JPasswordField(20);
-        passField.setBounds(500, 225, 200, 30);
-        signupPanel.add(passField);*/
 
         // password label
         JLabel signupPasswordLabel = new JLabel("Password");
@@ -227,21 +191,26 @@ public class UI extends JFrame implements ActionListener {
         confirmPassField.setFont(new Font("Comfortaa", Font.BOLD, 18));
         signupPanel.add(confirmPassField);
 
-        // register button
-        registerButton = new JButton("Register");
-        registerButton.setBounds(420, 345, 100, 30);
-        registerButton.addActionListener(this);
-        signupPanel.add(registerButton);
-
-        // back button
-        back2loginBtn = new JButton("Back");
-        back2loginBtn.setBounds(280, 345, 100, 30);
+        // back button UPDATED (round button)
+        back2loginBtn = roundBtn.genRoundBtn("Back", 50, "#001561", false);
+        back2loginBtn.setFont(new Font("Monsterrat", Font.BOLD, 13));
+        back2loginBtn.setForeground(Color.decode("#FFFFFF"));
+        back2loginBtn.setBounds(189, 450, 196, 50);
         back2loginBtn.addActionListener(this);
         signupPanel.add(back2loginBtn);
 
+        // register button UPDATED (round button)
+        registerButton = roundBtn.genRoundBtn("Register", 50, "#001561", false);
+        registerButton.setFont(new Font("Monsterrat", Font.BOLD, 13));
+        registerButton.setForeground(Color.decode("#FFFFFF"));
+        registerButton.setBounds(413, 450, 196, 50);
+        registerButton.addActionListener(this);
+        signupPanel.add(registerButton);
+
         haveCodeLabel = new JLabel("<HTML><U>I have a code</U></HTML>");
         haveCodeLabel.setForeground(Color.BLUE);
-        haveCodeLabel.setBounds(350, 385, 200, 30);
+        haveCodeLabel.setFont(new Font("Comfortaa", Font.BOLD, 13));
+        haveCodeLabel.setBounds(350, 514, 200, 30);
         haveCodeLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         haveCodeLabel.addMouseListener(new MouseAdapter() {
             @Override
@@ -259,12 +228,6 @@ public class UI extends JFrame implements ActionListener {
             }
         });
         signupPanel.add(haveCodeLabel);
-
-        /* login panel background
-        JLabel signupBG = new JLabel("");
-        signupBG.setIcon(new ImageIcon("images/signupBG.png"));
-        signupBG.setBounds(0, -10, 800, 600);
-        signupPanel.add(signupBG);*/
 
         // login indicator bar JLabel
         JLabel regIndicator = new JLabel("");
@@ -289,26 +252,54 @@ public class UI extends JFrame implements ActionListener {
         // instructor authenticate code panel
         authCodePanel = new JPanel();
         authCodePanel.setLayout(null);
+        authCodePanel.setBackground(Color.decode("#DADADA"));
 
-        // auth code label + field
-        JLabel authCodeLabel = new JLabel("Authorization Code:");
-        authCodeLabel.setBounds(300, 225, 200, 30);
+        // auth code label
+        JLabel authCodeLabel = new JLabel("Enter Authentication Code" +
+                                          "                   (16 Characters)");
+        // note: look at AbstractDocument and DocumentFilter to limit characters
+        authCodeLabel.setBounds(189, 140, 422, 25);
+        authCodeLabel.setFont(new Font("Monsterrat", Font.BOLD, 15));
         authCodePanel.add(authCodeLabel);
-        authField = new JTextField(20);
-        authField.setBounds(300, 245, 200, 30);
+
+        // auth code field
+        authField = new JTextField(20); // 20 is default -negligible
+        authField.setBounds(189, 165, 422, 45);
+        authField.setBorder(new EmptyBorder(0, 20, 0, 20)); // removes bord.
+        authField.setFont(new Font("Comfortaa", Font.BOLD, 18));
+        authField.setHorizontalAlignment(SwingConstants.CENTER); // c-align
         authCodePanel.add(authField);
 
-        // return to log-in btn
-        returnLoginBtn = new JButton("Return");
-        returnLoginBtn.setBounds(295, 285, 95, 30);
+        // return to log-in button UPDATED (round button)
+        returnLoginBtn = roundBtn.genRoundBtn("Return", 50, "#001561", false);
+        returnLoginBtn.setFont(new Font("Monsterrat", Font.BOLD, 13));
+        returnLoginBtn.setForeground(Color.decode("#FFFFFF"));
+        returnLoginBtn.setBounds(189, 292, 196, 50);
         returnLoginBtn.addActionListener(this);
         authCodePanel.add(returnLoginBtn);
 
-        // authenticate btn
-        authenticateBtn = new JButton("Authenticate");
-        authenticateBtn.setBounds(395, 285, 110, 30);
+        // authenticate button UPDATED (round button)
+        authenticateBtn = roundBtn.genRoundBtn("Authenticate", 50, "#001561",
+                false);
+        authenticateBtn.setFont(new Font("Monsterrat", Font.BOLD, 13));
+        authenticateBtn.setForeground(Color.decode("#FFFFFF"));
+        authenticateBtn.setBounds(413, 292, 196, 50);
         authenticateBtn.addActionListener(this);
         authCodePanel.add(authenticateBtn);
+
+        // screen indicator bar JLabel
+        JLabel indicatorBar = new JLabel("");
+        indicatorBar.setIcon(new ImageIcon("images/00301-auth-indicator.png"));
+        indicatorBar.setBounds(189, 65, 422, 9);
+        authCodePanel.add(indicatorBar);
+
+        // screen title JLabel
+        JLabel authLabelBig = new JLabel("Instructor Authentication",
+                                         SwingConstants.CENTER);
+        authLabelBig.setFont(new Font("Monsterrat", Font.BOLD, 16));
+        authLabelBig.setForeground(Color.decode("#001561"));
+        authLabelBig.setBounds(189, 25, 422, 47);
+        authCodePanel.add(authLabelBig);
 
         add(loginPanel, "Login"); // adds panel to the card "deck"
         add(signupPanel, "Signup");  // adds panel to the card "deck"
@@ -335,6 +326,8 @@ public class UI extends JFrame implements ActionListener {
         } else if (e.getSource() == signupButton) { // signup logic if pressed
             cardLayout.show(getContentPane(), "Signup"); // switches to SU panel
             // resets fields (signup screen)
+            firstNameField.setText("");
+            lastNameField.setText("");
             userField.setText("");
             emailField.setText("");
             passField.setText("");
@@ -388,7 +381,7 @@ public class UI extends JFrame implements ActionListener {
             } else {
                 System.out.println("Username already exists"); // F console msg
             }
-        } else if (e.getSource() == back2loginBtn) { // if back button is clicked
+        } else if (e.getSource() == back2loginBtn) { // if back button clicked
             // clears all the fields
             usernameField.setText("");
             passcodeField.setText("");
@@ -407,9 +400,19 @@ public class UI extends JFrame implements ActionListener {
             emailField.setText("");
             passField.setText("");
             confirmPassField.setText("");
+            authField.setText("");
 
             // switches the card layout back to log-in panel
             cardLayout.show(getContentPane(), "Login");
+        } else if (e.getSource() == authenticateBtn) {
+            String inputCode = authField.getText(); // get the input from user
+            if(database.validateAuthCode(inputCode)) {
+                System.out.println("Success! Valid code.");
+                authField.setText("");
+                cardLayout.show(getContentPane(), "Login");
+            } else {
+                System.out.println("Failure. Invalid code.");
+            }
         }
     }
 }
