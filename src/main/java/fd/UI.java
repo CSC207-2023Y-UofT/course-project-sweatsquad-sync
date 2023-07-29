@@ -18,7 +18,7 @@ public class UI extends JFrame implements ActionListener {
     private JTextField lastNameFieldIR, emailFieldIR, userFieldIR;
     private JPasswordField passcodeField, passField, confirmPassField;
     private JPasswordField passFieldIR, confirmPassFieldIR;
-    private JPanel loginPanel, signupPanel, authCodePanel, instrRegPanel;
+    private JPanel loginPanel, signupPanel, authCodePanel, instrRegPanel, mainP;
     private JLabel haveCodeLabel;
     private RoundBtn roundBtn = new RoundBtn();
     private RoundField roundField = new RoundField();
@@ -57,8 +57,7 @@ public class UI extends JFrame implements ActionListener {
         loginPanel.add(usernameLabel);
 
         // username field
-        usernameField = roundField.genRoundTextField("", 30, "#FFFFFF", false);
-        usernameField.setFont(new Font("Arial", Font.PLAIN, 16));
+        usernameField = roundField.genRoundTextField("", 20, "#FFFFFF", false);
         usernameField.setBounds(189, 123, 422, 45);
         usernameField.setFont(new Font("Comfortaa", Font.BOLD, 18));
         loginPanel.add(usernameField);
@@ -145,9 +144,8 @@ public class UI extends JFrame implements ActionListener {
         signupPanel.add(firstNameLabel);
 
         // first name field
-        firstNameField = new JTextField(20); // 20 is default -negligible
+        firstNameField = roundField.genRoundTextField("", 20, "#FFFFFF", false);
         firstNameField.setBounds(189, 123, 198, 45);
-        firstNameField.setBorder(new EmptyBorder(0, 20, 0, 20)); // removes bord.
         firstNameField.setFont(new Font("Comfortaa", Font.BOLD, 18));
         signupPanel.add(firstNameField);
 
@@ -158,9 +156,8 @@ public class UI extends JFrame implements ActionListener {
         signupPanel.add(lastNameLabel);
 
         // last name field
-        lastNameField = new JTextField(20); // 20 is default -negligible
+        lastNameField = roundField.genRoundTextField("", 20, "#FFFFFF", false);
         lastNameField.setBounds(413, 123, 198, 45);
-        lastNameField.setBorder(new EmptyBorder(0, 20, 0, 20)); // removes bord.
         lastNameField.setFont(new Font("Comfortaa", Font.BOLD, 18));
         signupPanel.add(lastNameField);
 
@@ -171,9 +168,8 @@ public class UI extends JFrame implements ActionListener {
         signupPanel.add(emailLabel);
 
         // email field
-        emailField = new JTextField(20); // 20 is default -negligible
+        emailField = roundField.genRoundTextField("", 20, "#FFFFFF", false);
         emailField.setBounds(189, 210, 422, 45);
-        emailField.setBorder(new EmptyBorder(0, 20, 0, 20)); // removes bord.
         emailField.setFont(new Font("Comfortaa", Font.BOLD, 18));
         signupPanel.add(emailField);
 
@@ -184,9 +180,8 @@ public class UI extends JFrame implements ActionListener {
         signupPanel.add(signupUsernameLabel);
 
         // username field
-        userField = new JTextField(20); // 20 is default -negligible
+        userField = roundField.genRoundTextField("", 20, "#FFFFFF", false);
         userField.setBounds(189, 297, 422, 45);
-        userField.setBorder(new EmptyBorder(0, 20, 0, 20)); // removes bord.
         userField.setFont(new Font("Comfortaa", Font.BOLD, 18));
         signupPanel.add(userField);
 
@@ -197,9 +192,8 @@ public class UI extends JFrame implements ActionListener {
         signupPanel.add(signupPasswordLabel);
 
         // password field
-        passField = new JPasswordField(20); // 20 is default -negligible
+        passField = roundField.genRoundPasswordField("", 20, "#FFFFFF", false);
         passField.setBounds(189, 384, 198, 45);
-        passField.setBorder(new EmptyBorder(0, 20, 0, 20)); // removes bord.
         passField.setFont(new Font("Comfortaa", Font.BOLD, 18));
         signupPanel.add(passField);
 
@@ -210,9 +204,8 @@ public class UI extends JFrame implements ActionListener {
         signupPanel.add(confirmPasswordLabel);
 
         // confirm password field
-        confirmPassField = new JPasswordField(20); // 20 is default -negligible
+        confirmPassField = roundField.genRoundPasswordField("", 20, "#FFFFFF", false);
         confirmPassField.setBounds(413, 384, 198, 45);
-        confirmPassField.setBorder(new EmptyBorder(0, 20, 0, 20)); // removes bord.
         confirmPassField.setFont(new Font("Comfortaa", Font.BOLD, 18));
         signupPanel.add(confirmPassField);
 
@@ -309,9 +302,8 @@ public class UI extends JFrame implements ActionListener {
         authCodePanel.add(authCodeLabel);
 
         // auth code field
-        authField = new JTextField(20); // 20 is default -negligible
+        authField = roundField.genRoundTextField("", 20, "#FFFFFF", false);
         authField.setBounds(189, 165, 422, 45);
-        authField.setBorder(new EmptyBorder(0, 20, 0, 20)); // removes bord.
         authField.setFont(new Font("Comfortaa", Font.BOLD, 18));
         authField.setHorizontalAlignment(SwingConstants.CENTER); // c-align
         authCodePanel.add(authField);
@@ -359,9 +351,8 @@ public class UI extends JFrame implements ActionListener {
         instrRegPanel.add(firstNameLabelIR);
 
         // first name field
-        firstNameFieldIR = new JTextField(20); // 20 is default -negligible
+        firstNameFieldIR = roundField.genRoundTextField("", 20, "#FFFFFF", false);
         firstNameFieldIR.setBounds(189, 123, 198, 45);
-        firstNameFieldIR.setBorder(new EmptyBorder(0, 20, 0, 20)); // removes bord.
         firstNameFieldIR.setFont(new Font("Comfortaa", Font.BOLD, 18));
         instrRegPanel.add(firstNameFieldIR);
 
@@ -372,9 +363,8 @@ public class UI extends JFrame implements ActionListener {
         instrRegPanel.add(lastNameLabelIR);
 
         // last name field
-        lastNameFieldIR = new JTextField(20); // 20 is default -negligible
+        lastNameFieldIR = roundField.genRoundTextField("", 20, "#FFFFFF", false);
         lastNameFieldIR.setBounds(413, 123, 198, 45);
-        lastNameFieldIR.setBorder(new EmptyBorder(0, 20, 0, 20)); // removes bord.
         lastNameFieldIR.setFont(new Font("Comfortaa", Font.BOLD, 18));
         instrRegPanel.add(lastNameFieldIR);
 
@@ -385,9 +375,8 @@ public class UI extends JFrame implements ActionListener {
         instrRegPanel.add(emailLabelIR);
 
         // email field
-        emailFieldIR = new JTextField(20); // 20 is default -negligible
+        emailFieldIR = roundField.genRoundTextField("", 20, "#FFFFFF", false);
         emailFieldIR.setBounds(189, 210, 422, 45);
-        emailFieldIR.setBorder(new EmptyBorder(0, 20, 0, 20)); // removes bord.
         emailFieldIR.setFont(new Font("Comfortaa", Font.BOLD, 18));
         instrRegPanel.add(emailFieldIR);
 
@@ -398,9 +387,8 @@ public class UI extends JFrame implements ActionListener {
         instrRegPanel.add(signupUsernameLabelIR);
 
         // username field
-        userFieldIR = new JTextField(20); // 20 is default -negligible
+        userFieldIR = roundField.genRoundTextField("", 20, "#FFFFFF", false);
         userFieldIR.setBounds(189, 297, 422, 45);
-        userFieldIR.setBorder(new EmptyBorder(0, 20, 0, 20)); // removes bord.
         userFieldIR.setFont(new Font("Comfortaa", Font.BOLD, 18));
         instrRegPanel.add(userFieldIR);
 
@@ -411,9 +399,8 @@ public class UI extends JFrame implements ActionListener {
         instrRegPanel.add(signupPasswordLabelIR);
 
         // password field
-        passFieldIR = new JPasswordField(20); // 20 is default -negligible
+        passFieldIR = roundField.genRoundPasswordField("", 20, "#FFFFFF", false);
         passFieldIR.setBounds(189, 384, 198, 45);
-        passFieldIR.setBorder(new EmptyBorder(0, 20, 0, 20)); // removes bord.
         passFieldIR.setFont(new Font("Comfortaa", Font.BOLD, 18));
         instrRegPanel.add(passFieldIR);
 
@@ -424,9 +411,8 @@ public class UI extends JFrame implements ActionListener {
         instrRegPanel.add(confirmPasswordLabelIR);
 
         // confirm password field
-        confirmPassFieldIR = new JPasswordField(20); // 20 is default -negligible
+        confirmPassFieldIR = roundField.genRoundPasswordField("", 20, "#FFFFFF", false);
         confirmPassFieldIR.setBounds(413, 384, 198, 45);
-        confirmPassFieldIR.setBorder(new EmptyBorder(0, 20, 0, 20)); // removes bord.
         confirmPassFieldIR.setFont(new Font("Comfortaa", Font.BOLD, 18));
         instrRegPanel.add(confirmPassFieldIR);
 
@@ -451,10 +437,16 @@ public class UI extends JFrame implements ActionListener {
         instrRegText.setBounds(189, 25, 422, 47);
         instrRegPanel.add(instrRegText);
 
+        // main logged-in view panel
+        mainP = new JPanel();
+        mainP.setLayout(null);
+        mainP.setBackground(Color.decode("#DADADA"));
+
         add(loginPanel, "Login"); // adds panel to the card "deck"
         add(signupPanel, "Signup"); // adds panel to the card "deck"
         add(authCodePanel, "AuthCode"); // adds panel to the card "deck"
         add(instrRegPanel, "InstrReg"); // adds panel to the card "deck"
+        add(mainP, "main"); // adds panel to the card "deck"
 
         setVisible(true);
     }
@@ -470,6 +462,7 @@ public class UI extends JFrame implements ActionListener {
             // checks if credentials are correct; uses Database.validateLogin
             if(database.validateLogin(username, password)) {
                 System.out.println("Logged in successfully"); // console msg
+                cardLayout.show(getContentPane(), "main");
             } else {
                 System.out.println("Invalid credentials"); // failed console msg
             }
