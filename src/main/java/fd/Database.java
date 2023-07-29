@@ -15,6 +15,7 @@ public class Database {
     // declares database vars - hashmap, txt file, and hash toggle
     private final String filename = "gym.bin";
     private Gym gym;
+    public User activeUser;
 
     // database constructor
     public Database() {
@@ -68,6 +69,7 @@ public class Database {
             if (u.name.equals(username))
                 if (u.passHash.equals(hashPassword(password))) {
                     System.out.println("Logged in successfully");
+                    activeUser = u;
                     return true;
                 } else {
                     System.out.println("Incorrect password");
