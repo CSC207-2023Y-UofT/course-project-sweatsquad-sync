@@ -3,6 +3,7 @@ package fd;
 // import statements
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
@@ -36,6 +37,18 @@ public class UI extends JFrame implements ActionListener {
 
         //init Database instance
         database = new Database();
+
+        this.addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(WindowEvent winEvt) {
+                try {
+                    database.save();
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                    System.err.println("Failed to write gym!");
+                }
+            }
+        });
 
         // ui 'defaults'
         setTitle("SweatSquad Sync System"); // window title

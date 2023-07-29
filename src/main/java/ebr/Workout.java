@@ -8,6 +8,7 @@ import java.util.*;
 public class Workout implements Serializable {
     public String name;
     public Set<String> requiredCerts;
+    private Instructor instructor;
 
     enum Weekday {
         Monday, Tuesday, Wednesday, Thursday, Friday
@@ -17,21 +18,12 @@ public class Workout implements Serializable {
         Weekday day;
         LocalTime start;
         Duration duration;
-        Instructor instructor;
         Room room;
         public Offering(Weekday day, LocalTime start, Duration duration, Room room) {
             this.day = day;
             this.start = start;
             this.duration = duration;
             this.room = room;
-            this.instructor = null;
-        }
-        public Offering(Weekday day, LocalTime start, Duration duration, Room room, Instructor instructor) {
-            this.day = day;
-            this.start = start;
-            this.duration = duration;
-            this.room = room;
-            this.instructor = instructor;
         }
     }
 
@@ -41,6 +33,7 @@ public class Workout implements Serializable {
         this.name = name;
         this.requiredCerts = new HashSet<>();
         this.offerings = new ArrayList<>();
+        this.instructor = null;
     }
 
     public Set<String> getRequiredCerts() {
@@ -57,6 +50,15 @@ public class Workout implements Serializable {
 
     public void deleteCert(String cert) {
         requiredCerts.remove(cert);
+    }
+
+    public void assignInstructor(Instructor instructor) {
+        if (validateCerts(instructor.certs))
+            this.instructor = instructor;
+    }
+
+    public Instructor getInstructor() {
+        return instructor;
     }
 
     @Override
