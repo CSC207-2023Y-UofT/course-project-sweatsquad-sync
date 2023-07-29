@@ -506,25 +506,31 @@ public class UI extends JFrame implements ActionListener {
             String password = new String(passField.getPassword());
             String confirmPassword = new String(confirmPassField.getPassword());
 
-            if (username.length() < 3) {
-                System.out.println("Username must be at least " +
-                        "3 characters long");
-                return;
-            }
+            boolean check = true;
 
             if (firstName.isEmpty() || lastName.isEmpty()) {
                 System.out.println("First and last name fields " +
                         "must not be empty");
-                return;
+                check = false;
             }
 
             if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
                 System.out.println("Invalid email format");
-                return;
+                check = false;
+            }
+
+            if (username.length() < 3) {
+                System.out.println("Username must be at least " +
+                        "3 characters long");
+                check = false;
             }
 
             if (!password.equals(confirmPassword)) {
                 System.out.println("Passwords do not match, try again");
+                check = false;
+            }
+
+            if (!check) {
                 return;
             }
 
@@ -588,31 +594,37 @@ public class UI extends JFrame implements ActionListener {
             String password = new String(passFieldIR.getPassword());
             String confirmPassword = new String(confirmPassFieldIR.getPassword());
 
-            if (username.length() < 3) {
-                System.out.println("Username must be at least " +
-                        "3 characters long");
-                return;
-            }
+            boolean check = true;
 
             if (firstName.isEmpty() || lastName.isEmpty()) {
                 System.out.println("First and last name fields " +
                         "must not be empty");
-                return;
+                check = false;
             }
 
             if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
                 System.out.println("Invalid email format");
-                return;
+                check = false;
+            }
+
+            if (username.length() < 3) {
+                System.out.println("Username must be at least " +
+                        "3 characters long");
+                check = false;
             }
 
             if (!password.equals(confirmPassword)) {
                 System.out.println("Passwords do not match, try again");
+                check = false;
+            }
+
+            if (!check) {
                 return;
             }
 
             if (database.register(firstName, lastName, username,
                     email, password, 2)) { // checks for uniqueness
-                System.out.println("Instructor registered successfully"); // console msg
+                System.out.println("Instructor registered successfully"); // console msg to be changed later to JLabel for viewing
                 // console messages for testing
                 System.out.println("Name: " + firstName + " " + lastName);
                 System.out.println("Username: " + username);
@@ -625,7 +637,7 @@ public class UI extends JFrame implements ActionListener {
                 passcodeField.setText("");
                 cardLayout.show(getContentPane(), "Login");
             } else {
-                System.out.println("Username already exists"); // F console msg
+                System.out.println("Username already exists"); // F console msg to be changed later to JLabel for viewing
             }
         }
     }
