@@ -5,7 +5,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 
 public class UI extends JFrame implements ActionListener {
 
@@ -20,7 +19,7 @@ public class UI extends JFrame implements ActionListener {
     private JPasswordField passcodeField, passField, confirmPassField;
     private JPasswordField passFieldIR, confirmPassFieldIR;
     private JPanel loginPanel, signupPanel, authCodePanel, instrRegPanel, mainP;
-    private JLabel haveCodeLabel;
+    private JLabel haveCodeLabel, welcomeUser;
     private RoundBtn roundBtn = new RoundBtn();
     private RoundField roundField = new RoundField();
 
@@ -455,6 +454,12 @@ public class UI extends JFrame implements ActionListener {
         mainP.setLayout(null);
         mainP.setBackground(Color.decode("#DADADA"));
 
+        welcomeUser = new JLabel("", SwingConstants.CENTER);
+        welcomeUser.setFont(new Font("Monsterrat", Font.BOLD, 16));
+        welcomeUser.setForeground(Color.decode("#001561"));
+        welcomeUser.setBounds(189, 25, 422, 47);
+        mainP.add(welcomeUser);
+
         add(loginPanel, "Login"); // adds panel to the card "deck"
         add(signupPanel, "Signup"); // adds panel to the card "deck"
         add(authCodePanel, "AuthCode"); // adds panel to the card "deck"
@@ -474,10 +479,11 @@ public class UI extends JFrame implements ActionListener {
 
             // checks if credentials are correct; uses Database.validateLogin
             if(database.validateLogin(username, password)) {
-                System.out.println("Logged in successfully"); // console msg
+                System.out.println("Logged in successfully"); // console msg -  change to JLabel custom
+                welcomeUser.setText("Welcome back, " + database.activeUser.firstName + "!");
                 cardLayout.show(getContentPane(), "main");
             } else {
-                System.out.println("Invalid credentials"); // failed console msg
+                System.out.println("Invalid credentials"); // failed console msg - change to JLabel custom
             }
 
         } else if ((e.getSource() == signupButton) ||
