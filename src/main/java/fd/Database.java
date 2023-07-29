@@ -13,7 +13,7 @@ import java.security.NoSuchAlgorithmException;
 public class Database {
 
     // declares database vars - hashmap, txt file, and hash toggle
-    private final String filename = "user_credentials.txt";
+    private final String filename = "gym.bin";
     private Gym gym;
 
     // database constructor
@@ -30,9 +30,9 @@ public class Database {
         }
     }
 
-    public void save(Gym g) throws IOException {
+    public void save() throws IOException {
         ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename));
-        oos.writeObject(g);
+        oos.writeObject(gym);
         oos.close();
     }
 
@@ -58,7 +58,7 @@ public class Database {
             }
         }
 
-        gym.addUser(new User(username, hashPassword(passcode)));
+        gym.addUser(new User(username, hashPassword(passcode), firstName, lastName, email));
         return true;
     }
 

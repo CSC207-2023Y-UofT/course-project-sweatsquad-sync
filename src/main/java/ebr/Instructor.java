@@ -9,8 +9,8 @@ public class Instructor extends RegisteredUser implements Serializable {
     // N.B. Set code below to null when instructor account is claimed
     public String tempAuth;
     public Set<String> certs;
-    public Instructor(String name, String password) {
-        super(name, password);
+    public Instructor(String name, String password, String firstName, String lastName, String email) {
+        super(name, password, firstName, lastName, email);
         tempAuth = "1234567890";
         certs = new HashSet<>();
     }
