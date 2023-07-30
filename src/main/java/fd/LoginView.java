@@ -6,7 +6,7 @@ import java.awt.event.*;
 import java.io.IOException;
 import javax.swing.*;
 
-public class UI extends JFrame implements ActionListener {
+public class LoginView extends JFrame implements ActionListener {
 
     // declaring UI components / layout
     private CardLayout cardLayout = new CardLayout();
@@ -24,23 +24,23 @@ public class UI extends JFrame implements ActionListener {
     private RoundField roundField = new RoundField();
 
     // declaring the database instance (database.java)
-    private Database database;
+    private FileDatabase gymDatabase;
 
     // entry point of the program; creates instance of the UI class
     public static void main(String[] args) {
-        new UI();
+        new LoginView();
     }
 
     // UI constructor - has a database, and covers login/registration
-    public UI() {
+    public LoginView() {
 
         //init Database instance
-        database = new Database();
+        gymDatabase = new FileDatabase();
 
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(WindowEvent winEvt) {
                 try {
-                    database.save();
+                    gymDatabase.save();
                 }
                 catch (IOException e) {
                     e.printStackTrace();
@@ -478,9 +478,9 @@ public class UI extends JFrame implements ActionListener {
             String password = new String(passcodeField.getPassword());
 
             // checks if credentials are correct; uses Database.validateLogin
-            if(database.validateLogin(username, password)) {
+            if(gymDatabase.validateLogin(username, password)) {
                 System.out.println("Logged in successfully"); // console msg -  change to JLabel custom
-                welcomeUser.setText("Welcome back, " + database.activeUser.firstName + "!");
+                welcomeUser.setText("Welcome back, " + gymDatabase.activeUser.firstName + "!");
                 cardLayout.show(getContentPane(), "main");
             } else {
                 System.out.println("Invalid credentials"); // failed console msg - change to JLabel custom
@@ -534,7 +534,7 @@ public class UI extends JFrame implements ActionListener {
                 return;
             }
 
-            if(database.register(firstName, lastName, username,
+            if(gymDatabase.register(firstName, lastName, username,
                     email, password, 0)) { // checks for uniqueness
                 System.out.println("Registered successfully"); // console msg
 
@@ -578,7 +578,7 @@ public class UI extends JFrame implements ActionListener {
             cardLayout.show(getContentPane(), "Login");
         } else if (e.getSource() == authenticateBtn) {
             String inputCode = authField.getText(); // get the input from user
-            if(database.validateAuthCode(inputCode)) {
+            if(gymDatabase.validateAuthCode(inputCode)) {
                 System.out.println("Success! Valid code.");
                 authField.setText("");
                 cardLayout.show(getContentPane(), "InstrReg");
@@ -622,7 +622,7 @@ public class UI extends JFrame implements ActionListener {
                 return;
             }
 
-            if (database.register(firstName, lastName, username,
+            if (gymDatabase.register(firstName, lastName, username,
                     email, password, 2)) { // checks for uniqueness
                 System.out.println("Instructor registered successfully"); // console msg to be changed later to JLabel for viewing
                 // console messages for testing

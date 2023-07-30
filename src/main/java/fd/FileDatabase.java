@@ -1,16 +1,16 @@
 package fd;
 
 // import statements
+import abr.RegisterDetails;
 import ebr.Gym;
 import ebr.Instructor;
 import ebr.User;
 
-import java.util.*;
 import java.io.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class Database {
+public class FileDatabase implements GymDatabase {
 
     // declares database vars - hashmap, txt file, and hash toggle
     private final String filename = "gym.bin";
@@ -18,7 +18,7 @@ public class Database {
     public User activeUser;
 
     // database constructor
-    public Database() {
+    public FileDatabase() {
         try {
             gym = load();
         }
@@ -31,12 +31,14 @@ public class Database {
         }
     }
 
+    @Override
     public void save() throws IOException {
         ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename));
         oos.writeObject(gym);
         oos.close();
     }
 
+    @Override
     public Gym load() throws IOException, ClassNotFoundException {
         ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename));
         Gym g = (Gym)ois.readObject();
@@ -45,8 +47,8 @@ public class Database {
     }
 
     // method to register new user, returns T if successful, F if already exists
-    public boolean register(String firstName, String lastName, String username,
-                            String email, String passcode, int level) {
+    @Override
+    public void register(RegisterDetails d, int level) {
         if (!validateInput(username) || !validateInput(passcode)) {
             System.out.println("Invalid input");
             return false;
@@ -64,7 +66,7 @@ public class Database {
     }
 
     // method to check if login credentials are valid
-    public boolean validateLogin(String username, String password) {
+    public boolean userExists(LoginDetails ld) {
         for (User u : gym.getUsers())
             if (u.name.equals(username))
                 if (u.passHash.equals(hashPassword(password))) {
