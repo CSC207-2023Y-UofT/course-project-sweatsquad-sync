@@ -5,8 +5,9 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
 import javax.swing.*;
+import javax.swing.plaf.OptionPaneUI;
 
-public class LoginView extends JFrame implements ActionListener {
+public class LoginView extends JFrame implements ActionListener, View {
 
     // declaring UI components / layout
     private CardLayout cardLayout = new CardLayout();
@@ -506,31 +507,8 @@ public class LoginView extends JFrame implements ActionListener {
             String password = new String(passField.getPassword());
             String confirmPassword = new String(confirmPassField.getPassword());
 
-            boolean check = true;
-
-            if (firstName.isEmpty() || lastName.isEmpty()) {
-                System.out.println("First and last name fields " +
-                        "must not be empty");
-                check = false;
-            }
-
-            if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
-                System.out.println("Invalid email format");
-                check = false;
-            }
-
-            if (username.length() < 3) {
-                System.out.println("Username must be at least " +
-                        "3 characters long");
-                check = false;
-            }
-
             if (!password.equals(confirmPassword)) {
                 System.out.println("Passwords do not match, try again");
-                check = false;
-            }
-
-            if (!check) {
                 return;
             }
 
@@ -640,5 +618,15 @@ public class LoginView extends JFrame implements ActionListener {
                 System.out.println("Username already exists"); // F console msg to be changed later to JLabel for viewing
             }
         }
+    }
+
+    @Override
+    public void displayInfoMessage(String message) {
+        JOptionPane.showMessageDialog(this, message);
+    }
+
+    @Override
+    public void displayErrorMessage(String message) {
+        JOptionPane.showMessageDialog(this, message, "", JOptionPane.ERROR_MESSAGE);
     }
 }

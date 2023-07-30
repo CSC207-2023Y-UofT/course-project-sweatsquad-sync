@@ -11,11 +11,26 @@ public class RegisterAuthenticator extends Authenticator<RegisterDetails> {
         this.db = db;
     }
 
-    public boolean authenticateInstructor(RegisterDetails details) {
 
-    }
     @Override
     public boolean authenticate(RegisterDetails details) {
+
+        if (details.firstName().isEmpty() || details.lastName().isEmpty()) {
+            setStatus("First and last name fields " +
+                    "must not be empty");
+            return false;
+        }
+
+        if (!details.email().matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+            setStatus("Invalid email format");
+            return false;
+        }
+
+        if (details.username().length() < 3) {
+            setStatus("Username must be at least " +
+                    "3 characters long");
+            return false;
+        }
 
         if (!correctCharacterTypes(details.username()) || !correctCharacterTypes(details.password())) {
             setStatus("Usernames and passwords can only consist of letters, digits and underscores.");
@@ -25,10 +40,6 @@ public class RegisterAuthenticator extends Authenticator<RegisterDetails> {
         if (db.usernameExists(details.username())) {
             setStatus("Username already exists");
             return false;
-        }
-
-        if (db.validateAuthCode(details.authCode())) {
-            setStatus("Invalid Code")
         }
 
     }
