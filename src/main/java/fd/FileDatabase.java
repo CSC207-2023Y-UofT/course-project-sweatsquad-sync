@@ -1,6 +1,7 @@
 package fd;
 
 // import statements
+import abr.LoginDetails;
 import abr.RegisterDetails;
 import ebr.Gym;
 import ebr.Instructor;
@@ -49,27 +50,17 @@ public class FileDatabase implements GymDatabase {
     // method to register new user, returns T if successful, F if already exists
     @Override
     public void register(RegisterDetails d, int level) {
-        if (!validateInput(username) || !validateInput(passcode)) {
-            System.out.println("Invalid input");
-            return false;
-        }
 
-        for (User u : gym.getUsers()) {
-            if (u.name.equals(username)) {
-                 System.out.println("Username already exists");
-                return false;
-            }
-        }
 
-        gym.addUser(new User(username, hashPassword(passcode), firstName, lastName, email));
-        return true;
+        gym.addUser(new User(d.username(), hashPassword(d.password()), d.firstName(), d.lastName(), d.email()));
     }
 
-    // method to check if login credentials are valid
-    public boolean userExists(LoginDetails ld) {
+    // method to check if user login exists in database
+    @Override
+    public boolean verifyLogin(LoginDetails ld) {
         for (User u : gym.getUsers())
-            if (u.name.equals(username))
-                if (u.passHash.equals(hashPassword(password))) {
+            if (u.name.equals(ld.username()))
+                if (u.passHash.equals(hashPassword(ld.password()))) {
                     System.out.println("Logged in successfully");
                     activeUser = u;
                     return true;
@@ -82,11 +73,18 @@ public class FileDatabase implements GymDatabase {
     }
 
     // checks if input's valid
-    private boolean validateInput(String input) {
-        // returns T iff letters (both UC + LC), digits, and underscores, else F
-        return input.matches("\\w+");
-    }
+    @Override
+    public boolean usernameExists(String username) {
+        for (User u : gym.getUsers()) {
+            if (u.name.equals(username)) {
+                System.out.println("Username already exists");
+                return false;
+            }
+        }
 
+        return false;
+
+    }
     // method to check if auth code is valid
     public boolean validateAuthCode(String code) {
         for (User u : gym.getUsers())
