@@ -12,6 +12,10 @@ public class LoginAuthenticator extends Authenticator<LoginDetails> {
 
     @Override
     public boolean authenticate(LoginDetails details) {
-        return false;
+        if (!db.verifyLogin(details)) {
+            setStatus("Either your username or password is incorrect");
+            return false;
+        }
+        return true;
     }
 }
