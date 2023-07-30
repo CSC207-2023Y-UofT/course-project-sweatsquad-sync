@@ -1,5 +1,6 @@
 package ebr;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,5 +20,9 @@ public class RegisteredUser extends User {
         if (workouts.remove(w)) {
             w.removeUser(this);
         }
+    }
+
+    public Set<Workout> getWorkouts() {
+        return Collections.unmodifiableSet(this.workouts);
     }
 }
