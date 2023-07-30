@@ -42,6 +42,8 @@ public class RegisterAuthenticator extends Authenticator<RegisterDetails> {
             return false;
         }
 
+        return true;
+
     }
     private boolean correctCharacterTypes(String input) {
         // returns T iff letters (both UC + LC), digits, and underscores, else F

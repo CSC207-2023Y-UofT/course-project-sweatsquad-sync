@@ -1,3 +1,3 @@
 package abr;
 
-public record LoginDetails(String username, String password) {}
+public record LoginDetails(String username, String password) implements UserDetails {}

@@ -1,6 +1,7 @@
 package fd;
 
 // import statements
+import abr.AuthCode;
 import abr.LoginDetails;
 import abr.RegisterDetails;
 import ebr.Gym;
@@ -33,6 +34,16 @@ public class FileDatabase implements GymDatabase {
     }
 
     @Override
+    public User getActiveUser() {
+        return activeUser;
+    }
+
+    @Override
+    public void setActiveUser(User u) {
+
+    }
+
+    @Override
     public void save() throws IOException {
         ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename));
         oos.writeObject(gym);
@@ -61,7 +72,7 @@ public class FileDatabase implements GymDatabase {
         for (User u : gym.getUsers())
             if (u.name.equals(ld.username()))
                 if (u.passHash.equals(hashPassword(ld.password()))) {
-                    System.out.println("Logged in successfully");
+                    System.out.println("Logged in found");
                     activeUser = u;
                     return true;
                 } else {
@@ -86,10 +97,11 @@ public class FileDatabase implements GymDatabase {
 
     }
     // method to check if auth code is valid
-    public boolean validateAuthCode(String code) {
+    @Override
+    public boolean validateAuthCode(AuthCode inputCode) {
         for (User u : gym.getUsers())
             if (u instanceof Instructor && ((Instructor) u).tempAuth != null)
-                if (((Instructor) u).tempAuth.equals(hashPassword(code))) {
+                if (((Instructor) u).tempAuth.equals(hashPassword(inputCode.code()))) {
                     System.out.println("Authentication code is valid");
                     return true;
                 }

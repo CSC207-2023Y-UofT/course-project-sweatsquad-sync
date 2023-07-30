@@ -2,7 +2,7 @@ package abr;
 
 import fd.GymDatabase;
 
-public class InstructorAuthenticator extends Authenticator<String> {
+public class InstructorAuthenticator extends Authenticator<AuthCode> {
 
 
     private final GymDatabase db;
@@ -12,11 +12,12 @@ public class InstructorAuthenticator extends Authenticator<String> {
     }
 
     @Override
-    public boolean authenticate(String inputCode) {
+    public boolean authenticate(AuthCode inputCode) {
         if(db.validateAuthCode(inputCode)) {
             return true;
         } else {
             setStatus("Invalid authentication code.");
+            return false;
         }
     }
 }
