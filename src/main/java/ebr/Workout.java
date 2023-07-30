@@ -8,7 +8,7 @@ import java.util.*;
 public class Workout implements Serializable {
     public String name;
     public Set<String> requiredCerts;
-    private Instructor instructor;
+    private Set<RegisteredUser> users;
 
     enum Weekday {
         Monday, Tuesday, Wednesday, Thursday, Friday
@@ -33,7 +33,7 @@ public class Workout implements Serializable {
         this.name = name;
         this.requiredCerts = new HashSet<>();
         this.offerings = new ArrayList<>();
-        this.instructor = null;
+        this.users = new HashSet<>();
     }
 
     public Set<String> getRequiredCerts() {
@@ -52,13 +52,26 @@ public class Workout implements Serializable {
         requiredCerts.remove(cert);
     }
 
-    public void assignInstructor(Instructor instructor) {
-        if (validateCerts(instructor.certs))
-            this.instructor = instructor;
+    protected boolean addUser(RegisteredUser u) {
+        if (u instanceof Instructor) {
+            if (validateCerts(((Instructor)u).certs)) {
+                this.users.add(u);
+                return true;
+            }
+            else return false;
+        }
+        else {
+            this.users.add(u);
+            return true;
+        }
     }
 
-    public Instructor getInstructor() {
-        return instructor;
+    protected void removeUser(RegisteredUser u) {
+        this.users.remove(u);
+    }
+
+    public Set<RegisteredUser> getUsers() {
+        return Collections.unmodifiableSet(this.users);
     }
 
     @Override

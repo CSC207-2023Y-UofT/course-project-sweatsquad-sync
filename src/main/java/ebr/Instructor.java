@@ -5,13 +5,25 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Instructor extends RegisteredUser implements Serializable {
-    protected Instructor() {};
     // N.B. Set code below to null when instructor account is claimed
-    public String tempAuth;
+    private String tempAuth;
     public Set<String> certs;
-    public Instructor(String name, String password, String firstName, String lastName, String email) {
-        super(name, password, firstName, lastName, email);
+    public Instructor() {
+        super(null, null, null, null, null);
         tempAuth = "1234567890";
         certs = new HashSet<>();
+    }
+    public String getAuthCode() {
+        return tempAuth;
+    }
+    public void claim(String auth, String name, String passHash, String firstName, String lastName, String email) {
+        if (tempAuth != null && tempAuth == auth) {
+            tempAuth = null;
+            this.name = name;
+            this.passHash = passHash;
+            this.firstName = firstName;
+            this.lastName = lastName;
+            this.email = email;
+        }
     }
 }
