@@ -1,12 +1,13 @@
 package fd;
 
 // import statements
-import abr.AuthCode;
+import abr.ActivationCodeDetails;
 import abr.LoginDetails;
 import abr.RegisterDetails;
 import ebr.Gym;
 import ebr.Instructor;
 import ebr.User;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
 import java.security.MessageDigest;
@@ -60,7 +61,7 @@ public class FileDatabase implements GymDatabase {
 
     // method to register new user, returns T if successful, F if already exists
     @Override
-    public void register(RegisterDetails d, int level) {
+    public void register(@NotNull RegisterDetails d, int level) {
 
 
         gym.addUser(new User(d.username(), hashPassword(d.password()), d.firstName(), d.lastName(), d.email()));
@@ -98,7 +99,7 @@ public class FileDatabase implements GymDatabase {
     }
     // method to check if auth code is valid
     @Override
-    public boolean validateAuthCode(AuthCode inputCode) {
+    public boolean validateAuthCode(ActivationCodeDetails inputCode) {
         for (User u : gym.getUsers())
             if (u instanceof Instructor && ((Instructor) u).tempAuth != null)
                 if (((Instructor) u).tempAuth.equals(hashPassword(inputCode.code()))) {
@@ -111,7 +112,7 @@ public class FileDatabase implements GymDatabase {
         return false;
     }
 
-    private String hashPassword(String password) {
+    private @NotNull String hashPassword(@NotNull String password) {
         try {
             // inst of the SHA-256 messageDigest
             MessageDigest md = MessageDigest.getInstance("SHA-256");

@@ -1,7 +1,7 @@
 package fd;
 
 // import statements
-import abr.AuthCode;
+import abr.ActivationCodeDetails;
 import abr.LoginDetails;
 import abr.RegisterDetails;
 import ia.LoginViewListener;
@@ -520,7 +520,7 @@ public class LoginView extends JFrame implements ActionListener, View {
             String inputCode = authField.getText(); // get the input from user
 
             for (LoginViewListener listener: listenerList) {
-                listener.codeActivationAttempted(new AuthCode(inputCode));
+                listener.codeActivationAttempted(new ActivationCodeDetails(inputCode));
             }
         } else if (e.getSource() == registerButtonIR) {
             // gets text from respective JTextField components

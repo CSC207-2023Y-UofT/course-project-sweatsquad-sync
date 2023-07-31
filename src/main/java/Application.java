@@ -1,4 +1,4 @@
-import abr.AuthenticatorFactory;
+import abr.AuthenticationUseCase;
 import fd.FileDatabase;
 import fd.LoginView;
 import ia.LoginController;
@@ -10,17 +10,12 @@ import javax.swing.*;
 public class Application {
 
     public Application() {
-        AuthenticatorFactory f = new AuthenticatorFactory(new FileDatabase());
+        AuthenticationUseCase f = new AuthenticationUseCase(new FileDatabase());
         LoginView v = new LoginView();
         LoginController l = new LoginController(v, f);
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new Application();
-            }
-        });
+        SwingUtilities.invokeLater(Application::new);
     }
 }

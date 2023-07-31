@@ -6,21 +6,22 @@ import fd.LoginView;
 public class LoginController {
 
     private LoginView loginView;
-    private AuthenticatorFactory loginModel;
+    private AuthenticationUseCase authenticationModel;
 
-    public LoginController(LoginView loginView, AuthenticatorFactory loginModel) {
+    public LoginController(LoginView loginView, AuthenticationUseCase authenticationModel) {
         this.loginView = loginView;
-        this.loginModel = loginModel;
+        this.authenticationModel = authenticationModel;
         loginView.addListener(new LoginHandler());
     }
 
     private class LoginHandler implements  LoginViewListener {
 
-        private boolean attemptAuthenticate(UserDetails d) {
+        private boolean attemptAuthenticate(AuthenticationRequestModel d) {
 
-            Authenticator<UserDetails> a = loginModel.getAuthenticator(d);
-            if (!a.authenticate(d)) {
-                loginView.displayInfoMessage(a.getStatus());
+            AuthenticationResponseModel m = authenticationModel.requestAuthentication(d);
+            loginView.displayInfoMessage(m.responseMessage()); //TODO move into if-statement after testing
+            if (!m.success()) {
+
                 return false;
             }
             return true;
@@ -28,17 +29,12 @@ public class LoginController {
 
         @Override
         public void loginAttempted(LoginDetails d) {
-            if (attemptAuthenticate(d)) {
-                // TODO: i'm not even sure tbh but something has to be done here
-                loginView.displayInfoMessage("Login success!");
-            }
+            attemptAuthenticate(d);
         }
 
         @Override
         public void instructorRegistrationAttempted(RegisterDetails r) {
             if (attemptAuthenticate(r)) {
-                // TODO: register the instructor
-                loginView.displayInfoMessage("Registration success!");
                 loginView.showLoginPanel();
             }
         }
@@ -46,17 +42,13 @@ public class LoginController {
         @Override
         public void registrationAttempted(RegisterDetails r) {
             if (attemptAuthenticate(r)) {
-                // TODO: register the user
-                loginView.displayInfoMessage("Registration success!");
                 loginView.showLoginPanel();
             }
         }
 
         @Override
-        public void codeActivationAttempted(AuthCode c) {
+        public void codeActivationAttempted(ActivationCodeDetails c) {
             if (attemptAuthenticate(c)) {
-                // TODO: register the instructor
-                loginView.displayInfoMessage("Account activation success!!");
                 loginView.showInstrRegistrationPanel();
             }
         }

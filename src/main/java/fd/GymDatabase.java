@@ -1,6 +1,6 @@
 package fd;
 
-import abr.AuthCode;
+import abr.ActivationCodeDetails;
 import abr.LoginDetails;
 import abr.RegisterDetails;
 import ebr.Gym;
@@ -24,5 +24,5 @@ public interface GymDatabase {
 
     public boolean usernameExists(String username);
 
-    public boolean validateAuthCode(AuthCode code);
+    public boolean validateAuthCode(ActivationCodeDetails code);
 }
