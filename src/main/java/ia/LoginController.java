@@ -4,8 +4,8 @@ import abr.*;
 
 public class LoginController implements Controller {
 
-    private LoginView loginView;
-    private AuthenticationUseCase authenticationModel;
+    private final LoginView loginView;
+    private final AuthenticationUseCase authenticationModel;
 
     public LoginController(LoginView loginView, AuthenticationUseCase authenticationModel) {
         this.loginView = loginView;
@@ -17,11 +17,7 @@ public class LoginController implements Controller {
 
         AuthenticationResponseModel m = authenticationModel.requestAuthentication(d);
         loginView.displayInfoMessage(m.responseMessage()); //TODO move into if-statement after testing
-        if (!m.success()) {
-
-            return false;
-        }
-        return true;
+        return m.success();
     }
 
     public void loginAttempted(LoginDetails d) {

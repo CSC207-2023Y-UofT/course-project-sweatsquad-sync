@@ -3,7 +3,7 @@ package abr;
 
 import fd.GymDatabase;
 
-public class AuthenticationUseCase {
+public class AuthenticationUseCase extends UseCase {
 
     private final GymDatabase db;
     public AuthenticationUseCase (GymDatabase db) {
@@ -46,12 +46,12 @@ public class AuthenticationUseCase {
     private AuthenticationResponseModel verifyRegisterDetailsFormat(RegisterDetails details) {
         String status = "Registration details verified";
         boolean verified = true;
-        if (details.firstName().isEmpty() || details.lastName().isEmpty()) {
-            status = "First and last name fields must not be empty";
+        if (details.anyBlank()) {
+            status = "Fields were left blank";
             verified = false;
         }
 
-        if (!correctEmailFormat(details.email())) {
+        if (!details.correctEmailFormat()) {
             status = "Invalid email format";
             verified =  false;
         }
@@ -75,10 +75,6 @@ public class AuthenticationUseCase {
 
     }
 
-    private boolean correctEmailFormat(String email) {
-        return email.matches("^[A-Za-z0-9+_.-]+@(.+)$");
-
-    }
     private boolean correctCharacterTypes(String input) {
         // returns T iff letters (both UC + LC), digits, and underscores, else F
         return input.matches("\\w+");
