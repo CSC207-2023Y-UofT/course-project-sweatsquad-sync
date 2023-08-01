@@ -4,18 +4,16 @@ package fd;
 import abr.ActivationCodeDetails;
 import abr.LoginDetails;
 import abr.RegisterDetails;
-import ia.LoginViewListener;
+import ia.LoginController;
+import ia.LoginView;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.io.IOException;
-import java.util.ArrayList;
 import javax.swing.*;
-import java.util.List;
 
-public class LoginView extends JFrame implements ActionListener, View {
+public class LoginViewSwing extends JFrame implements ActionListener, LoginView {
 
-    private List<LoginViewListener> listenerList = new ArrayList<>();
+    private LoginController controller;
 
     // declaring UI components / layout
     private CardLayout cardLayout = new CardLayout();
@@ -32,31 +30,13 @@ public class LoginView extends JFrame implements ActionListener, View {
     private RoundBtn roundBtn = new RoundBtn();
     private RoundField roundField = new RoundField();
 
-    // declaring the database instance (database.java)
-    private FileDatabase gymDatabase;
-
-    // entry point of the program; creates instance of the UI class
     public static void main(String[] args) {
-        new LoginView();
+        new LoginViewSwing();
     }
 
     // UI constructor - has a database, and covers login/registration
-    public LoginView() {
+    public LoginViewSwing() {
 
-        //init Database instance
-        gymDatabase = new FileDatabase();
-
-        this.addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosing(WindowEvent winEvt) {
-                try {
-                    gymDatabase.save();
-                }
-                catch (IOException e) {
-                    e.printStackTrace();
-                    System.err.println("Failed to write gym!");
-                }
-            }
-        });
 
         // ui 'defaults'
         setTitle("SweatSquad Sync System"); // window title
@@ -486,13 +466,11 @@ public class LoginView extends JFrame implements ActionListener, View {
             String username = usernameField.getText();
             String password = new String(passcodeField.getPassword());
 
-            for (LoginViewListener listener: listenerList) {
-                listener.loginAttempted(new LoginDetails(username, password));
-            }
+            controller.loginAttempted(new LoginDetails(username, password));
 
         } else if ((e.getSource() == signupButton) ||
                    (e.getSource() == registerTransparentBtn)) { // signup logic if pressed
-            showSignupPanel();
+            provideSignup();
 
         } else if (e.getSource() == registerButton) { // register logic
             // gets text from respective JTextField components
@@ -507,21 +485,18 @@ public class LoginView extends JFrame implements ActionListener, View {
                 displayInfoMessage("Passwords do not match, try again");
                 return;
             }
-            for (LoginViewListener listener: listenerList) {
-                listener.registrationAttempted(new RegisterDetails(firstName, lastName, username, email, password));
-            }
+            controller.registrationAttempted(new RegisterDetails(firstName, lastName, username, email, password));
+
         } else if ((e.getSource() == back2loginBtn) ||
                    (e.getSource() == signupTransparentBtn)) { // if back button clicked
 
-            showLoginPanel();
+            provideLogin();
         } else if (e.getSource() == returnLoginBtn) {
-            showLoginPanel();
+            provideLogin();
         } else if (e.getSource() == authenticateBtn) {
             String inputCode = authField.getText(); // get the input from user
 
-            for (LoginViewListener listener: listenerList) {
-                listener.codeActivationAttempted(new ActivationCodeDetails(inputCode));
-            }
+            controller.codeActivationAttempted(new ActivationCodeDetails(inputCode));
         } else if (e.getSource() == registerButtonIR) {
             // gets text from respective JTextField components
             String firstName = firstNameFieldIR.getText();
@@ -535,39 +510,38 @@ public class LoginView extends JFrame implements ActionListener, View {
                 displayInfoMessage("Passwords do not match, try again");
                 return;
             }
-            for (LoginViewListener listener: listenerList) {
-                listener.instructorRegistrationAttempted(new RegisterDetails(firstName, lastName, username, email, password));
-            }
+            controller.instructorRegistrationAttempted(new RegisterDetails(firstName, lastName, username, email, password));
+
         }
     }
 
-    public void showInstrRegistrationPanel() {
+    @Override
+    public void provideInstrSignup() {
         clearPanels();
         cardLayout.show(getContentPane(), "InstrReg");
     }
-    public void showSignupPanel() {
+    @Override
+    public void provideSignup() {
         clearPanels();
         cardLayout.show(getContentPane(), "Signup");
     }
-    public void showActivationCodePanel() {
+    @Override
+    public void provideInstrAuthentication() {
         clearPanels();
         cardLayout.show(getContentPane(), "AuthCode");
     }
 
-    public void showLoginPanel() {
+    @Override
+    public void provideLogin() {
         clearPanels();
         cardLayout.show(getContentPane(), "Login");
     }
 
-    public void clearPanels() {
+    private void clearPanels() {
         SwingUtil.clearPanel(authCodePanel);
         SwingUtil.clearPanel(loginPanel);
         SwingUtil.clearPanel(signupPanel);
         SwingUtil.clearPanel(instrRegPanel);
-    }
-
-    public void addListener(LoginViewListener l) {
-        listenerList.add(l);
     }
 
     @Override
@@ -578,5 +552,10 @@ public class LoginView extends JFrame implements ActionListener, View {
     @Override
     public void displayErrorMessage(String message) {
         JOptionPane.showMessageDialog(this, message, "", JOptionPane.ERROR_MESSAGE);
+    }
+
+    @Override
+    public void setController(LoginController c) {
+        controller = c;
     }
 }

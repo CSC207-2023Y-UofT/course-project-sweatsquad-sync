@@ -1,6 +1,7 @@
 import abr.AuthenticationUseCase;
 import fd.FileDatabase;
-import fd.LoginView;
+import fd.LoginViewSwing;
+import ia.LoginView;
 import ia.LoginController;
 
 import javax.swing.*;
@@ -11,7 +12,7 @@ public class Application {
 
     public Application() {
         AuthenticationUseCase f = new AuthenticationUseCase(new FileDatabase());
-        LoginView v = new LoginView();
+        LoginView v = new LoginViewSwing();
         LoginController l = new LoginController(v, f);
     }
 
