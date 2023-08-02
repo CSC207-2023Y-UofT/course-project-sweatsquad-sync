@@ -5,7 +5,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
 import javax.swing.*;
-import static fd.Database.UserType;
 import ebr.*;
 
 public class UI extends JFrame implements ActionListener {
@@ -698,8 +697,8 @@ public class UI extends JFrame implements ActionListener {
                 return;
             }
 
-            if(database.register(firstName, lastName, username,
-                    email, password, UserType.unregistered, null)) { // uniqueness
+            if(database.registerBasicUser(firstName, lastName, username,
+                    email, password)) { // uniqueness
                 System.out.println("Registered successfully"); // console msg
 
                 // console messages for testing
@@ -799,8 +798,8 @@ public class UI extends JFrame implements ActionListener {
                 return;
             }
 
-            if (database.register(firstName, lastName, username,
-                    email, password, UserType.instructor, authField.getText())) { // uniqueness
+            if (database.claimInstructor(database.validateAuthCode(authField.getText()), firstName, lastName, username,
+                    email, password)) { // uniqueness
                 System.out.println("Instructor registered successfully");
                 // console messages for testing
                 System.out.println("Name: " + firstName + " " + lastName);
