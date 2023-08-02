@@ -691,7 +691,7 @@ public class UI extends JFrame implements ActionListener {
             }
 
             if(database.register(firstName, lastName, username,
-                    email, password, UserType.unregistered)) { // uniqueness
+                    email, password, UserType.unregistered, null)) { // uniqueness
                 System.out.println("Registered successfully"); // console msg
 
                 // console messages for testing
@@ -792,7 +792,7 @@ public class UI extends JFrame implements ActionListener {
             }
 
             if (database.register(firstName, lastName, username,
-                    email, password, UserType.instructor)) { // uniqueness
+                    email, password, UserType.instructor, authField.getText())) { // uniqueness
                 System.out.println("Instructor registered successfully");
                 // console messages for testing
                 System.out.println("Name: " + firstName + " " + lastName);
