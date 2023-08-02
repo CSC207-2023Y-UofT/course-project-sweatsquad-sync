@@ -24,7 +24,7 @@ public class LoginViewSwing extends JFrame implements ActionListener, LoginView 
     private JPasswordField passcodeField, passField, confirmPassField;
     private JPasswordField passFieldIR, confirmPassFieldIR;
     private JPanel loginPanel, signupPanel, authCodePanel, instrRegPanel, mainP;
-    private JLabel haveCodeLabel, welcomeUser, err1, err2, err3, err4, err5;
+    private JLabel haveCodeLabel, err1, err2, err3, err4, err5;
     private RoundBtn roundBtn = new RoundBtn();
     private RoundField roundField = new RoundField();
 
@@ -467,22 +467,12 @@ public class LoginViewSwing extends JFrame implements ActionListener, LoginView 
         instrRegText.setBounds(189, 25, 422, 47);
         instrRegPanel.add(instrRegText);
 
-        // main logged-in view panel
-        mainP = new JPanel();
-        mainP.setLayout(null);
-        mainP.setBackground(Color.decode("#DADADA"));
 
-        welcomeUser = new JLabel("", SwingConstants.CENTER);
-        welcomeUser.setFont(new Font("Monsterrat", Font.BOLD, 16));
-        welcomeUser.setForeground(Color.decode("#001561"));
-        welcomeUser.setBounds(189, 25, 422, 47);
-        mainP.add(welcomeUser);
 
         add(loginPanel, "Login"); // adds panel to the card "deck"
         add(signupPanel, "Signup"); // adds panel to the card "deck"
         add(authCodePanel, "AuthCode"); // adds panel to the card "deck"
         add(instrRegPanel, "InstrReg"); // adds panel to the card "deck"
-        add(mainP, "main"); // adds panel to the card "deck"
 
         setVisible(true);
     }
