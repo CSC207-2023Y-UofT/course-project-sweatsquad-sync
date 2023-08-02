@@ -41,12 +41,25 @@ public class Database {
         ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename));
         Gym g = (Gym)ois.readObject();
         ois.close();
+
+        // todo take out after -admin can add instructor functionality is added
+        Instructor instructor = new Instructor();
+        System.out.println(instructor.getAuthCode());
+        g.addUser(instructor);
+
         return g;
+    }
+
+    public enum UserType {
+        unregistered,
+        registered,
+        instructor,
+        administrator
     }
 
     // method to register new user, returns T if successful, F if already exists
     public boolean register(String firstName, String lastName, String username,
-                            String email, String passcode, int level) {
+                            String email, String passcode, UserType level) {
         if (!validateInput(username)) {
             System.out.println("Invalid input");
             return false;
@@ -59,7 +72,11 @@ public class Database {
             }
         }
 
-        gym.addUser(new User(username, hashPassword(passcode), firstName, lastName, email));
+        if (level == UserType.unregistered) {
+            gym.addUser(new User(username, hashPassword(passcode), firstName, lastName, email));
+        } else if (level == UserType.instructor) {
+            // do stuff to claim
+        }
         return true;
     }
 
