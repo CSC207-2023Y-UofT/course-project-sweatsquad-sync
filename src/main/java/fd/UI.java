@@ -735,7 +735,7 @@ public class UI extends JFrame implements ActionListener {
             cardLayout.show(getContentPane(), "Login");
         } else if (e.getSource() == authenticateBtn) {
             String inputCode = authField.getText(); // get the input from user
-            if(database.validateAuthCode(inputCode)) {
+            if (database.validateAuthCode(inputCode) != null) {
                 System.out.println("Success! Valid code.");
                 authField.setText("");
                 cardLayout.show(getContentPane(), "InstrReg");

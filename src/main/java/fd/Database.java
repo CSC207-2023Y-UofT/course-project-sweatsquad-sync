@@ -59,7 +59,7 @@ public class Database {
 
     // method to register new user, returns T if successful, F if already exists
     public boolean register(String firstName, String lastName, String username,
-                            String email, String passcode, UserType level) {
+                            String email, String passcode, UserType level, String authCode) {
         if (!validateInput(username)) {
             System.out.println("Invalid input");
             return false;
@@ -75,7 +75,8 @@ public class Database {
         if (level == UserType.unregistered) {
             gym.addUser(new User(username, hashPassword(passcode), firstName, lastName, email));
         } else if (level == UserType.instructor) {
-            // do stuff to claim
+            Instructor u = validateAuthCode(authCode);
+            u.claim(authCode, username, hashPassword(passcode), firstName, lastName, email);
         }
         return true;
     }
@@ -103,17 +104,17 @@ public class Database {
     }
 
     // method to check if auth code is valid
-    public boolean validateAuthCode(String code) {
+    public Instructor validateAuthCode(String code) {
         for (User u : gym.getUsers())
             if (u instanceof Instructor && ((Instructor) u).getAuthCode() != null)
                 if (((Instructor) u).getAuthCode().equals(code)) {
                     System.out.println("Authentication code is valid");
-                    return true;
+                    return (Instructor)u;
                 }
 
 
         System.out.println("Authentication code is not valid");
-        return false;
+        return null;
     }
 
     private String hashPassword(String password) {
