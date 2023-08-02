@@ -2,15 +2,25 @@ package ebr;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
 public class Instructor extends RegisteredUser implements Serializable {
     // N.B. Set code below to null when instructor account is claimed
     private String tempAuth;
     public Set<String> certs;
+    private static final String ALPHA_NUM = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
+
     public Instructor() {
         super(null, null, null, null, null);
-        tempAuth = "1234567890";
+
+        StringBuilder codeBuilder = new StringBuilder();
+        Random rnd = new Random();
+        while (codeBuilder.length() < 16)
+            codeBuilder.append(ALPHA_NUM.charAt((int)(rnd.nextFloat() * ALPHA_NUM.length())));
+
+        tempAuth = codeBuilder.toString();
+
         certs = new HashSet<>();
     }
     public String getAuthCode() {
