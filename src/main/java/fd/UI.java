@@ -21,7 +21,7 @@ public class UI extends JFrame implements ActionListener {
     private JPasswordField passFieldIR, confirmPassFieldIR;
     private JPanel loginPanel, signupPanel, authCodePanel, instrRegPanel, mainP;
     private JPanel schedulePanel, enrolPanel, smthPanel, settingsPanel;
-    private JLabel haveCodeLabel, welcomeUser;
+    private JLabel haveCodeLabel, welcomeUser, err1, err2, err3, err4, err5;
     private RoundBtn roundBtn = new RoundBtn();
     private RoundField roundField = new RoundField();
 
@@ -301,6 +301,37 @@ public class UI extends JFrame implements ActionListener {
         registerTextSU.setForeground(Color.decode("#001561"));
         registerTextSU.setBounds(400, 25, 211, 47);
         signupPanel.add(registerTextSU);
+
+        // error messages
+        err1 = new JLabel("");
+        err1.setFont(new Font("Monsterrat", Font.BOLD, 12));
+        err1.setBounds(620, 124, 130, 40);
+        signupPanel.add(err1);
+
+        // error messages
+        err2 = new JLabel("");
+        err2.setFont(new Font("Monsterrat", Font.BOLD, 12));
+        err2.setBounds(620, 211, 150, 40);
+        signupPanel.add(err2);
+
+        // error messages
+        err3 = new JLabel("");
+        err3.setFont(new Font("Monsterrat", Font.BOLD, 12));
+        err3.setBounds(620, 298, 150, 40);
+        signupPanel.add(err3);
+
+        // error messages
+        err4 = new JLabel("");
+        err4.setFont(new Font("Monsterrat", Font.BOLD, 12));
+        err4.setBounds(620, 385, 150, 40);
+        signupPanel.add(err4);
+
+        /* error messages
+        err4 = new JLabel("<html>*Passwords cannot be<BR>left blank</html>");
+        err4.setFont(new Font("Monsterrat", Font.BOLD, 12));
+        err4.setBounds(620, 385, 150, 40);
+        signupPanel.add(err4);*/
+
 
         // instructor authenticate code panel
         authCodePanel = new JPanel();
@@ -611,28 +642,39 @@ public class UI extends JFrame implements ActionListener {
             String email = emailField.getText();
             String password = new String(passField.getPassword());
             String confirmPassword = new String(confirmPassField.getPassword());
+            err1.setText("");
+            err2.setText("");
+            err3.setText("");
+            err4.setText("");
 
             boolean check = true;
 
             if (firstName.isEmpty() || lastName.isEmpty()) {
                 System.out.println("First and last name fields " +
                         "must not be empty");
+                err1.setText("<HTML>*Names cannot be<BR> left blank</HTML>");
                 check = false;
             }
 
             if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
                 System.out.println("Invalid email format");
+                err2.setText("*Invalid email format");
                 check = false;
             }
 
             if (username.length() < 3) {
                 System.out.println("Username must be at least " +
                         "3 characters long");
+                err3.setText("<html>*Usernames must be<BR>at least 3 characters</html>");
                 check = false;
             }
 
-            if (!password.equals(confirmPassword)) {
+            if (password.isEmpty()) {
+                System.out.println("*Passwords cannot be left blank");
+                err4.setText("<HTML>*Passwords cannot be<BR>left blank</HTML>");
+            } else if (!password.equals(confirmPassword)) {
                 System.out.println("Passwords do not match, try again");
+                err4.setText("*Passwords must match");
                 check = false;
             }
 
@@ -641,7 +683,7 @@ public class UI extends JFrame implements ActionListener {
             }
 
             if(database.register(firstName, lastName, username,
-                    email, password, 0)) { // checks for uniqueness
+                    email, password, 0)) { // checks for username uniqueness
                 System.out.println("Registered successfully"); // console msg
 
                 // console messages for testing
@@ -656,7 +698,8 @@ public class UI extends JFrame implements ActionListener {
                 passcodeField.setText("");
                 cardLayout.show(getContentPane(), "Login");
             } else {
-                System.out.println("Username already exists"); // F console msg
+                err3.setText("<HTML>*Username already<BR>exists<HTML>");
+                System.out.println("Invalid input"); // F console msg
             }
         } else if ((e.getSource() == back2loginBtn) ||
                    (e.getSource() == signupTransparentBtn)) { // if back button clicked
@@ -699,28 +742,39 @@ public class UI extends JFrame implements ActionListener {
             String email = emailFieldIR.getText();
             String password = new String(passFieldIR.getPassword());
             String confirmPassword = new String(confirmPassFieldIR.getPassword());
+            err1.setText("");
+            err2.setText("");
+            err3.setText("");
+            err4.setText("");
 
             boolean check = true;
 
             if (firstName.isEmpty() || lastName.isEmpty()) {
                 System.out.println("First and last name fields " +
                         "must not be empty");
+                err1.setText("<HTML>*Names cannot be<BR> left blank</HTML>");
                 check = false;
             }
 
             if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
                 System.out.println("Invalid email format");
+                err2.setText("*Invalid email format");
                 check = false;
             }
 
             if (username.length() < 3) {
                 System.out.println("Username must be at least " +
                         "3 characters long");
+                err3.setText("<html>*Usernames must be<BR>at least 3 characters</html>");
                 check = false;
             }
 
-            if (!password.equals(confirmPassword)) {
+            if (password.isEmpty()) {
+                System.out.println("*Passwords cannot be left blank");
+                err4.setText("<HTML>*Passwords cannot be<BR>left blank</HTML>");
+            } else if (!password.equals(confirmPassword)) {
                 System.out.println("Passwords do not match, try again");
+                err4.setText("*Passwords must match");
                 check = false;
             }
 
@@ -743,7 +797,8 @@ public class UI extends JFrame implements ActionListener {
                 passcodeField.setText("");
                 cardLayout.show(getContentPane(), "Login");
             } else {
-                System.out.println("Username already exists"); // F console msg to be changed later to JLabel for viewing
+                err3.setText("<HTML>*Username already<BR>exists<HTML>");
+                System.out.println("Username already exists"); // F console msg
             }
         } else if (e.getSource() == viewEntireSchedule) {
             cardLayout.show(getContentPane(), "schedule");

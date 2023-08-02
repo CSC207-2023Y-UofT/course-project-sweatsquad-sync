@@ -47,7 +47,7 @@ public class Database {
     // method to register new user, returns T if successful, F if already exists
     public boolean register(String firstName, String lastName, String username,
                             String email, String passcode, int level) {
-        if (!validateInput(username) || !validateInput(passcode)) {
+        if (!validateInput(username)) {
             System.out.println("Invalid input");
             return false;
         }
