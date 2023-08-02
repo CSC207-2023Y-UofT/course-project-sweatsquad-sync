@@ -3,6 +3,9 @@ package abr;
 
 import fd.GymDatabase;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AuthenticationUseCase extends UseCase {
 
     private final GymDatabase db;
@@ -10,70 +13,113 @@ public class AuthenticationUseCase extends UseCase {
         this.db = db;
     }
 
+    private static final String leftBlank = "Cannot be left blank";
+
     public AuthenticationResponseModel requestAuthentication(AuthenticationRequestModel data) {
-        if (data instanceof RegisterDetails d) {
-            if (db.usernameExists(d.username())) {
-                return new AuthenticationResponseModel(false, "Username already exists");
-            } else {
+        if (data instanceof RegisterDetails rd) {
 
-                return verifyRegisterDetailsFormat(d);
-            }
+            return authenticateRegistration(rd);
+        } else if (data instanceof LoginDetails ld) {
 
-        } else if (data instanceof LoginDetails d) {
-            if (!db.verifyLogin(d)) {
-                return new AuthenticationResponseModel(false, "Either your username or password is incorrect");
+            return authenticateLogin(ld);
+        } else if (data instanceof ActivationCodeDetails acd) {
 
-            } else {
+            return authenticateActivationCode(acd);
+        }
+        // TODO: optional create a separate type of fieldissue that doesn't mention a specific one
+        throw new RuntimeException("An error has ocurred with authentication");
+    }
 
-                return new AuthenticationResponseModel(true, "Login record found");
-            }
+    private LoginResponse authenticateLogin(LoginDetails ld) {
+        IssueList<LoginField> issues = new IssueList<>();
 
-        } else if (data instanceof ActivationCodeDetails c) {
+        if (ld.username().isEmpty()) {
+            issues.add(new FieldIssue<>(LoginField.USERNAME, leftBlank));
+        }
 
-            if (!db.validateAuthCode(c)) {
+        if (ld.password().isEmpty()) {
 
-                return new AuthenticationResponseModel(false, "Authentication failed");
-            } else {
+            issues.add(new FieldIssue<>(LoginField.PASSWORD, leftBlank));
+        }
 
-                return new AuthenticationResponseModel(false, "Authentication success");
+        if (!db.verifyLogin(ld)) {
+            issues.add(new FieldIssue<>(LoginField.USERNAME, "Either your username or password is incorrect"));
+
+        }
+
+        if (!issues.isEmpty()) {
+            return new LoginResponse(false, issues);
+        }
+
+        return new LoginResponse(true, new IssueList<>());
+
+
+    }
+
+    private RegistrationResponse authenticateRegistration(RegisterDetails rd) {
+        IssueList<RegistrationField> issues = new IssueList<>();
+        String[] fieldValues = {rd.username(), rd.password(), rd.firstName(), rd.lastName(), rd.email()};
+        RegistrationField[] fields = {RegistrationField.USERNAME, RegistrationField.PASSWORD, RegistrationField.FIRST_NAME, RegistrationField.LAST_NAME, RegistrationField.EMAIL};
+
+        boolean anyBlank = false;
+        for (int i = 0; i < fields.length; i++) {
+
+            if (fieldValues[i].isEmpty()) {
+                anyBlank = true;
+                issues.add(new FieldIssue<>(fields[i], leftBlank));
             }
         }
 
-        return new AuthenticationResponseModel(false, "An error has occurred.");
+        if (anyBlank) {
+            return new RegistrationResponse(false, issues);
+        }
+
+
+        if (!rd.correctEmailFormat()) {
+            issues.add(new FieldIssue<>(RegistrationField.EMAIL, "Invalid email format"));
+        }
+
+        if (!correctCharacterTypes(rd.username())) {
+            issues.add(new FieldIssue<>(RegistrationField.USERNAME, "Can only consist of letters, digits and underscores."));
+        }
+
+        if (rd.username().length() < 3) {
+            issues.add(new FieldIssue<>(RegistrationField.USERNAME, "Username must be at least 3 characters long"));
+        }
+
+        if (!correctCharacterTypes(rd.password())) {
+            issues.add(new FieldIssue<>(RegistrationField.PASSWORD, "Can only consist of letters, digits and underscores."));
+        }
+
+        if (db.usernameExists(rd.username())) {
+
+            issues.add(new FieldIssue<>(RegistrationField.USERNAME, "Username already exists"));
+        }
+
+        if (!issues.isEmpty()) {
+            return new RegistrationResponse(false, issues);
+        }
+        return new RegistrationResponse(true, new IssueList<>());
+
+    }
+
+    private ActivationCodeResponse authenticateActivationCode(ActivationCodeDetails acd) {
+        IssueList<ActivationCodeField> issues = new IssueList<>();
+
+        if (acd.code().isEmpty()) {
+            issues.add(new FieldIssue<>(ActivationCodeField.ACTIVATION_CODE_FIELD, leftBlank));
+        }
+        if (!db.validateAuthCode(acd)) {
+
+            issues.add(new FieldIssue<>(ActivationCodeField.ACTIVATION_CODE_FIELD, "Activation code was not found"));
+        }
+        if (!issues.isEmpty()) {
+            return new ActivationCodeResponse(false, issues);
+        }
+        return new ActivationCodeResponse(true, new IssueList<>());
     }
 
 
-    private AuthenticationResponseModel verifyRegisterDetailsFormat(RegisterDetails details) {
-        String status = "Registration details verified";
-        boolean verified = true;
-        if (details.anyBlank()) {
-            status = "Fields were left blank";
-            verified = false;
-        }
-
-        if (!details.correctEmailFormat()) {
-            status = "Invalid email format";
-            verified =  false;
-        }
-
-        if (details.username().length() < 3) {
-            status = "Username must be at least 3 characters long";
-            verified = false;
-        }
-
-        if (!correctCharacterTypes(details.username()) || !correctCharacterTypes(details.password())) {
-            status = "Usernames and passwords can only consist of letters, digits and underscores.";
-            verified =  false;
-        }
-
-        if (db.usernameExists(details.username())) {
-            status = "Username already exists";
-            verified = false;
-        }
-
-        return new AuthenticationResponseModel(verified, status);
-
-    }
 
     private boolean correctCharacterTypes(String input) {
         // returns T iff letters (both UC + LC), digits, and underscores, else F
