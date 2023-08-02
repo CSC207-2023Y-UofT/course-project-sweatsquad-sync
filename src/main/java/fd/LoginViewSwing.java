@@ -467,8 +467,6 @@ public class LoginViewSwing extends JFrame implements ActionListener, LoginView 
         instrRegText.setBounds(189, 25, 422, 47);
         instrRegPanel.add(instrRegText);
 
-
-
         add(loginPanel, "Login"); // adds panel to the card "deck"
         add(signupPanel, "Signup"); // adds panel to the card "deck"
         add(authCodePanel, "AuthCode"); // adds panel to the card "deck"

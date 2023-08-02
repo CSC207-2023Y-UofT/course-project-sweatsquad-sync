@@ -73,14 +73,14 @@ public class FileDatabase implements GymDatabase {
         for (User u : gym.getUsers())
             if (u.name.equals(ld.username()))
                 if (u.passHash.equals(hashPassword(ld.password()))) {
-                    System.out.println("Logged in found");
+                    System.out.println("Successfully logged in.");
                     activeUser = u;
                     return true;
                 } else {
-                    System.out.println("Incorrect password");
+                    System.out.println("Incorrect credentials, try again.");
                     return false;
                 }
-        System.out.println("User does not exist");
+        System.out.println("User does not exist.");
         return false;
     }
 
