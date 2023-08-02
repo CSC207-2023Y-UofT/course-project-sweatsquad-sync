@@ -6,6 +6,7 @@ import java.awt.event.*;
 import java.io.IOException;
 import javax.swing.*;
 import static fd.Database.UserType;
+import ebr.*;
 
 public class UI extends JFrame implements ActionListener {
 
@@ -22,7 +23,7 @@ public class UI extends JFrame implements ActionListener {
     private JPasswordField passFieldIR, confirmPassFieldIR;
     private JPanel loginPanel, signupPanel, authCodePanel, instrRegPanel, mainP;
     private JPanel schedulePanel, enrolPanel, smthPanel, settingsPanel;
-    private JLabel haveCodeLabel, welcomeUser, err1, err2, err3, err4;
+    private JLabel haveCodeLabel, welcomeUser, err1, err2, err3, err4, viewType;
     private RoundBtn roundBtn = new RoundBtn();
     private RoundField roundField = new RoundField();
 
@@ -548,7 +549,7 @@ public class UI extends JFrame implements ActionListener {
         settings.addActionListener(this);
         mainP.add(settings);
 
-        JLabel viewType = new JLabel("User View");
+        viewType = new JLabel("User View");
         viewType.setFont(new Font("Monsterrat", Font.BOLD, 20));
         viewType.setForeground(Color.decode("#001561"));
         viewType.setBounds(670, 16, 150, 26);
@@ -624,6 +625,13 @@ public class UI extends JFrame implements ActionListener {
                 passcodeField.setText("");
                 welcomeUser.setText("Welcome back, " +
                                     database.activeUser.firstName + "!");
+                if (database.activeUser instanceof Instructor) {
+                    viewType.setText("Instructor View");
+                } else if (database.activeUser instanceof GymAdmin) {
+                    viewType.setText("Admin View");
+                } else {
+                    viewType.setText("User View");
+                }
                 cardLayout.show(getContentPane(), "main");
             } else {
                 System.out.println("Invalid credentials"); // failed console msg
