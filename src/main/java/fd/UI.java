@@ -744,7 +744,6 @@ public class UI extends JFrame implements ActionListener {
             String inputCode = authField.getText(); // get the input from user
             if (database.validateAuthCode(inputCode) != null) {
                 System.out.println("Success! Valid code.");
-                authField.setText("");
                 cardLayout.show(getContentPane(), "InstrReg");
             } else {
                 System.out.println("Failure. Invalid code.");
@@ -800,6 +799,7 @@ public class UI extends JFrame implements ActionListener {
 
             if (database.claimInstructor(database.validateAuthCode(authField.getText()), firstName, lastName, username,
                     email, password)) { // uniqueness
+                authField.setText("");
                 System.out.println("Instructor registered successfully");
                 // console messages for testing
                 System.out.println("Name: " + firstName + " " + lastName);
