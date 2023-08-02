@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
 import javax.swing.*;
+import static fd.Database.UserType;
 
 public class UI extends JFrame implements ActionListener {
 
@@ -690,7 +691,7 @@ public class UI extends JFrame implements ActionListener {
             }
 
             if(database.register(firstName, lastName, username,
-                    email, password, 0)) { // checks for username uniqueness
+                    email, password, UserType.unregistered)) { // uniqueness
                 System.out.println("Registered successfully"); // console msg
 
                 // console messages for testing
@@ -791,7 +792,7 @@ public class UI extends JFrame implements ActionListener {
             }
 
             if (database.register(firstName, lastName, username,
-                    email, password, 2)) { // checks for uniqueness
+                    email, password, UserType.instructor)) { // uniqueness
                 System.out.println("Instructor registered successfully");
                 // console messages for testing
                 System.out.println("Name: " + firstName + " " + lastName);
