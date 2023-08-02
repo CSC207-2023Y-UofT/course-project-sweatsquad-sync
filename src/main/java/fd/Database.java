@@ -50,41 +50,47 @@ public class Database {
         return g;
     }
 
-    public enum UserType {
-        unregistered,
-        registered,
-        instructor,
-        administrator
-    }
-
     // method to register new user, returns T if successful, F if already exists
-    public boolean register(String firstName, String lastName, String username,
-                            String email, String passcode, UserType level, String authCode) {
+    public boolean registerBasicUser(String firstName, String lastName, String username,
+                            String email, String passcode) {
         if (!validateInput(username)) {
             System.out.println("Invalid input");
             return false;
         }
 
         for (User u : gym.getUsers()) {
-            if (u.name.equals(username)) {
-                 System.out.println("Username already exists");
+            if (u.getName().equals(username)) {
+                System.out.println("Username already exists");
                 return false;
             }
         }
 
-        if (level == UserType.unregistered) {
-            gym.addUser(new User(username, hashPassword(passcode), firstName, lastName, email));
-        } else if (level == UserType.instructor) {
-            Instructor u = validateAuthCode(authCode);
-            u.claim(authCode, username, hashPassword(passcode), firstName, lastName, email);
+        gym.addUser(new User(username, hashPassword(passcode), firstName, lastName, email));
+        return true;
+    }
+
+    public boolean claimInstructor(Instructor i, String firstName, String lastName, String username,
+                                     String email, String passcode) {
+        if (!validateInput(username)) {
+            System.out.println("Invalid input");
+            return false;
         }
+
+        for (User u : gym.getUsers()) {
+            if (u.getName().equals(username)) {
+                System.out.println("Username already exists");
+                return false;
+            }
+        }
+
+        i.claim(username, hashPassword(passcode), firstName, lastName, email);
         return true;
     }
 
     // method to check if login credentials are valid
     public boolean validateLogin(String username, String password) {
         for (User u : gym.getUsers())
-            if (u.name.equals(username))
+            if (u.getName().equals(username))
                 if (u.passHash.equals(hashPassword(password))) {
                     System.out.println("Logged in successfully");
                     activeUser = u;
