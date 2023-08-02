@@ -1,9 +1,7 @@
 package fd;
 
 // import statements
-import abr.ActivationCodeDetails;
-import abr.LoginDetails;
-import abr.RegisterDetails;
+import abr.*;
 import ia.LoginController;
 import ia.LoginView;
 
@@ -26,7 +24,7 @@ public class LoginViewSwing extends JFrame implements ActionListener, LoginView 
     private JPasswordField passcodeField, passField, confirmPassField;
     private JPasswordField passFieldIR, confirmPassFieldIR;
     private JPanel loginPanel, signupPanel, authCodePanel, instrRegPanel, mainP;
-    private JLabel haveCodeLabel, welcomeUser;
+    private JLabel haveCodeLabel, welcomeUser, err1, err2, err3, err4, err5;
     private RoundBtn roundBtn = new RoundBtn();
     private RoundField roundField = new RoundField();
 
@@ -111,6 +109,7 @@ public class LoginViewSwing extends JFrame implements ActionListener, LoginView 
         registerTextLI.setForeground(Color.decode("#000000"));
         registerTextLI.setBounds(400, 27, 211, 47);
         loginPanel.add(registerTextLI);
+
 
         // Register Transparent Button
         registerTransparentBtn = new JButton("");
@@ -288,6 +287,36 @@ public class LoginViewSwing extends JFrame implements ActionListener, LoginView 
         registerTextSU.setForeground(Color.decode("#001561"));
         registerTextSU.setBounds(400, 25, 211, 47);
         signupPanel.add(registerTextSU);
+
+        // error messages
+        err1 = new JLabel("");
+        err1.setFont(new Font("Monsterrat", Font.BOLD, 12));
+        err1.setBounds(620, 124, 130, 40);
+        signupPanel.add(err1);
+
+        // error messages
+        err2 = new JLabel("");
+        err2.setFont(new Font("Monsterrat", Font.BOLD, 12));
+        err2.setBounds(620, 211, 150, 40);
+        signupPanel.add(err2);
+
+        // error messages
+        err3 = new JLabel("");
+        err3.setFont(new Font("Monsterrat", Font.BOLD, 12));
+        err3.setBounds(620, 298, 150, 40);
+        signupPanel.add(err3);
+
+        // error messages
+        err4 = new JLabel("");
+        err4.setFont(new Font("Monsterrat", Font.BOLD, 12));
+        err4.setBounds(620, 385, 150, 40);
+        signupPanel.add(err4);
+
+        /* error messages
+        err4 = new JLabel("<html>*Passwords cannot be<BR>left blank</html>");
+        err4.setFont(new Font("Monsterrat", Font.BOLD, 12));
+        err4.setBounds(620, 385, 150, 40);
+        signupPanel.add(err4);*/
 
         // instructor authenticate code panel
         authCodePanel = new JPanel();
@@ -481,11 +510,7 @@ public class LoginViewSwing extends JFrame implements ActionListener, LoginView 
             String password = new String(passField.getPassword());
             String confirmPassword = new String(confirmPassField.getPassword());
 
-            if (!password.equals(confirmPassword)) {
-                displayInfoMessage("Passwords do not match, try again");
-                return;
-            }
-            controller.registrationAttempted(new RegisterDetails(firstName, lastName, username, email, password));
+            controller.registrationAttempted(new RegisterDetails(firstName, lastName, username, email, password, confirmPassword));
 
         } else if ((e.getSource() == back2loginBtn) ||
                    (e.getSource() == signupTransparentBtn)) { // if back button clicked
@@ -510,7 +535,7 @@ public class LoginViewSwing extends JFrame implements ActionListener, LoginView 
                 displayInfoMessage("Passwords do not match, try again");
                 return;
             }
-            controller.instructorRegistrationAttempted(new RegisterDetails(firstName, lastName, username, email, password));
+            controller.instructorRegistrationAttempted(new RegisterDetails(firstName, lastName, username, email, password, confirmPassword));
 
         }
     }
@@ -532,6 +557,43 @@ public class LoginViewSwing extends JFrame implements ActionListener, LoginView 
     }
 
     @Override
+    public void displayFieldError(Field inputField, String message) {
+
+        if (inputField instanceof LoginField lf) {
+            switch (lf) {
+
+                case USERNAME -> {
+
+                }
+                case PASSWORD -> {
+                }
+            }
+        } else if (inputField instanceof RegistrationField rf) {
+            switch (rf) {
+
+                case USERNAME -> {
+                    err2.setText(formatFieldError(message));
+                }
+                case FIRST_NAME, LAST_NAME -> {
+                    err1.setText(formatFieldError(message));
+                }
+                case EMAIL -> {
+                    err3.setText(formatFieldError(message));
+                } case PASSWORD -> {
+                    err4.setText(formatFieldError(message));
+                }
+            }
+        } else if (inputField instanceof ActivationCodeField) {
+
+        }
+
+
+    }
+    private String formatFieldError(String s) {
+        return ("<html>*" + s + "<html>");
+    }
+
+    @Override
     public void provideLogin() {
         clearPanels();
         cardLayout.show(getContentPane(), "Login");
@@ -542,6 +604,10 @@ public class LoginViewSwing extends JFrame implements ActionListener, LoginView 
         SwingUtil.clearPanel(loginPanel);
         SwingUtil.clearPanel(signupPanel);
         SwingUtil.clearPanel(instrRegPanel);
+        err1.setText("");
+        err2.setText("");
+        err3.setText("");
+        err4.setText("");
     }
 
     @Override

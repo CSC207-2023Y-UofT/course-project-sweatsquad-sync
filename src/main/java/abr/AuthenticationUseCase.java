@@ -3,8 +3,6 @@ package abr;
 
 import fd.GymDatabase;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class AuthenticationUseCase extends UseCase {
 
@@ -15,7 +13,7 @@ public class AuthenticationUseCase extends UseCase {
 
     private static final String leftBlank = "Cannot be left blank";
 
-    public AuthenticationResponseModel requestAuthentication(AuthenticationRequestModel data) {
+    public AuthenticationResponseModel<? extends Field> requestAuthentication(AuthenticationRequestModel data) {
         if (data instanceof RegisterDetails rd) {
 
             return authenticateRegistration(rd);
@@ -58,8 +56,8 @@ public class AuthenticationUseCase extends UseCase {
 
     private RegistrationResponse authenticateRegistration(RegisterDetails rd) {
         IssueList<RegistrationField> issues = new IssueList<>();
-        String[] fieldValues = {rd.username(), rd.password(), rd.firstName(), rd.lastName(), rd.email()};
-        RegistrationField[] fields = {RegistrationField.USERNAME, RegistrationField.PASSWORD, RegistrationField.FIRST_NAME, RegistrationField.LAST_NAME, RegistrationField.EMAIL};
+        String[] fieldValues = {rd.username(), rd.password(), rd.confirmPassword(), rd.firstName(), rd.lastName(), rd.email()};
+        RegistrationField[] fields = RegistrationField.values();
 
         boolean anyBlank = false;
         for (int i = 0; i < fields.length; i++) {
@@ -68,10 +66,6 @@ public class AuthenticationUseCase extends UseCase {
                 anyBlank = true;
                 issues.add(new FieldIssue<>(fields[i], leftBlank));
             }
-        }
-
-        if (anyBlank) {
-            return new RegistrationResponse(false, issues);
         }
 
 
@@ -89,6 +83,10 @@ public class AuthenticationUseCase extends UseCase {
 
         if (!correctCharacterTypes(rd.password())) {
             issues.add(new FieldIssue<>(RegistrationField.PASSWORD, "Can only consist of letters, digits and underscores."));
+        }
+
+        if (!rd.password().equals(rd.confirmPassword())) {
+            issues.add(new FieldIssue<>(RegistrationField.PASSWORD, "Passwords must match"));
         }
 
         if (db.usernameExists(rd.username())) {

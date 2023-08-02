@@ -2,6 +2,8 @@ package ia;
 
 import abr.*;
 
+import java.util.List;
+
 public class LoginController implements Controller {
 
     private final LoginView loginView;
@@ -15,9 +17,13 @@ public class LoginController implements Controller {
 
     private boolean attemptAuthenticate(AuthenticationRequestModel d) {
 
-        AuthenticationResponseModel m = authenticationModel.requestAuthentication(d);
-        loginView.displayInfoMessage(m.responseMessage()); //TODO move into if-statement after testing
-        return m.success();
+        AuthenticationResponseModel<? extends Field> m = authenticationModel.requestAuthentication(d);
+        if (!m.isSuccessful()) {
+            for (FieldIssue<? extends Field> i : m.getIssues()) {
+                loginView.displayFieldError(i.field(), i.issue());
+            }
+        }
+        return m.isSuccessful();
     }
 
     public void loginAttempted(LoginDetails d) {

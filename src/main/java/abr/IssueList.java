@@ -8,7 +8,7 @@ public class IssueList<T extends Field>{
 
     public void add(FieldIssue<T> fi) {
         for (FieldIssue<T> other: issues) {
-            if (other.issue().equals(fi.issue())) {
+            if (other.field().equals(fi.field())) {
                 return;
             }
         }
