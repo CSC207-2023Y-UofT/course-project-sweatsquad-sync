@@ -9,7 +9,7 @@ public class Instructor extends RegisteredUser implements Serializable {
     // N.B. Set code below to null when instructor account is claimed
     private String tempAuth;
     public Set<String> certs;
-    private static String ALPHA_NUM = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
+    private static final String ALPHA_NUM = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
 
     public Instructor() {
         super(null, null, null, null, null);
