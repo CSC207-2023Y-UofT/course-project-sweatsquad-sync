@@ -3,7 +3,8 @@ package ebr;
 import java.io.Serializable;
 
 public class User implements Serializable {
-    public String name, passHash, firstName, lastName, email;
+    protected String name;
+    public String passHash, firstName, lastName, email;
 
     protected User() {}
 
@@ -13,6 +14,10 @@ public class User implements Serializable {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+    }
+
+    public String getName() {
+        return name;
     }
 
     @Override
