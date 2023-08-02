@@ -86,8 +86,8 @@ public class Database {
     // method to check if auth code is valid
     public boolean validateAuthCode(String code) {
         for (User u : gym.getUsers())
-            if (u instanceof Instructor && ((Instructor) u).tempAuth != null)
-                if (((Instructor) u).tempAuth.equals(hashPassword(code))) {
+            if (u instanceof Instructor && ((Instructor) u).getAuthCode() != null)
+                if (((Instructor) u).getAuthCode().equals(code)) {
                     System.out.println("Authentication code is valid");
                     return true;
                 }
