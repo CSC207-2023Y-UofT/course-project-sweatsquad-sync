@@ -21,7 +21,7 @@ public class UI extends JFrame implements ActionListener {
     private JPasswordField passFieldIR, confirmPassFieldIR;
     private JPanel loginPanel, signupPanel, authCodePanel, instrRegPanel, mainP;
     private JPanel schedulePanel, enrolPanel, smthPanel, settingsPanel;
-    private JLabel haveCodeLabel, welcomeUser, err1, err2, err3, err4, err5;
+    private JLabel haveCodeLabel, welcomeUser, err1, err2, err3, err4;
     private RoundBtn roundBtn = new RoundBtn();
     private RoundField roundField = new RoundField();
 
@@ -83,7 +83,8 @@ public class UI extends JFrame implements ActionListener {
         loginPanel.add(passwordLabel);
 
         // passcode field
-        passcodeField = roundField.genRoundPasswordField("", 20, "#FFFFFF", false);
+        passcodeField = roundField.genRoundPasswordField("", 20, "#FFFFFF",
+                                                         false);
         passcodeField.setFont(new Font("Arial", Font.PLAIN, 16));
         passcodeField.setBounds(189, 210, 422, 45);
         loginPanel.add(passcodeField);
@@ -218,7 +219,8 @@ public class UI extends JFrame implements ActionListener {
         signupPanel.add(confirmPasswordLabel);
 
         // confirm password field
-        confirmPassField = roundField.genRoundPasswordField("", 20, "#FFFFFF", false);
+        confirmPassField = roundField.genRoundPasswordField("", 20, "#FFFFFF",
+                                                            false);
         confirmPassField.setBounds(413, 384, 198, 45);
         confirmPassField.setFont(new Font("Comfortaa", Font.BOLD, 18));
         signupPanel.add(confirmPassField);
@@ -326,13 +328,6 @@ public class UI extends JFrame implements ActionListener {
         err4.setBounds(620, 385, 150, 40);
         signupPanel.add(err4);
 
-        /* error messages
-        err4 = new JLabel("<html>*Passwords cannot be<BR>left blank</html>");
-        err4.setFont(new Font("Monsterrat", Font.BOLD, 12));
-        err4.setBounds(620, 385, 150, 40);
-        signupPanel.add(err4);*/
-
-
         // instructor authenticate code panel
         authCodePanel = new JPanel();
         authCodePanel.setLayout(null);
@@ -396,7 +391,8 @@ public class UI extends JFrame implements ActionListener {
         instrRegPanel.add(firstNameLabelIR);
 
         // first name field
-        firstNameFieldIR = roundField.genRoundTextField("", 20, "#FFFFFF", false);
+        firstNameFieldIR = roundField.genRoundTextField("", 20, "#FFFFFF",
+                                                        false);
         firstNameFieldIR.setBounds(189, 123, 198, 45);
         firstNameFieldIR.setFont(new Font("Comfortaa", Font.BOLD, 18));
         instrRegPanel.add(firstNameFieldIR);
@@ -408,7 +404,8 @@ public class UI extends JFrame implements ActionListener {
         instrRegPanel.add(lastNameLabelIR);
 
         // last name field
-        lastNameFieldIR = roundField.genRoundTextField("", 20, "#FFFFFF", false);
+        lastNameFieldIR = roundField.genRoundTextField("", 20, "#FFFFFF",
+                                                       false);
         lastNameFieldIR.setBounds(413, 123, 198, 45);
         lastNameFieldIR.setFont(new Font("Comfortaa", Font.BOLD, 18));
         instrRegPanel.add(lastNameFieldIR);
@@ -444,7 +441,8 @@ public class UI extends JFrame implements ActionListener {
         instrRegPanel.add(signupPasswordLabelIR);
 
         // password field
-        passFieldIR = roundField.genRoundPasswordField("", 20, "#FFFFFF", false);
+        passFieldIR = roundField.genRoundPasswordField("", 20, "#FFFFFF",
+                                                       false);
         passFieldIR.setBounds(189, 384, 198, 45);
         passFieldIR.setFont(new Font("Comfortaa", Font.BOLD, 18));
         instrRegPanel.add(passFieldIR);
@@ -456,13 +454,15 @@ public class UI extends JFrame implements ActionListener {
         instrRegPanel.add(confirmPasswordLabelIR);
 
         // confirm password field
-        confirmPassFieldIR = roundField.genRoundPasswordField("", 20, "#FFFFFF", false);
+        confirmPassFieldIR = roundField.genRoundPasswordField("", 20, "#FFFFFF",
+                                                              false);
         confirmPassFieldIR.setBounds(413, 384, 198, 45);
         confirmPassFieldIR.setFont(new Font("Comfortaa", Font.BOLD, 18));
         instrRegPanel.add(confirmPassFieldIR);
 
         // register button UPDATED (round button)
-        registerButtonIR = roundBtn.genRoundBtn("Register", 50, "#001561", false);
+        registerButtonIR = roundBtn.genRoundBtn("Register", 50, "#001561",
+                                                false);
         registerButtonIR.setFont(new Font("Monsterrat", Font.BOLD, 13));
         registerButtonIR.setForeground(Color.decode("#FFFFFF"));
         registerButtonIR.setBounds(189, 450, 422, 50);
@@ -471,12 +471,14 @@ public class UI extends JFrame implements ActionListener {
 
         // login indicator bar JLabel
         JLabel regIndicatorIR = new JLabel("");
-        regIndicatorIR.setIcon(new ImageIcon("images/00301-auth-indicator.png"));
+        String tempImg1 = "images/00301-auth-indicator.png";
+        regIndicatorIR.setIcon(new ImageIcon(tempImg1));
         regIndicatorIR.setBounds(189, 65, 422, 9);
         instrRegPanel.add(regIndicatorIR);
 
         // Sign In JLabel
-        JLabel instrRegText = new JLabel("Instructor Registration", SwingConstants.CENTER);
+        JLabel instrRegText = new JLabel("Instructor Registration",
+                                         SwingConstants.CENTER);
         instrRegText.setFont(new Font("Monsterrat", Font.BOLD, 16));
         instrRegText.setForeground(Color.decode("#001561"));
         instrRegText.setBounds(189, 25, 422, 47);
@@ -530,7 +532,8 @@ public class UI extends JFrame implements ActionListener {
         upcomingC3.setBounds(66, 370, 320, 60);
         mainP.add(upcomingC3);
 
-        viewEntireSchedule = roundBtn.genRoundBtn("View Entire Schedule", 30, "#001561", false);
+        viewEntireSchedule = roundBtn.genRoundBtn("View Entire Schedule", 30,
+                                                  "#001561", false);
         viewEntireSchedule.setFont(new Font("Monsterrat", Font.BOLD, 20));
         viewEntireSchedule.setForeground(Color.decode("#FFFFFF"));
         viewEntireSchedule.setBounds(66, 445, 320, 40);
@@ -550,7 +553,8 @@ public class UI extends JFrame implements ActionListener {
         viewType.setBounds(670, 16, 150, 26);
         mainP.add(viewType);
 
-        enrolBtn = roundBtn.genRoundBtn("Enroll in Classes", 30, "#001561", false);
+        enrolBtn = roundBtn.genRoundBtn("Enroll in Classes", 30, "#001561",
+                                        false);
         enrolBtn.setFont(new Font("Monsterrat", Font.BOLD, 23));
         enrolBtn.setForeground(Color.decode("#FFFFFF"));
         enrolBtn.setBounds(490, 180, 218, 100);
@@ -614,17 +618,18 @@ public class UI extends JFrame implements ActionListener {
 
             // checks if credentials are correct; uses Database.validateLogin
             if(database.validateLogin(username, password)) {
-                System.out.println("Logged in successfully"); // console msg -  change to JLabel custom
+                System.out.println("Logged in successfully"); // console msg
                 usernameField.setText("");
                 passcodeField.setText("");
-                welcomeUser.setText("Welcome back, " + database.activeUser.firstName + "!");
+                welcomeUser.setText("Welcome back, " +
+                                    database.activeUser.firstName + "!");
                 cardLayout.show(getContentPane(), "main");
             } else {
-                System.out.println("Invalid credentials"); // failed console msg - change to JLabel custom
+                System.out.println("Invalid credentials"); // failed console msg
             }
 
         } else if ((e.getSource() == signupButton) ||
-                   (e.getSource() == registerTransparentBtn)) { // signup logic if pressed
+                   (e.getSource() == registerTransparentBtn)) { // signup logic
             cardLayout.show(getContentPane(), "Signup"); // switches to SU panel
             // resets fields (signup screen)
             firstNameField.setText("");
@@ -665,13 +670,15 @@ public class UI extends JFrame implements ActionListener {
             if (username.length() < 3) {
                 System.out.println("Username must be at least " +
                         "3 characters long");
-                err3.setText("<html>*Usernames must be<BR>at least 3 characters</html>");
+                err3.setText("<html>*Usernames must be<BR>at least 3 characters"
+                             + "</html>");
                 check = false;
             }
 
             if (password.isEmpty()) {
                 System.out.println("*Passwords cannot be left blank");
                 err4.setText("<HTML>*Passwords cannot be<BR>left blank</HTML>");
+                check = false;
             } else if (!password.equals(confirmPassword)) {
                 System.out.println("Passwords do not match, try again");
                 err4.setText("*Passwords must match");
@@ -702,7 +709,7 @@ public class UI extends JFrame implements ActionListener {
                 System.out.println("Invalid input"); // F console msg
             }
         } else if ((e.getSource() == back2loginBtn) ||
-                   (e.getSource() == signupTransparentBtn)) { // if back button clicked
+                   (e.getSource() == signupTransparentBtn)) { // if back button
             // clears all the fields
             usernameField.setText("");
             passcodeField.setText("");
@@ -741,7 +748,7 @@ public class UI extends JFrame implements ActionListener {
             String username = userFieldIR.getText();
             String email = emailFieldIR.getText();
             String password = new String(passFieldIR.getPassword());
-            String confirmPassword = new String(confirmPassFieldIR.getPassword());
+            String confirmPass = new String(confirmPassFieldIR.getPassword());
             err1.setText("");
             err2.setText("");
             err3.setText("");
@@ -765,14 +772,15 @@ public class UI extends JFrame implements ActionListener {
             if (username.length() < 3) {
                 System.out.println("Username must be at least " +
                         "3 characters long");
-                err3.setText("<html>*Usernames must be<BR>at least 3 characters</html>");
+                err3.setText("<html>*Usernames must be<BR>at least 3 " +
+                             "characters</html>");
                 check = false;
             }
 
             if (password.isEmpty()) {
                 System.out.println("*Passwords cannot be left blank");
                 err4.setText("<HTML>*Passwords cannot be<BR>left blank</HTML>");
-            } else if (!password.equals(confirmPassword)) {
+            } else if (!password.equals(confirmPass)) {
                 System.out.println("Passwords do not match, try again");
                 err4.setText("*Passwords must match");
                 check = false;
@@ -784,13 +792,13 @@ public class UI extends JFrame implements ActionListener {
 
             if (database.register(firstName, lastName, username,
                     email, password, 2)) { // checks for uniqueness
-                System.out.println("Instructor registered successfully"); // console msg to be changed later to JLabel for viewing
+                System.out.println("Instructor registered successfully");
                 // console messages for testing
                 System.out.println("Name: " + firstName + " " + lastName);
                 System.out.println("Username: " + username);
                 System.out.println("Email: " + email);
                 System.out.println("Password: " + password);
-                System.out.println("Confirm Password: " + confirmPassword);
+                System.out.println("Confirm Password: " + confirmPass);
 
                 // Switch the card layout back to the login panel + reset JTFs
                 usernameField.setText("");
@@ -809,6 +817,7 @@ public class UI extends JFrame implements ActionListener {
         } else if (e.getSource() == settings) {
             cardLayout.show(getContentPane(), "settings");
         } else if (e.getSource() == logout) {
+            System.out.println("Logged out successfully");
             cardLayout.show(getContentPane(), "Login");
         }
     }
