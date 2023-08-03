@@ -1,32 +1,23 @@
 package abr;
 
+import abr.requestAndResponse.*;
+import abr.requestAndResponse.authenticationFields.*;
 
-import fd.GymDatabase;
+
+public class Authenticator implements InputBoundary<AuthenticationRequestModel> {
+
+    private final UserAccountManager uam;
+    private final ActiveUserManager aum;
+    private final OutputBoundary<AuthenticationResponseModel<? extends Field>> outputBoundary;
 
 
-public class AuthenticationUseCase extends UseCase {
-
-    private final GymDatabase db;
-    public AuthenticationUseCase (GymDatabase db) {
-        this.db = db;
+    public Authenticator(UserAccountManager uam, ActiveUserManager aum, OutputBoundary<AuthenticationResponseModel<? extends Field>> outputBoundary) {
+        this.aum = aum;
+        this.uam = uam;
+        this.outputBoundary = outputBoundary;
     }
 
     private static final String leftBlank = "Cannot be left blank";
-
-    public AuthenticationResponseModel<? extends Field> requestAuthentication(AuthenticationRequestModel data) {
-        if (data instanceof RegisterDetails rd) {
-
-            return authenticateRegistration(rd);
-        } else if (data instanceof LoginDetails ld) {
-
-            return authenticateLogin(ld);
-        } else if (data instanceof ActivationCodeDetails acd) {
-
-            return authenticateActivationCode(acd);
-        }
-        // TODO: optional create a separate type of fieldissue that doesn't mention a specific one
-        throw new RuntimeException("An error has ocurred with authentication");
-    }
 
     private LoginResponse authenticateLogin(LoginDetails ld) {
         IssueList<LoginField> issues = new IssueList<>();
@@ -40,7 +31,7 @@ public class AuthenticationUseCase extends UseCase {
             issues.add(new FieldIssue<>(LoginField.PASSWORD, leftBlank));
         }
 
-        if (!db.verifyLogin(ld)) {
+        if (!uam.verifyLogin(ld)) {
             issues.add(new FieldIssue<>(LoginField.USERNAME, "Either your username or password is incorrect"));
 
         }
@@ -49,6 +40,7 @@ public class AuthenticationUseCase extends UseCase {
             return new LoginResponse(false, issues);
         }
 
+        aum.loginUser(uam.retrieveUser(ld));
         return new LoginResponse(true, new IssueList<>());
 
 
@@ -89,7 +81,7 @@ public class AuthenticationUseCase extends UseCase {
             issues.add(new FieldIssue<>(RegistrationField.PASSWORD, "Passwords must match"));
         }
 
-        if (db.usernameExists(rd.username())) {
+        if (uam.usernameExists(rd.username())) {
 
             issues.add(new FieldIssue<>(RegistrationField.USERNAME, "Username already exists"));
         }
@@ -107,7 +99,7 @@ public class AuthenticationUseCase extends UseCase {
         if (acd.code().isEmpty()) {
             issues.add(new FieldIssue<>(ActivationCodeField.ACTIVATION_CODE_FIELD, leftBlank));
         }
-        if (!db.validateAuthCode(acd)) {
+        if (!uam.validateAuthCode(acd)) {
 
             issues.add(new FieldIssue<>(ActivationCodeField.ACTIVATION_CODE_FIELD, "Activation code was not found"));
         }
@@ -125,4 +117,24 @@ public class AuthenticationUseCase extends UseCase {
     }
 
 
+    @Override
+    public void receiveRequest(AuthenticationRequestModel rm) {
+
+        if (rm instanceof RegisterDetails rd) {
+
+            RegistrationResponse response = authenticateRegistration(rd);
+            outputBoundary.receiveResponse(authenticateRegistration(rd));
+
+        } else if (rm instanceof LoginDetails ld) {
+            LoginResponse response = authenticateLogin(ld);
+            if (response.isSuccessful()) {
+                aum.loginUser(uam.retrieveUser(ld));
+            }
+            outputBoundary.receiveResponse(response);
+        } else if (rm instanceof ActivationCodeDetails acd) {
+
+            outputBoundary.receiveResponse(authenticateActivationCode(acd));
+        }
+        throw new RuntimeException("Request model not recognized by this use case");
+    }
 }

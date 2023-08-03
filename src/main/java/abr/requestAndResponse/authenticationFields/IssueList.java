@@ -1,4 +1,4 @@
-package abr;
+package abr.requestAndResponse.authenticationFields;
 
 import java.util.ArrayList;
 import java.util.List;

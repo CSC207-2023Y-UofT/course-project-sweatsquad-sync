@@ -1,6 +1,7 @@
-package abr;
+package abr.requestAndResponse;
 
-import java.util.List;
+import abr.requestAndResponse.authenticationFields.IssueList;
+import abr.requestAndResponse.authenticationFields.LoginField;
 
 public class LoginResponse extends AuthenticationResponseModel<LoginField> {
     public LoginResponse(boolean success, IssueList<LoginField> fieldIssues) {

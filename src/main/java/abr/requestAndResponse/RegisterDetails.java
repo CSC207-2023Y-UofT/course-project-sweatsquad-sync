@@ -1,6 +1,6 @@
-package abr;
+package abr.requestAndResponse;
 
-public record RegisterDetails(String firstName, String lastName, String username, String email, String password, String confirmPassword) implements AuthenticationRequestModel {
+public record RegisterDetails(String firstName, String lastName, String username, String email, String password, String confirmPassword, AccountType accountType) implements AuthenticationRequestModel {
 
 
     public boolean anyBlank() {

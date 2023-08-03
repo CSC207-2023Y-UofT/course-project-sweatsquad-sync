@@ -1,6 +1,7 @@
-package abr;
+package abr.requestAndResponse;
 
-import java.util.List;
+import abr.requestAndResponse.authenticationFields.IssueList;
+import abr.requestAndResponse.authenticationFields.RegistrationField;
 
 public class RegistrationResponse extends AuthenticationResponseModel<RegistrationField> {
     public RegistrationResponse(boolean success, IssueList<RegistrationField> fieldIssues) {

@@ -1,4 +1,4 @@
-package abr;
+package abr.requestAndResponse.authenticationFields;
 
 public enum LoginField implements Field {
 

@@ -1,8 +1,8 @@
 package fd;
 
 // import statements
-import abr.*;
-import ia.LoginController;
+import abr.requestAndResponse.authenticationFields.*;
+import ia.LoginFrameController;
 import ia.LoginView;
 
 import java.awt.*;
@@ -11,7 +11,7 @@ import javax.swing.*;
 
 public class LoginViewSwing extends JFrame implements ActionListener, LoginView {
 
-    private LoginController controller;
+    private LoginFrameController controller;
 
     // declaring UI components / layout
     private CardLayout cardLayout = new CardLayout();
@@ -477,13 +477,14 @@ public class LoginViewSwing extends JFrame implements ActionListener, LoginView 
 
     // button action listener response function
     public void actionPerformed(ActionEvent e) {
+        clearInputs();
         if (e.getSource() == loginButton) { // checks 4 loginButton; login logic
 
             // fetches username + passcode from JTextField components
             String username = usernameField.getText();
             String password = new String(passcodeField.getPassword());
 
-            controller.loginAttempted(new LoginDetails(username, password));
+            controller.loginAttempted(username, password);
 
         } else if ((e.getSource() == signupButton) ||
                    (e.getSource() == registerTransparentBtn)) { // signup logic if pressed
@@ -498,7 +499,7 @@ public class LoginViewSwing extends JFrame implements ActionListener, LoginView 
             String password = new String(passField.getPassword());
             String confirmPassword = new String(confirmPassField.getPassword());
 
-            controller.registrationAttempted(new RegisterDetails(firstName, lastName, username, email, password, confirmPassword));
+            controller.regularRegistrationAttempted(firstName, lastName, username, email, password, confirmPassword);
 
         } else if ((e.getSource() == back2loginBtn) ||
                    (e.getSource() == signupTransparentBtn)) { // if back button clicked
@@ -509,7 +510,7 @@ public class LoginViewSwing extends JFrame implements ActionListener, LoginView 
         } else if (e.getSource() == authenticateBtn) {
             String inputCode = authField.getText(); // get the input from user
 
-            controller.codeActivationAttempted(new ActivationCodeDetails(inputCode));
+            controller.codeActivationAttempted(inputCode);
         } else if (e.getSource() == registerButtonIR) {
             // gets text from respective JTextField components
             String firstName = firstNameFieldIR.getText();
@@ -523,24 +524,24 @@ public class LoginViewSwing extends JFrame implements ActionListener, LoginView 
                 displayInfoMessage("Passwords do not match, try again");
                 return;
             }
-            controller.instructorRegistrationAttempted(new RegisterDetails(firstName, lastName, username, email, password, confirmPassword));
+            controller.instructorRegistrationAttempted(firstName, lastName, username, email, password, confirmPassword);
 
         }
     }
 
     @Override
     public void provideInstrSignup() {
-        clearPanels();
+        clearInputs();
         cardLayout.show(getContentPane(), "InstrReg");
     }
     @Override
     public void provideSignup() {
-        clearPanels();
+        clearInputs();
         cardLayout.show(getContentPane(), "Signup");
     }
     @Override
     public void provideInstrAuthentication() {
-        clearPanels();
+        clearInputs();
         cardLayout.show(getContentPane(), "AuthCode");
     }
 
@@ -550,10 +551,10 @@ public class LoginViewSwing extends JFrame implements ActionListener, LoginView 
         if (inputField instanceof LoginField lf) {
             switch (lf) {
 
-                case USERNAME -> {
+                case USERNAME, PASSWORD -> {
 
-                }
-                case PASSWORD -> {
+                    displayInfoMessage(message);
+
                 }
             }
         } else if (inputField instanceof RegistrationField rf) {
@@ -573,6 +574,7 @@ public class LoginViewSwing extends JFrame implements ActionListener, LoginView 
             }
         } else if (inputField instanceof ActivationCodeField) {
 
+            displayInfoMessage(message);
         }
 
 
@@ -583,11 +585,12 @@ public class LoginViewSwing extends JFrame implements ActionListener, LoginView 
 
     @Override
     public void provideLogin() {
-        clearPanels();
+        clearInputs();
         cardLayout.show(getContentPane(), "Login");
     }
 
-    private void clearPanels() {
+    @Override
+    public void clearInputs() {
         SwingUtil.clearPanel(authCodePanel);
         SwingUtil.clearPanel(loginPanel);
         SwingUtil.clearPanel(signupPanel);
@@ -609,7 +612,17 @@ public class LoginViewSwing extends JFrame implements ActionListener, LoginView 
     }
 
     @Override
-    public void setController(LoginController c) {
+    public void setController(LoginFrameController c) {
         controller = c;
+    }
+
+    @Override
+    public void showView() {
+        setVisible(true);
+    }
+
+    @Override
+    public void hideView() {
+
     }
 }

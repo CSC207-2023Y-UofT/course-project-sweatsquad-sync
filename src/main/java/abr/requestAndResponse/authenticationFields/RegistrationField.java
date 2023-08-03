@@ -1,4 +1,4 @@
-package abr;
+package abr.requestAndResponse.authenticationFields;
 
 public enum RegistrationField implements Field {
 

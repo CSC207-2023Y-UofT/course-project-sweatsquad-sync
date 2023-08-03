@@ -1,8 +1,8 @@
 package ia;
 
-import abr.Field;
+import abr.requestAndResponse.authenticationFields.Field;
 
-public interface LoginView extends View<LoginController> {
+public interface LoginView extends View<LoginFrameController> {
 
     public void provideInstrSignup();
 
@@ -13,5 +13,9 @@ public interface LoginView extends View<LoginController> {
     public void provideInstrAuthentication();
 
     public void displayFieldError(Field inputField, String message);
+
+    public void showView();
+    public void hideView();
+    public void clearInputs();
 
 }
