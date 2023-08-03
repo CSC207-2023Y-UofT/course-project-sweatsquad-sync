@@ -14,7 +14,7 @@ public class UI extends JFrame implements ActionListener {
     private JButton loginButton, signupButton, registerButton, back2loginBtn;
     private JButton registerTransparentBtn, signupTransparentBtn;
     private JButton returnLoginBtn, authenticateBtn, registerButtonIR;
-    private JButton viewEntireSchedule, enrolBtn, smthBtn, logout, settings;
+    private JButton viewEntireSchedule, enrolBtn, logout, settings;
     private JTextField usernameField, userField, emailField, authField;
     private JTextField firstNameField, lastNameField, firstNameFieldIR;
     private JTextField lastNameFieldIR, emailFieldIR, userFieldIR;
@@ -25,9 +25,9 @@ public class UI extends JFrame implements ActionListener {
     private JPanel userDash, regUserDash, instructorDash, adminDash;
     private JLabel haveCodeLabel, welcomeUser, err1, err2, err3, err4, viewType;
     private JLabel dashboardTitle;
-    private JButton viewClassOfferings, dailyWorkoutTips, accountSettings;
+    private JButton viewClassOfferings, dailyWorkoutTips;
     private JPanel viewOfferingsPanel, workoutTipsPanel, settingsPanel;
-    private JButton back2dash;
+    private JButton back2dash, logout_icon;
     private RoundBtn roundBtn = new RoundBtn();
     private RoundField roundField = new RoundField();
 
@@ -514,12 +514,31 @@ public class UI extends JFrame implements ActionListener {
         welcomeUser.setBounds(66, 64, 422, 47);
         userDash.add(welcomeUser);
 
-        logout = roundBtn.genRoundBtn("⏻", 30, "#001561", false);
+        logout_icon = new JButton();
+        logout_icon.setBounds(620, 15, 40, 30);
+        logout_icon.setBorderPainted(false); // Hide the button border
+        logout_icon.setFocusPainted(false); // Remove the focus indication
+        logout_icon.setContentAreaFilled(false);
+        logout_icon.setIcon(new ImageIcon("images/logout_icon.png"));
+        logout_icon.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                setCursor(Cursor.getDefaultCursor());
+            }
+        });
+        logout_icon.addActionListener(this);
+        userDash.add(logout_icon);
+
+        logout = roundBtn.genRoundBtn("", 23, "#001561", false);
         logout.setFont(new Font("Monsterrat", Font.BOLD, 19));
         logout.setForeground(Color.decode("#FFFFFF"));
-        logout.setBounds(608, 10, 48, 30);
-        logout.addActionListener(this);
-        userDash.add(logout);
+        logout.setBounds(620, 15, 40, 30);
+        userDash.add(logout); // just the background -for the overridden paint
 
         viewType = new JLabel("");
         viewType.setFont(new Font("Monsterrat", Font.BOLD, 20));
@@ -578,8 +597,8 @@ public class UI extends JFrame implements ActionListener {
         upcomingC.setBounds(66, 130, 422, 47);
         instructorDash.add(upcomingC);
 
-        JLabel upcomingC1 = new JLabel("Class 1 Info");
-        upcomingC1.setFont(new Font("Monsterrat", Font.BOLD, 20));
+        JLabel upcomingC1 = new JLabel("<html><b>14:00</b><BR><BR>16:00</html>");
+        upcomingC1.setFont(new Font("Monsterrat", Font.PLAIN, 12));
         upcomingC1.setForeground(Color.decode("#FFFFFF"));
         upcomingC1.setBackground(Color.decode("#40508a"));
         upcomingC1.setOpaque(true);
@@ -587,7 +606,7 @@ public class UI extends JFrame implements ActionListener {
         instructorDash.add(upcomingC1);
 
         JLabel upcomingC2 = new JLabel("Class 2 Info");
-        upcomingC2.setFont(new Font("Monsterrat", Font.BOLD, 20));
+        upcomingC2.setFont(new Font("Monsterrat", Font.PLAIN, 16));
         upcomingC2.setForeground(Color.decode("#FFFFFF"));
         upcomingC2.setBackground(Color.decode("#40508a"));
         upcomingC2.setOpaque(true);
@@ -596,7 +615,7 @@ public class UI extends JFrame implements ActionListener {
         instructorDash.add(upcomingC2);
 
         JLabel upcomingC3 = new JLabel("Class 3 Info");
-        upcomingC3.setFont(new Font("Monsterrat", Font.BOLD, 20));
+        upcomingC3.setFont(new Font("Monsterrat", Font.PLAIN, 16));
         upcomingC3.setForeground(Color.decode("#FFFFFF"));
         upcomingC3.setBackground(Color.decode("#40508a"));
         upcomingC3.setOpaque(true);
@@ -611,17 +630,17 @@ public class UI extends JFrame implements ActionListener {
         viewEntireSchedule.addActionListener(this);
         instructorDash.add(viewEntireSchedule);
 
+        // Login panel
+        schedulePanel = new JPanel();
+        schedulePanel.setLayout(null);
+        schedulePanel.setBackground(Color.decode("#DADADA"));
+
         enrolBtn = roundBtn.genRoundBtn("Manage Classes", 30, "#001561", false);
         enrolBtn.setFont(new Font("Monsterrat", Font.BOLD, 23));
         enrolBtn.setForeground(Color.decode("#FFFFFF"));
         enrolBtn.setBounds(490, 180, 218, 75);
         enrolBtn.addActionListener(this);
         instructorDash.add(enrolBtn);
-
-        // Login panel
-        schedulePanel = new JPanel();
-        schedulePanel.setLayout(null);
-        schedulePanel.setBackground(Color.decode("#DADADA"));
 
         // Login panel
         enrolPanel = new JPanel();
@@ -642,10 +661,10 @@ public class UI extends JFrame implements ActionListener {
         add(workoutTipsPanel, "Daily Workout Tips"); // adds panel to card deck
         add(instructorDash, "Instructor Dashboard"); // adds panel to card deck
         add(settingsPanel, "Account Settings"); // adds panel to the card "deck"
+        add(schedulePanel, "Schedule"); // adds panel to the card "deck"
+        add(enrolPanel, "Enrolment"); // adds panel to the card "deck"
 
         add(mainP, "main"); // adds panel to the card "deck" todo deprecated
-        add(schedulePanel, "schedule"); // adds panel to the card "deck"
-        add(enrolPanel, "enrolment"); // adds panel to the card "deck"
         add(smthPanel, "something"); // adds panel to the card "deck"
 
         setVisible(true);
@@ -669,14 +688,21 @@ public class UI extends JFrame implements ActionListener {
                 if (database.activeUser instanceof Instructor) {
                     viewType.setText("Instructor View");
                     instructorDash.add(viewType);
+                    viewType.setBounds(615, 16, 160, 26);
                     instructorDash.add(welcomeUser);
                     instructorDash.add(dashboardTitle);
+                    instructorDash.add(logout_icon);
+                    logout_icon.setBounds(565, 15, 40, 30);
                     instructorDash.add(logout);
+                    logout.setBounds(565, 15, 40, 30);
                     instructorDash.add(dailyWorkoutTips);
                     dailyWorkoutTips.setBounds(490, 295, 218, 75);
                     instructorDash.add(settings);
                     settings.setBounds(490, 410, 218, 75);
                     activeDash = "Instructor Dashboard";
+                } else if (database.activeUser instanceof GymAdmin) {
+                    viewType.setText("Admin View");
+                    activeDash = "Admin Dashboard";
                 } else if (database.activeUser instanceof GymAdmin) {
                     viewType.setText("Admin View");
                     activeDash = "Admin Dashboard";
@@ -886,12 +912,16 @@ public class UI extends JFrame implements ActionListener {
         } else if (e.getSource() == dailyWorkoutTips) {
             workoutTipsPanel.add(back2dash);
             cardLayout.show(getContentPane(), "Daily Workout Tips");
+        } else if (e.getSource() == enrolBtn) {
+            enrolPanel.add(back2dash);
+            cardLayout.show(getContentPane(), "Enrolment");
         } else if (e.getSource() == settings) {
             settingsPanel.add(back2dash);
             cardLayout.show(getContentPane(), "Account Settings");
-        } else if (e.getSource() == smthBtn) {
-            cardLayout.show(getContentPane(), "something");
-        } else if (e.getSource() == logout) {
+        } else if (e.getSource() == viewEntireSchedule) {
+            schedulePanel.add(back2dash);
+            cardLayout.show(getContentPane(), "Schedule");
+        } else if (e.getSource() == logout_icon) {
             database.activeUser = null;
             System.out.println("Logged out successfully");
             cardLayout.show(getContentPane(), "Login");
