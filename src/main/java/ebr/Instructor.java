@@ -2,11 +2,10 @@ package ebr;
 
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
 
-public class Instructor extends RegisteredUser implements Serializable {
+public class Instructor extends User implements Serializable {
     // N.B. Set code below to null when instructor account is claimed
     private String tempAuth;
     public Set<String> certs;

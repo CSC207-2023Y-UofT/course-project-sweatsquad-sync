@@ -26,7 +26,6 @@ public class Gym implements Serializable  {
         members.remove(u);
         // TODO remove all refs to that user here
         if (u instanceof Instructor) {}
-        if (u instanceof RegisteredUser) {}
     }
 
     public Set<User> getUsers() {
