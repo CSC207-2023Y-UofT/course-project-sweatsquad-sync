@@ -27,8 +27,8 @@ public class Instructor extends RegisteredUser implements Serializable {
     public String getAuthCode() {
         return tempAuth;
     }
-    public void claim(String auth, String name, String passHash, String firstName, String lastName, String email) {
-        if (tempAuth != null && tempAuth == auth) {
+    public void claim(String name, String passHash, String firstName, String lastName, String email) {
+        if (tempAuth != null) {
             tempAuth = null;
             this.name = name;
             this.passHash = passHash;
@@ -36,6 +36,11 @@ public class Instructor extends RegisteredUser implements Serializable {
             this.lastName = lastName;
             this.email = email;
         }
+    }
+
+    @Override
+    public String getName() {
+        return this.name == null ? "UNCLAIMED INSTRUCTOR" : this.name;
     }
 
     @Override

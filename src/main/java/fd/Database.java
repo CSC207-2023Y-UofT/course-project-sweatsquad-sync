@@ -15,6 +15,7 @@ public class Database {
     // declares database vars - hashmap, txt file, and hash toggle
     private final String filename = "gym.bin";
     private Gym gym;
+    public User activeUser;
 
     // database constructor
     public Database() {
@@ -40,20 +41,26 @@ public class Database {
         ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename));
         Gym g = (Gym)ois.readObject();
         ois.close();
+
+        // todo take out after -admin can add instructor functionality is added
+        Instructor instructor = new Instructor();
+        System.out.println(instructor.getAuthCode());
+        g.addUser(instructor);
+
         return g;
     }
 
     // method to register new user, returns T if successful, F if already exists
-    public boolean register(String firstName, String lastName, String username,
-                            String email, String passcode, int level) {
-        if (!validateInput(username) || !validateInput(passcode)) {
+    public boolean registerBasicUser(String firstName, String lastName, String username,
+                            String email, String passcode) {
+        if (!validateInput(username)) {
             System.out.println("Invalid input");
             return false;
         }
 
         for (User u : gym.getUsers()) {
-            if (u.name.equals(username)) {
-                 System.out.println("Username already exists");
+            if (u.getName().equals(username)) {
+                System.out.println("Username already exists");
                 return false;
             }
         }
@@ -62,12 +69,31 @@ public class Database {
         return true;
     }
 
+    public boolean claimInstructor(Instructor i, String firstName, String lastName, String username,
+                                     String email, String passcode) {
+        if (!validateInput(username)) {
+            System.out.println("Invalid input");
+            return false;
+        }
+
+        for (User u : gym.getUsers()) {
+            if (u.getName().equals(username)) {
+                System.out.println("Username already exists");
+                return false;
+            }
+        }
+
+        i.claim(username, hashPassword(passcode), firstName, lastName, email);
+        return true;
+    }
+
     // method to check if login credentials are valid
     public boolean validateLogin(String username, String password) {
         for (User u : gym.getUsers())
-            if (u.name.equals(username))
+            if (u.getName().equals(username))
                 if (u.passHash.equals(hashPassword(password))) {
                     System.out.println("Logged in successfully");
+                    activeUser = u;
                     return true;
                 } else {
                     System.out.println("Incorrect password");
@@ -84,17 +110,17 @@ public class Database {
     }
 
     // method to check if auth code is valid
-    public boolean validateAuthCode(String code) {
+    public Instructor validateAuthCode(String code) {
         for (User u : gym.getUsers())
             if (u instanceof Instructor && ((Instructor) u).getAuthCode() != null)
                 if (((Instructor) u).getAuthCode().equals(code)) {
                     System.out.println("Authentication code is valid");
-                    return true;
+                    return (Instructor)u;
                 }
 
 
         System.out.println("Authentication code is not valid");
-        return false;
+        return null;
     }
 
     private String hashPassword(String password) {

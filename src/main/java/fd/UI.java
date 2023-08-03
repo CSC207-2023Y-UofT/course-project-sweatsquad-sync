@@ -5,7 +5,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
+import ebr.*;
 
 public class UI extends JFrame implements ActionListener {
 
@@ -14,13 +14,15 @@ public class UI extends JFrame implements ActionListener {
     private JButton loginButton, signupButton, registerButton, back2loginBtn;
     private JButton registerTransparentBtn, signupTransparentBtn;
     private JButton returnLoginBtn, authenticateBtn, registerButtonIR;
+    private JButton viewEntireSchedule, enrolBtn, smthBtn, logout, settings;
     private JTextField usernameField, userField, emailField, authField;
     private JTextField firstNameField, lastNameField, firstNameFieldIR;
     private JTextField lastNameFieldIR, emailFieldIR, userFieldIR;
     private JPasswordField passcodeField, passField, confirmPassField;
     private JPasswordField passFieldIR, confirmPassFieldIR;
     private JPanel loginPanel, signupPanel, authCodePanel, instrRegPanel, mainP;
-    private JLabel haveCodeLabel;
+    private JPanel schedulePanel, enrolPanel, smthPanel, settingsPanel;
+    private JLabel haveCodeLabel, welcomeUser, err1, err2, err3, err4, viewType;
     private RoundBtn roundBtn = new RoundBtn();
     private RoundField roundField = new RoundField();
 
@@ -82,7 +84,8 @@ public class UI extends JFrame implements ActionListener {
         loginPanel.add(passwordLabel);
 
         // passcode field
-        passcodeField = roundField.genRoundPasswordField("", 20, "#FFFFFF", false);
+        passcodeField = roundField.genRoundPasswordField("", 20, "#FFFFFF",
+                                                         false);
         passcodeField.setFont(new Font("Arial", Font.PLAIN, 16));
         passcodeField.setBounds(189, 210, 422, 45);
         loginPanel.add(passcodeField);
@@ -217,7 +220,8 @@ public class UI extends JFrame implements ActionListener {
         signupPanel.add(confirmPasswordLabel);
 
         // confirm password field
-        confirmPassField = roundField.genRoundPasswordField("", 20, "#FFFFFF", false);
+        confirmPassField = roundField.genRoundPasswordField("", 20, "#FFFFFF",
+                                                            false);
         confirmPassField.setBounds(413, 384, 198, 45);
         confirmPassField.setFont(new Font("Comfortaa", Font.BOLD, 18));
         signupPanel.add(confirmPassField);
@@ -301,6 +305,30 @@ public class UI extends JFrame implements ActionListener {
         registerTextSU.setBounds(400, 25, 211, 47);
         signupPanel.add(registerTextSU);
 
+        // error messages
+        err1 = new JLabel("");
+        err1.setFont(new Font("Monsterrat", Font.BOLD, 12));
+        err1.setBounds(620, 124, 130, 40);
+        signupPanel.add(err1);
+
+        // error messages
+        err2 = new JLabel("");
+        err2.setFont(new Font("Monsterrat", Font.BOLD, 12));
+        err2.setBounds(620, 211, 150, 40);
+        signupPanel.add(err2);
+
+        // error messages
+        err3 = new JLabel("");
+        err3.setFont(new Font("Monsterrat", Font.BOLD, 12));
+        err3.setBounds(620, 298, 150, 40);
+        signupPanel.add(err3);
+
+        // error messages
+        err4 = new JLabel("");
+        err4.setFont(new Font("Monsterrat", Font.BOLD, 12));
+        err4.setBounds(620, 385, 150, 40);
+        signupPanel.add(err4);
+
         // instructor authenticate code panel
         authCodePanel = new JPanel();
         authCodePanel.setLayout(null);
@@ -364,7 +392,8 @@ public class UI extends JFrame implements ActionListener {
         instrRegPanel.add(firstNameLabelIR);
 
         // first name field
-        firstNameFieldIR = roundField.genRoundTextField("", 20, "#FFFFFF", false);
+        firstNameFieldIR = roundField.genRoundTextField("", 20, "#FFFFFF",
+                                                        false);
         firstNameFieldIR.setBounds(189, 123, 198, 45);
         firstNameFieldIR.setFont(new Font("Comfortaa", Font.BOLD, 18));
         instrRegPanel.add(firstNameFieldIR);
@@ -376,7 +405,8 @@ public class UI extends JFrame implements ActionListener {
         instrRegPanel.add(lastNameLabelIR);
 
         // last name field
-        lastNameFieldIR = roundField.genRoundTextField("", 20, "#FFFFFF", false);
+        lastNameFieldIR = roundField.genRoundTextField("", 20, "#FFFFFF",
+                                                       false);
         lastNameFieldIR.setBounds(413, 123, 198, 45);
         lastNameFieldIR.setFont(new Font("Comfortaa", Font.BOLD, 18));
         instrRegPanel.add(lastNameFieldIR);
@@ -412,7 +442,8 @@ public class UI extends JFrame implements ActionListener {
         instrRegPanel.add(signupPasswordLabelIR);
 
         // password field
-        passFieldIR = roundField.genRoundPasswordField("", 20, "#FFFFFF", false);
+        passFieldIR = roundField.genRoundPasswordField("", 20, "#FFFFFF",
+                                                       false);
         passFieldIR.setBounds(189, 384, 198, 45);
         passFieldIR.setFont(new Font("Comfortaa", Font.BOLD, 18));
         instrRegPanel.add(passFieldIR);
@@ -424,13 +455,15 @@ public class UI extends JFrame implements ActionListener {
         instrRegPanel.add(confirmPasswordLabelIR);
 
         // confirm password field
-        confirmPassFieldIR = roundField.genRoundPasswordField("", 20, "#FFFFFF", false);
+        confirmPassFieldIR = roundField.genRoundPasswordField("", 20, "#FFFFFF",
+                                                              false);
         confirmPassFieldIR.setBounds(413, 384, 198, 45);
         confirmPassFieldIR.setFont(new Font("Comfortaa", Font.BOLD, 18));
         instrRegPanel.add(confirmPassFieldIR);
 
         // register button UPDATED (round button)
-        registerButtonIR = roundBtn.genRoundBtn("Register", 50, "#001561", false);
+        registerButtonIR = roundBtn.genRoundBtn("Register", 50, "#001561",
+                                                false);
         registerButtonIR.setFont(new Font("Monsterrat", Font.BOLD, 13));
         registerButtonIR.setForeground(Color.decode("#FFFFFF"));
         registerButtonIR.setBounds(189, 450, 422, 50);
@@ -439,12 +472,14 @@ public class UI extends JFrame implements ActionListener {
 
         // login indicator bar JLabel
         JLabel regIndicatorIR = new JLabel("");
-        regIndicatorIR.setIcon(new ImageIcon("images/00301-auth-indicator.png"));
+        String tempImg1 = "images/00301-auth-indicator.png";
+        regIndicatorIR.setIcon(new ImageIcon(tempImg1));
         regIndicatorIR.setBounds(189, 65, 422, 9);
         instrRegPanel.add(regIndicatorIR);
 
         // Sign In JLabel
-        JLabel instrRegText = new JLabel("Instructor Registration", SwingConstants.CENTER);
+        JLabel instrRegText = new JLabel("Instructor Registration",
+                                         SwingConstants.CENTER);
         instrRegText.setFont(new Font("Monsterrat", Font.BOLD, 16));
         instrRegText.setForeground(Color.decode("#001561"));
         instrRegText.setBounds(189, 25, 422, 47);
@@ -455,11 +490,121 @@ public class UI extends JFrame implements ActionListener {
         mainP.setLayout(null);
         mainP.setBackground(Color.decode("#DADADA"));
 
+        JLabel dashboardTitle = new JLabel("Dashboard");
+        dashboardTitle.setFont(new Font("Monsterrat", Font.BOLD, 28));
+        dashboardTitle.setForeground(Color.decode("#001561"));
+        dashboardTitle.setBounds(64, 25, 422, 47);
+        mainP.add(dashboardTitle);
+
+        welcomeUser = new JLabel("");
+        welcomeUser.setFont(new Font("Monsterrat", Font.BOLD, 20));
+        welcomeUser.setForeground(Color.decode("#001561"));
+        welcomeUser.setBounds(66, 64, 422, 47);
+        mainP.add(welcomeUser);
+
+        JLabel upcomingC = new JLabel("Upcoming Classes");
+        upcomingC.setFont(new Font("Monsterrat", Font.BOLD, 20));
+        upcomingC.setForeground(Color.decode("#000000"));
+        upcomingC.setBounds(66, 130, 422, 47);
+        mainP.add(upcomingC);
+
+        JLabel upcomingC1 = new JLabel("Class 1 Info");
+        upcomingC1.setFont(new Font("Monsterrat", Font.BOLD, 20));
+        upcomingC1.setForeground(Color.decode("#FFFFFF"));
+        upcomingC1.setBackground(Color.decode("#40508a"));
+        upcomingC1.setOpaque(true);
+        upcomingC1.setBounds(66, 180, 320, 60);
+        mainP.add(upcomingC1);
+
+        JLabel upcomingC2 = new JLabel("Class 2 Info");
+        upcomingC2.setFont(new Font("Monsterrat", Font.BOLD, 20));
+        upcomingC2.setForeground(Color.decode("#FFFFFF"));
+        upcomingC2.setBackground(Color.decode("#40508a"));
+        upcomingC2.setOpaque(true);
+        upcomingC2.setBounds(66, 275, 320, 60);
+        upcomingC2.setOpaque(true);
+        mainP.add(upcomingC2);
+
+        JLabel upcomingC3 = new JLabel("Class 3 Info");
+        upcomingC3.setFont(new Font("Monsterrat", Font.BOLD, 20));
+        upcomingC3.setForeground(Color.decode("#FFFFFF"));
+        upcomingC3.setBackground(Color.decode("#40508a"));
+        upcomingC3.setOpaque(true);
+        upcomingC3.setBounds(66, 370, 320, 60);
+        mainP.add(upcomingC3);
+
+        viewEntireSchedule = roundBtn.genRoundBtn("View Entire Schedule", 30,
+                                                  "#001561", false);
+        viewEntireSchedule.setFont(new Font("Monsterrat", Font.BOLD, 20));
+        viewEntireSchedule.setForeground(Color.decode("#FFFFFF"));
+        viewEntireSchedule.setBounds(66, 445, 320, 40);
+        viewEntireSchedule.addActionListener(this);
+        mainP.add(viewEntireSchedule);
+
+        settings = roundBtn.genRoundBtn("⚙", 30, "#001561", false);
+        settings.setFont(new Font("Monsterrat", Font.BOLD, 24));
+        settings.setForeground(Color.decode("#FFFFFF"));
+        settings.setBounds(608, 12, 48, 32);
+        settings.addActionListener(this);
+        mainP.add(settings);
+
+        viewType = new JLabel("User View");
+        viewType.setFont(new Font("Monsterrat", Font.BOLD, 20));
+        viewType.setForeground(Color.decode("#001561"));
+        viewType.setBounds(670, 16, 150, 26);
+        mainP.add(viewType);
+
+        enrolBtn = roundBtn.genRoundBtn("Enroll in Classes", 30, "#001561",
+                                        false);
+        enrolBtn.setFont(new Font("Monsterrat", Font.BOLD, 23));
+        enrolBtn.setForeground(Color.decode("#FFFFFF"));
+        enrolBtn.setBounds(490, 180, 218, 100);
+        enrolBtn.addActionListener(this);
+        mainP.add(enrolBtn);
+
+        smthBtn = roundBtn.genRoundBtn("Smth", 30, "#001561", false);
+        smthBtn.setFont(new Font("Monsterrat", Font.BOLD, 23));
+        smthBtn.setForeground(Color.decode("#FFFFFF"));
+        smthBtn.setBounds(490, 300, 218, 100);
+        smthBtn.addActionListener(this);
+        mainP.add(smthBtn);
+
+        logout = roundBtn.genRoundBtn("Logout", 30, "#001561", false);
+        logout.setFont(new Font("Monsterrat", Font.BOLD, 23));
+        logout.setForeground(Color.decode("#FFFFFF"));
+        logout.setBounds(490, 420, 218, 64);
+        logout.addActionListener(this);
+        mainP.add(logout);
+
+        // settings panel
+        settingsPanel = new JPanel();
+        settingsPanel.setLayout(null);
+        settingsPanel.setBackground(Color.decode("#DADADA"));
+
+        // Login panel
+        schedulePanel = new JPanel();
+        schedulePanel.setLayout(null);
+        schedulePanel.setBackground(Color.decode("#DADADA"));
+
+        // Login panel
+        enrolPanel = new JPanel();
+        enrolPanel.setLayout(null);
+        enrolPanel.setBackground(Color.decode("#DADADA"));
+
+        // Login panel
+        smthPanel = new JPanel();
+        smthPanel.setLayout(null);
+        smthPanel.setBackground(Color.decode("#DADADA"));
+
         add(loginPanel, "Login"); // adds panel to the card "deck"
         add(signupPanel, "Signup"); // adds panel to the card "deck"
         add(authCodePanel, "AuthCode"); // adds panel to the card "deck"
         add(instrRegPanel, "InstrReg"); // adds panel to the card "deck"
         add(mainP, "main"); // adds panel to the card "deck"
+        add(settingsPanel, "settings"); // adds panel to the card "deck"
+        add(schedulePanel, "schedule"); // adds panel to the card "deck"
+        add(enrolPanel, "enrolment"); // adds panel to the card "deck"
+        add(smthPanel, "something"); // adds panel to the card "deck"
 
         setVisible(true);
     }
@@ -475,13 +620,24 @@ public class UI extends JFrame implements ActionListener {
             // checks if credentials are correct; uses Database.validateLogin
             if(database.validateLogin(username, password)) {
                 System.out.println("Logged in successfully"); // console msg
+                usernameField.setText("");
+                passcodeField.setText("");
+                welcomeUser.setText("Welcome back, " +
+                                    database.activeUser.firstName + "!");
+                if (database.activeUser instanceof Instructor) {
+                    viewType.setText("Instructor View");
+                } else if (database.activeUser instanceof GymAdmin) {
+                    viewType.setText("Admin View");
+                } else {
+                    viewType.setText("User View");
+                }
                 cardLayout.show(getContentPane(), "main");
             } else {
                 System.out.println("Invalid credentials"); // failed console msg
             }
 
         } else if ((e.getSource() == signupButton) ||
-                   (e.getSource() == registerTransparentBtn)) { // signup logic if pressed
+                   (e.getSource() == registerTransparentBtn)) { // signup logic
             cardLayout.show(getContentPane(), "Signup"); // switches to SU panel
             // resets fields (signup screen)
             firstNameField.setText("");
@@ -499,31 +655,50 @@ public class UI extends JFrame implements ActionListener {
             String email = emailField.getText();
             String password = new String(passField.getPassword());
             String confirmPassword = new String(confirmPassField.getPassword());
+            err1.setText("");
+            err2.setText("");
+            err3.setText("");
+            err4.setText("");
 
-            if (username.length() < 3) {
-                System.out.println("Username must be at least " +
-                        "3 characters long");
-                return;
-            }
+            boolean check = true;
 
             if (firstName.isEmpty() || lastName.isEmpty()) {
                 System.out.println("First and last name fields " +
                         "must not be empty");
-                return;
+                err1.setText("<HTML>*Names cannot be<BR> left blank</HTML>");
+                check = false;
             }
 
             if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
                 System.out.println("Invalid email format");
-                return;
+                err2.setText("*Invalid email format");
+                check = false;
             }
 
-            if (!password.equals(confirmPassword)) {
+            if (username.length() < 3) {
+                System.out.println("Username must be at least " +
+                        "3 characters long");
+                err3.setText("<html>*Usernames must be<BR>at least 3 characters"
+                             + "</html>");
+                check = false;
+            }
+
+            if (password.isEmpty()) {
+                System.out.println("*Passwords cannot be left blank");
+                err4.setText("<HTML>*Passwords cannot be<BR>left blank</HTML>");
+                check = false;
+            } else if (!password.equals(confirmPassword)) {
                 System.out.println("Passwords do not match, try again");
+                err4.setText("*Passwords must match");
+                check = false;
+            }
+
+            if (!check) {
                 return;
             }
 
-            if(database.register(firstName, lastName, username,
-                    email, password, 0)) { // checks for uniqueness
+            if(database.registerBasicUser(firstName, lastName, username,
+                    email, password)) { // uniqueness
                 System.out.println("Registered successfully"); // console msg
 
                 // console messages for testing
@@ -538,10 +713,11 @@ public class UI extends JFrame implements ActionListener {
                 passcodeField.setText("");
                 cardLayout.show(getContentPane(), "Login");
             } else {
-                System.out.println("Username already exists"); // F console msg
+                err3.setText("<HTML>*Username already<BR>exists<HTML>");
+                System.out.println("Invalid input"); // F console msg
             }
         } else if ((e.getSource() == back2loginBtn) ||
-                   (e.getSource() == signupTransparentBtn)) { // if back button clicked
+                   (e.getSource() == signupTransparentBtn)) { // if back button
             // clears all the fields
             usernameField.setText("");
             passcodeField.setText("");
@@ -566,7 +742,7 @@ public class UI extends JFrame implements ActionListener {
             cardLayout.show(getContentPane(), "Login");
         } else if (e.getSource() == authenticateBtn) {
             String inputCode = authField.getText(); // get the input from user
-            if(database.validateAuthCode(inputCode)) {
+            if (database.validateAuthCode(inputCode) != null) {
                 System.out.println("Success! Valid code.");
                 authField.setText("");
                 cardLayout.show(getContentPane(), "InstrReg");
@@ -580,47 +756,77 @@ public class UI extends JFrame implements ActionListener {
             String username = userFieldIR.getText();
             String email = emailFieldIR.getText();
             String password = new String(passFieldIR.getPassword());
-            String confirmPassword = new String(confirmPassFieldIR.getPassword());
+            String confirmPass = new String(confirmPassFieldIR.getPassword());
+            err1.setText("");
+            err2.setText("");
+            err3.setText("");
+            err4.setText("");
 
-            if (username.length() < 3) {
-                System.out.println("Username must be at least " +
-                        "3 characters long");
-                return;
-            }
+            boolean check = true;
 
             if (firstName.isEmpty() || lastName.isEmpty()) {
                 System.out.println("First and last name fields " +
                         "must not be empty");
-                return;
+                err1.setText("<HTML>*Names cannot be<BR> left blank</HTML>");
+                check = false;
             }
 
             if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
                 System.out.println("Invalid email format");
-                return;
+                err2.setText("*Invalid email format");
+                check = false;
             }
 
-            if (!password.equals(confirmPassword)) {
+            if (username.length() < 3) {
+                System.out.println("Username must be at least " +
+                        "3 characters long");
+                err3.setText("<html>*Usernames must be<BR>at least 3 " +
+                             "characters</html>");
+                check = false;
+            }
+
+            if (password.isEmpty()) {
+                System.out.println("*Passwords cannot be left blank");
+                err4.setText("<HTML>*Passwords cannot be<BR>left blank</HTML>");
+            } else if (!password.equals(confirmPass)) {
                 System.out.println("Passwords do not match, try again");
+                err4.setText("*Passwords must match");
+                check = false;
+            }
+
+            if (!check) {
                 return;
             }
 
-            if (database.register(firstName, lastName, username,
-                    email, password, 2)) { // checks for uniqueness
-                System.out.println("Instructor registered successfully"); // console msg
+            if (database.claimInstructor(database.validateAuthCode(authField.getText()), firstName, lastName, username,
+                    email, password)) { // uniqueness
+                System.out.println("Instructor registered successfully");
                 // console messages for testing
                 System.out.println("Name: " + firstName + " " + lastName);
                 System.out.println("Username: " + username);
                 System.out.println("Email: " + email);
                 System.out.println("Password: " + password);
-                System.out.println("Confirm Password: " + confirmPassword);
+                System.out.println("Confirm Password: " + confirmPass);
 
                 // Switch the card layout back to the login panel + reset JTFs
                 usernameField.setText("");
                 passcodeField.setText("");
                 cardLayout.show(getContentPane(), "Login");
             } else {
+                err3.setText("<HTML>*Username already<BR>exists<HTML>");
                 System.out.println("Username already exists"); // F console msg
             }
+        } else if (e.getSource() == viewEntireSchedule) {
+            cardLayout.show(getContentPane(), "schedule");
+        } else if (e.getSource() == enrolBtn) {
+            cardLayout.show(getContentPane(), "enrolment");
+        } else if (e.getSource() == smthBtn) {
+            cardLayout.show(getContentPane(), "something");
+        } else if (e.getSource() == settings) {
+            cardLayout.show(getContentPane(), "settings");
+        } else if (e.getSource() == logout) {
+            System.out.println("Logged out successfully");
+            cardLayout.show(getContentPane(), "Login");
         }
     }
 }
