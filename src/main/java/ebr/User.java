@@ -25,6 +25,10 @@ public class User implements Serializable {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     // Enrol (RegisteredUser) or Teach (Instructor) cert check is done in Workout.addUser
     public void addWorkout(Workout w) {
         if (w.addUser(this))
