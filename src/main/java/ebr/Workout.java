@@ -8,7 +8,7 @@ import java.util.*;
 public class Workout implements Serializable {
     public String name;
     public Set<String> requiredCerts;
-    private Set<RegisteredUser> users;
+    private Set<User> users;
 
     enum Weekday {
         Monday, Tuesday, Wednesday, Thursday, Friday
@@ -52,7 +52,7 @@ public class Workout implements Serializable {
         requiredCerts.remove(cert);
     }
 
-    protected boolean addUser(RegisteredUser u) {
+    protected boolean addUser(User u) {
         if (u instanceof Instructor) {
             if (validateCerts(((Instructor)u).certs)) {
                 this.users.add(u);
@@ -66,11 +66,11 @@ public class Workout implements Serializable {
         }
     }
 
-    protected void removeUser(RegisteredUser u) {
+    protected void removeUser(User u) {
         this.users.remove(u);
     }
 
-    public Set<RegisteredUser> getUsers() {
+    public Set<User> getUsers() {
         return Collections.unmodifiableSet(this.users);
     }
 

@@ -5,7 +5,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
+import ebr.*;
 
 public class UI extends JFrame implements ActionListener {
 
@@ -14,15 +14,26 @@ public class UI extends JFrame implements ActionListener {
     private JButton loginButton, signupButton, registerButton, back2loginBtn;
     private JButton registerTransparentBtn, signupTransparentBtn;
     private JButton returnLoginBtn, authenticateBtn, registerButtonIR;
+    private JButton viewEntireSchedule, enrolBtn, logout, settings;
     private JTextField usernameField, userField, emailField, authField;
     private JTextField firstNameField, lastNameField, firstNameFieldIR;
     private JTextField lastNameFieldIR, emailFieldIR, userFieldIR;
     private JPasswordField passcodeField, passField, confirmPassField;
     private JPasswordField passFieldIR, confirmPassFieldIR;
     private JPanel loginPanel, signupPanel, authCodePanel, instrRegPanel, mainP;
-    private JLabel haveCodeLabel;
+    private JPanel schedulePanel, enrolPanel, smthPanel;
+    private JTable enrolTable, scheduleTable;
+    private JPanel userDash, regUserDash, instructorDash, adminDash;
+    private JLabel haveCodeLabel, welcomeUser, err1, err2, err3, err4, viewType;
+    private JLabel dashboardTitle, firstNameLabel, lastNameLabel, emailLabel, signupUsernameLabel, signupPasswordLabel, signUpConfirmLabel, confirmPasswordLabel, regIndicator, signInTextSU, registerTextSU;
+    private JButton viewClassOfferings, dailyWorkoutTips;
+    private JPanel viewOfferingsPanel, workoutTipsPanel, settingsPanel;
+    private JButton back2dash, logout_icon, saveAccountChanges;
+    private JButton addWorkoutBtn;
     private RoundBtn roundBtn = new RoundBtn();
     private RoundField roundField = new RoundField();
+
+    public String activeDash;
 
     // declaring the database instance (database.java)
     private Database database;
@@ -82,7 +93,8 @@ public class UI extends JFrame implements ActionListener {
         loginPanel.add(passwordLabel);
 
         // passcode field
-        passcodeField = roundField.genRoundPasswordField("", 20, "#FFFFFF", false);
+        passcodeField = roundField.genRoundPasswordField("", 20, "#FFFFFF",
+                                                         false);
         passcodeField.setFont(new Font("Arial", Font.PLAIN, 16));
         passcodeField.setBounds(189, 210, 422, 45);
         loginPanel.add(passcodeField);
@@ -151,7 +163,7 @@ public class UI extends JFrame implements ActionListener {
         signupPanel.setBackground(Color.decode("#DADADA"));
 
         // first name label
-        JLabel firstNameLabel = new JLabel("First Name");
+        firstNameLabel = new JLabel("First Name");
         firstNameLabel.setFont(new Font("Monsterrat", Font.BOLD, 15));
         firstNameLabel.setBounds(189, 98, 422, 25);
         signupPanel.add(firstNameLabel);
@@ -163,7 +175,7 @@ public class UI extends JFrame implements ActionListener {
         signupPanel.add(firstNameField);
 
         // last name label
-        JLabel lastNameLabel = new JLabel("Last Name");
+        lastNameLabel = new JLabel("Last Name");
         lastNameLabel.setFont(new Font("Monsterrat", Font.BOLD, 15));
         lastNameLabel.setBounds(413, 98, 422, 25);
         signupPanel.add(lastNameLabel);
@@ -175,7 +187,7 @@ public class UI extends JFrame implements ActionListener {
         signupPanel.add(lastNameField);
 
         // email label
-        JLabel emailLabel = new JLabel("Email");
+        emailLabel = new JLabel("Email");
         emailLabel.setFont(new Font("Monsterrat", Font.BOLD, 15));
         emailLabel.setBounds(189, 185, 422, 25);
         signupPanel.add(emailLabel);
@@ -187,7 +199,7 @@ public class UI extends JFrame implements ActionListener {
         signupPanel.add(emailField);
 
         // username label
-        JLabel signupUsernameLabel = new JLabel("Username");
+        signupUsernameLabel = new JLabel("Username");
         signupUsernameLabel.setFont(new Font("Monsterrat", Font.BOLD, 15));
         signupUsernameLabel.setBounds(189, 272, 422, 25);
         signupPanel.add(signupUsernameLabel);
@@ -199,7 +211,7 @@ public class UI extends JFrame implements ActionListener {
         signupPanel.add(userField);
 
         // password label
-        JLabel signupPasswordLabel = new JLabel("Password");
+        signupPasswordLabel = new JLabel("Password");
         signupPasswordLabel.setFont(new Font("Monsterrat", Font.BOLD, 15));
         signupPasswordLabel.setBounds(189, 359, 422, 25);
         signupPanel.add(signupPasswordLabel);
@@ -211,13 +223,14 @@ public class UI extends JFrame implements ActionListener {
         signupPanel.add(passField);
 
         // confirm password label
-        JLabel confirmPasswordLabel = new JLabel("Password");
+        confirmPasswordLabel = new JLabel("Password");
         confirmPasswordLabel.setFont(new Font("Monsterrat", Font.BOLD, 15));
         confirmPasswordLabel.setBounds(189, 359, 422, 25);
         signupPanel.add(confirmPasswordLabel);
 
         // confirm password field
-        confirmPassField = roundField.genRoundPasswordField("", 20, "#FFFFFF", false);
+        confirmPassField = roundField.genRoundPasswordField("", 20, "#FFFFFF",
+                                                            false);
         confirmPassField.setBounds(413, 384, 198, 45);
         confirmPassField.setFont(new Font("Comfortaa", Font.BOLD, 18));
         signupPanel.add(confirmPassField);
@@ -261,13 +274,13 @@ public class UI extends JFrame implements ActionListener {
         signupPanel.add(haveCodeLabel);
 
         // login indicator bar JLabel
-        JLabel regIndicator = new JLabel("");
+        regIndicator = new JLabel("");
         regIndicator.setIcon(new ImageIcon("images/00201-reg-indicator.png"));
         regIndicator.setBounds(189, 65, 422, 9);
         signupPanel.add(regIndicator);
 
         // Sign In JLabel
-        JLabel signInTextSU = new JLabel("Sign In", SwingConstants.CENTER);
+        signInTextSU = new JLabel("Sign In", SwingConstants.CENTER);
         signInTextSU.setFont(new Font("Monsterrat", Font.BOLD, 14));
         signInTextSU.setForeground(Color.decode("#000000"));
         signInTextSU.setBounds(189, 27, 211, 47);
@@ -295,11 +308,35 @@ public class UI extends JFrame implements ActionListener {
         signupPanel.add(signupTransparentBtn);
 
         // Register JLabel
-        JLabel registerTextSU = new JLabel("Register", SwingConstants.CENTER);
+        registerTextSU = new JLabel("Register", SwingConstants.CENTER);
         registerTextSU.setFont(new Font("Monsterrat", Font.BOLD, 16));
         registerTextSU.setForeground(Color.decode("#001561"));
         registerTextSU.setBounds(400, 25, 211, 47);
         signupPanel.add(registerTextSU);
+
+        // error messages
+        err1 = new JLabel("");
+        err1.setFont(new Font("Monsterrat", Font.BOLD, 12));
+        err1.setBounds(620, 124, 130, 40);
+        signupPanel.add(err1);
+
+        // error messages
+        err2 = new JLabel("");
+        err2.setFont(new Font("Monsterrat", Font.BOLD, 12));
+        err2.setBounds(620, 211, 150, 40);
+        signupPanel.add(err2);
+
+        // error messages
+        err3 = new JLabel("");
+        err3.setFont(new Font("Monsterrat", Font.BOLD, 12));
+        err3.setBounds(620, 298, 150, 40);
+        signupPanel.add(err3);
+
+        // error messages
+        err4 = new JLabel("");
+        err4.setFont(new Font("Monsterrat", Font.BOLD, 12));
+        err4.setBounds(620, 385, 150, 40);
+        signupPanel.add(err4);
 
         // instructor authenticate code panel
         authCodePanel = new JPanel();
@@ -364,7 +401,8 @@ public class UI extends JFrame implements ActionListener {
         instrRegPanel.add(firstNameLabelIR);
 
         // first name field
-        firstNameFieldIR = roundField.genRoundTextField("", 20, "#FFFFFF", false);
+        firstNameFieldIR = roundField.genRoundTextField("", 20, "#FFFFFF",
+                                                        false);
         firstNameFieldIR.setBounds(189, 123, 198, 45);
         firstNameFieldIR.setFont(new Font("Comfortaa", Font.BOLD, 18));
         instrRegPanel.add(firstNameFieldIR);
@@ -376,7 +414,8 @@ public class UI extends JFrame implements ActionListener {
         instrRegPanel.add(lastNameLabelIR);
 
         // last name field
-        lastNameFieldIR = roundField.genRoundTextField("", 20, "#FFFFFF", false);
+        lastNameFieldIR = roundField.genRoundTextField("", 20, "#FFFFFF",
+                                                       false);
         lastNameFieldIR.setBounds(413, 123, 198, 45);
         lastNameFieldIR.setFont(new Font("Comfortaa", Font.BOLD, 18));
         instrRegPanel.add(lastNameFieldIR);
@@ -412,7 +451,8 @@ public class UI extends JFrame implements ActionListener {
         instrRegPanel.add(signupPasswordLabelIR);
 
         // password field
-        passFieldIR = roundField.genRoundPasswordField("", 20, "#FFFFFF", false);
+        passFieldIR = roundField.genRoundPasswordField("", 20, "#FFFFFF",
+                                                       false);
         passFieldIR.setBounds(189, 384, 198, 45);
         passFieldIR.setFont(new Font("Comfortaa", Font.BOLD, 18));
         instrRegPanel.add(passFieldIR);
@@ -424,13 +464,15 @@ public class UI extends JFrame implements ActionListener {
         instrRegPanel.add(confirmPasswordLabelIR);
 
         // confirm password field
-        confirmPassFieldIR = roundField.genRoundPasswordField("", 20, "#FFFFFF", false);
+        confirmPassFieldIR = roundField.genRoundPasswordField("", 20, "#FFFFFF",
+                                                              false);
         confirmPassFieldIR.setBounds(413, 384, 198, 45);
         confirmPassFieldIR.setFont(new Font("Comfortaa", Font.BOLD, 18));
         instrRegPanel.add(confirmPassFieldIR);
 
         // register button UPDATED (round button)
-        registerButtonIR = roundBtn.genRoundBtn("Register", 50, "#001561", false);
+        registerButtonIR = roundBtn.genRoundBtn("Register", 50, "#001561",
+                                                false);
         registerButtonIR.setFont(new Font("Monsterrat", Font.BOLD, 13));
         registerButtonIR.setForeground(Color.decode("#FFFFFF"));
         registerButtonIR.setBounds(189, 450, 422, 50);
@@ -439,12 +481,14 @@ public class UI extends JFrame implements ActionListener {
 
         // login indicator bar JLabel
         JLabel regIndicatorIR = new JLabel("");
-        regIndicatorIR.setIcon(new ImageIcon("images/00301-auth-indicator.png"));
+        String tempImg1 = "images/00301-auth-indicator.png";
+        regIndicatorIR.setIcon(new ImageIcon(tempImg1));
         regIndicatorIR.setBounds(189, 65, 422, 9);
         instrRegPanel.add(regIndicatorIR);
 
         // Sign In JLabel
-        JLabel instrRegText = new JLabel("Instructor Registration", SwingConstants.CENTER);
+        JLabel instrRegText = new JLabel("Instructor Registration",
+                                         SwingConstants.CENTER);
         instrRegText.setFont(new Font("Monsterrat", Font.BOLD, 16));
         instrRegText.setForeground(Color.decode("#001561"));
         instrRegText.setBounds(189, 25, 422, 47);
@@ -455,11 +499,187 @@ public class UI extends JFrame implements ActionListener {
         mainP.setLayout(null);
         mainP.setBackground(Color.decode("#DADADA"));
 
+        // main logged-in view panel
+        userDash = new JPanel();
+        userDash.setLayout(null);
+        userDash.setBackground(Color.decode("#DADADA"));
+
+        dashboardTitle = new JLabel("Dashboard");
+        dashboardTitle.setFont(new Font("Monsterrat", Font.BOLD, 28));
+        dashboardTitle.setForeground(Color.decode("#001561"));
+        dashboardTitle.setBounds(64, 25, 422, 47);
+        userDash.add(dashboardTitle);
+
+        welcomeUser = new JLabel("");
+        welcomeUser.setFont(new Font("Monsterrat", Font.BOLD, 20));
+        welcomeUser.setForeground(Color.decode("#001561"));
+        welcomeUser.setBounds(66, 64, 422, 47);
+        userDash.add(welcomeUser);
+
+        logout_icon = new JButton();
+        logout_icon.setBounds(620, 15, 40, 30);
+        logout_icon.setBorderPainted(false); // Hide the button border
+        logout_icon.setFocusPainted(false); // Remove the focus indication
+        logout_icon.setContentAreaFilled(false);
+        logout_icon.setIcon(new ImageIcon("images/logout_icon.png"));
+        logout_icon.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                setCursor(Cursor.getDefaultCursor());
+            }
+        });
+        logout_icon.addActionListener(this);
+        userDash.add(logout_icon);
+
+        logout = roundBtn.genRoundBtn("", 23, "#001561", false);
+        logout.setFont(new Font("Monsterrat", Font.BOLD, 19));
+        logout.setForeground(Color.decode("#FFFFFF"));
+        logout.setBounds(620, 15, 40, 30);
+        userDash.add(logout); // just the background -for the overridden paint
+
+        viewType = new JLabel("");
+        viewType.setFont(new Font("Monsterrat", Font.BOLD, 20));
+        viewType.setForeground(Color.decode("#001561"));
+        viewType.setBounds(670, 16, 150, 26);
+        userDash.add(viewType);
+
+        viewClassOfferings = roundBtn.genRoundBtn("View Class Offerings", 30, "#001561", false);
+        viewClassOfferings.setFont(new Font("Monsterrat", Font.BOLD, 20));
+        viewClassOfferings.setForeground(Color.decode("#FFFFFF"));
+        viewClassOfferings.setBounds(174, 130, 452, 60);
+        viewClassOfferings.addActionListener(this);
+        userDash.add(viewClassOfferings);
+
+        viewOfferingsPanel = new JPanel();
+        viewOfferingsPanel.setLayout(null);
+        viewOfferingsPanel.setBackground(Color.decode("#DADADA"));
+
+        back2dash = roundBtn.genRoundBtn("Back", 30, "#001561", false);
+        back2dash.setFont(new Font("Monsterrat", Font.BOLD, 20));
+        back2dash.setForeground(Color.decode("#FFFFFF"));
+        back2dash.setBounds(592, 478, 138, 68);
+        back2dash.addActionListener(this);
+        viewOfferingsPanel.add(back2dash);
+
+        dailyWorkoutTips = roundBtn.genRoundBtn("Daily Workout Tips", 30, "#001561", false);
+        dailyWorkoutTips.setFont(new Font("Monsterrat", Font.BOLD, 20));
+        dailyWorkoutTips.setForeground(Color.decode("#FFFFFF"));
+        dailyWorkoutTips.setBounds(174, 230, 452, 60);
+        dailyWorkoutTips.addActionListener(this);
+        userDash.add(dailyWorkoutTips);
+
+        workoutTipsPanel = new JPanel();
+        workoutTipsPanel.setLayout(null);
+        workoutTipsPanel.setBackground(Color.decode("#DADADA"));
+
+        settings = roundBtn.genRoundBtn("Account Settings ⚙", 30, "#001561", false);
+        settings.setFont(new Font("Monsterrat", Font.BOLD, 20));
+        settings.setForeground(Color.decode("#FFFFFF"));
+        settings.setBounds(174, 330, 452, 60);
+        settings.addActionListener(this);
+        userDash.add(settings);
+
+        settingsPanel = new JPanel();
+        settingsPanel.setLayout(null);
+        settingsPanel.setBackground(Color.decode("#DADADA"));
+
+        saveAccountChanges = roundBtn.genRoundBtn("Save Changes", 50, "#001561", false);
+        saveAccountChanges.setFont(new Font("Monsterrat", Font.BOLD, 13));
+        saveAccountChanges.setForeground(Color.decode("#FFFFFF"));
+        saveAccountChanges.setBounds(189, 450, 422, 50);
+        saveAccountChanges.addActionListener(this);
+        settingsPanel.add(saveAccountChanges);
+
+        // main logged-in view panel
+        instructorDash = new JPanel();
+        instructorDash.setLayout(null);
+        instructorDash.setBackground(Color.decode("#DADADA"));
+
+        JLabel upcomingC = new JLabel("Upcoming Classes");
+        upcomingC.setFont(new Font("Monsterrat", Font.BOLD, 20));
+        upcomingC.setForeground(Color.decode("#000000"));
+        upcomingC.setBounds(66, 130, 422, 47);
+        instructorDash.add(upcomingC);
+
+        JLabel upcomingC1 = new JLabel("<html><b>14:00</b><BR><BR>16:00</html>");
+        upcomingC1.setFont(new Font("Monsterrat", Font.PLAIN, 12));
+        upcomingC1.setForeground(Color.decode("#FFFFFF"));
+        upcomingC1.setBackground(Color.decode("#40508a"));
+        upcomingC1.setOpaque(true);
+        upcomingC1.setBounds(66, 180, 320, 60);
+        instructorDash.add(upcomingC1);
+
+        JLabel upcomingC2 = new JLabel("Class 2 Info");
+        upcomingC2.setFont(new Font("Monsterrat", Font.PLAIN, 16));
+        upcomingC2.setForeground(Color.decode("#FFFFFF"));
+        upcomingC2.setBackground(Color.decode("#40508a"));
+        upcomingC2.setOpaque(true);
+        upcomingC2.setBounds(66, 275, 320, 60);
+        upcomingC2.setOpaque(true);
+        instructorDash.add(upcomingC2);
+
+        JLabel upcomingC3 = new JLabel("Class 3 Info");
+        upcomingC3.setFont(new Font("Monsterrat", Font.PLAIN, 16));
+        upcomingC3.setForeground(Color.decode("#FFFFFF"));
+        upcomingC3.setBackground(Color.decode("#40508a"));
+        upcomingC3.setOpaque(true);
+        upcomingC3.setBounds(66, 370, 320, 60);
+        instructorDash.add(upcomingC3);
+
+        viewEntireSchedule = roundBtn.genRoundBtn("View Entire Schedule", 30,
+                                                  "#001561", false);
+        viewEntireSchedule.setFont(new Font("Monsterrat", Font.BOLD, 20));
+        viewEntireSchedule.setForeground(Color.decode("#FFFFFF"));
+        viewEntireSchedule.setBounds(66, 445, 320, 40);
+        viewEntireSchedule.addActionListener(this);
+        instructorDash.add(viewEntireSchedule);
+
+        // Login panel
+        schedulePanel = new JPanel();
+        schedulePanel.setLayout(null);
+        schedulePanel.setBackground(Color.decode("#DADADA"));
+
+        enrolBtn = roundBtn.genRoundBtn("Manage Classes", 30, "#001561", false);
+        enrolBtn.setFont(new Font("Monsterrat", Font.BOLD, 23));
+        enrolBtn.setForeground(Color.decode("#FFFFFF"));
+        enrolBtn.setBounds(490, 180, 218, 75);
+        enrolBtn.addActionListener(this);
+        instructorDash.add(enrolBtn);
+
+        // Login panel
+        enrolPanel = new JPanel();
+        enrolPanel.setLayout(null);
+        enrolPanel.setBackground(Color.decode("#DADADA"));
+
+        addWorkoutBtn = new JButton("Add Workout");
+        addWorkoutBtn.setBounds(0, 0, 211, 47);
+        addWorkoutBtn.addActionListener(this);
+        enrolPanel.add(addWorkoutBtn);
+
+        // Login panel
+        smthPanel = new JPanel();
+        smthPanel.setLayout(null);
+        smthPanel.setBackground(Color.decode("#DADADA"));
+
         add(loginPanel, "Login"); // adds panel to the card "deck"
         add(signupPanel, "Signup"); // adds panel to the card "deck"
         add(authCodePanel, "AuthCode"); // adds panel to the card "deck"
         add(instrRegPanel, "InstrReg"); // adds panel to the card "deck"
-        add(mainP, "main"); // adds panel to the card "deck"
+        add(userDash, "User Dashboard"); // adds panel to the card "deck"
+        add(viewOfferingsPanel, "Offerings"); // adds panel to the card "deck"
+        add(workoutTipsPanel, "Daily Workout Tips"); // adds panel to card deck
+        add(instructorDash, "Instructor Dashboard"); // adds panel to card deck
+        add(settingsPanel, "Account Settings"); // adds panel to the card "deck"
+        add(schedulePanel, "Schedule"); // adds panel to the card "deck"
+        add(enrolPanel, "Enrolment"); // adds panel to the card "deck"
+
+        add(mainP, "main"); // adds panel to the card "deck" todo deprecated
+        add(smthPanel, "something"); // adds panel to the card "deck"
 
         setVisible(true);
     }
@@ -469,19 +689,58 @@ public class UI extends JFrame implements ActionListener {
         if (e.getSource() == loginButton) { // checks 4 loginButton; login logic
 
             // fetches username + passcode from JTextField components
-            String username = usernameField.getText();
+            String username = usernameField.getText().trim();
+            usernameField.setText(username);
             String password = new String(passcodeField.getPassword());
 
             // checks if credentials are correct; uses Database.validateLogin
-            if(database.validateLogin(username, password)) {
+            if (database.validateLogin(username, password)) {
                 System.out.println("Logged in successfully"); // console msg
-                cardLayout.show(getContentPane(), "main");
+                usernameField.setText("");
+                passcodeField.setText("");
+                welcomeUser.setText("Welcome back, " +
+                                    database.activeUser.firstName + "!");
+                if (database.activeUser instanceof Instructor) {
+                    viewType.setText("Instructor View");
+                    instructorDash.add(viewType);
+                    viewType.setBounds(615, 16, 160, 26);
+                    instructorDash.add(welcomeUser);
+                    instructorDash.add(dashboardTitle);
+                    instructorDash.add(logout_icon);
+                    logout_icon.setBounds(565, 15, 40, 30);
+                    instructorDash.add(logout);
+                    logout.setBounds(565, 15, 40, 30);
+                    instructorDash.add(dailyWorkoutTips);
+                    dailyWorkoutTips.setBounds(490, 295, 218, 75);
+                    instructorDash.add(settings);
+                    settings.setBounds(490, 410, 218, 75);
+                    activeDash = "Instructor Dashboard";
+                } else if (database.activeUser instanceof GymAdmin) {
+                    viewType.setText("Admin View");
+                    activeDash = "Admin Dashboard";
+                } else if (database.activeUser instanceof GymAdmin) {
+                    viewType.setText("Admin View");
+                    activeDash = "Admin Dashboard";
+                } else {
+                    viewType.setText("User View");
+                    userDash.add(viewType);
+                    userDash.add(welcomeUser);
+                    userDash.add(dashboardTitle);
+                    userDash.add(logout);
+                    userDash.add(dailyWorkoutTips);
+                    dailyWorkoutTips.setBounds(174, 230, 452, 60);
+                    userDash.add(settings);
+                    settings.setBounds(174, 330, 452, 60);
+                    activeDash = "User Dashboard";
+                }
+                cardLayout.show(getContentPane(), activeDash);
+
             } else {
                 System.out.println("Invalid credentials"); // failed console msg
             }
 
         } else if ((e.getSource() == signupButton) ||
-                   (e.getSource() == registerTransparentBtn)) { // signup logic if pressed
+                   (e.getSource() == registerTransparentBtn)) { // signup logic
             cardLayout.show(getContentPane(), "Signup"); // switches to SU panel
             // resets fields (signup screen)
             firstNameField.setText("");
@@ -493,37 +752,58 @@ public class UI extends JFrame implements ActionListener {
 
         } else if (e.getSource() == registerButton) { // register logic
             // gets text from respective JTextField components
-            String firstName = firstNameField.getText();
-            String lastName = lastNameField.getText();
-            String username = userField.getText();
-            String email = emailField.getText();
+            String firstName = capitalizeRemoveTrailingSpaces(firstNameField.getText());
+            String lastName = capitalizeRemoveTrailingSpaces(lastNameField.getText());
+            String username = userField.getText().trim();
+            userField.setText(username);
+            String email = emailField.getText().trim();
+            emailField.setText(email);
             String password = new String(passField.getPassword());
             String confirmPassword = new String(confirmPassField.getPassword());
+            err1.setText("");
+            err2.setText("");
+            err3.setText("");
+            err4.setText("");
 
-            if (username.length() < 3) {
-                System.out.println("Username must be at least " +
-                        "3 characters long");
-                return;
-            }
+            boolean check = true;
 
             if (firstName.isEmpty() || lastName.isEmpty()) {
                 System.out.println("First and last name fields " +
                         "must not be empty");
-                return;
+                err1.setText("<HTML>*Names cannot be<BR> left blank</HTML>");
+                check = false;
             }
 
             if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
                 System.out.println("Invalid email format");
-                return;
+                err2.setText("*Invalid email format");
+                check = false;
             }
 
-            if (!password.equals(confirmPassword)) {
+            if (username.length() < 3) {
+                System.out.println("Username must be at least " +
+                        "3 characters long");
+                err3.setText("<html>*Usernames must be<BR>at least 3 characters"
+                             + "</html>");
+                check = false;
+            }
+
+            if (password.isEmpty()) {
+                System.out.println("*Passwords cannot be left blank");
+                err4.setText("<HTML>*Passwords cannot be<BR>left blank</HTML>");
+                check = false;
+            } else if (!password.equals(confirmPassword)) {
                 System.out.println("Passwords do not match, try again");
+                err4.setText("*Passwords must match");
+                check = false;
+            }
+
+            if (!check) {
                 return;
             }
 
-            if(database.register(firstName, lastName, username,
-                    email, password, 0)) { // checks for uniqueness
+            if(database.registerBasicUser(firstName, lastName, username,
+                    email, password)) { // uniqueness
                 System.out.println("Registered successfully"); // console msg
 
                 // console messages for testing
@@ -538,10 +818,11 @@ public class UI extends JFrame implements ActionListener {
                 passcodeField.setText("");
                 cardLayout.show(getContentPane(), "Login");
             } else {
-                System.out.println("Username already exists"); // F console msg
+                err3.setText("<HTML>*Username already<BR>exists<HTML>");
+                System.out.println("Invalid input"); // F console msg
             }
         } else if ((e.getSource() == back2loginBtn) ||
-                   (e.getSource() == signupTransparentBtn)) { // if back button clicked
+                   (e.getSource() == signupTransparentBtn)) { // if back button
             // clears all the fields
             usernameField.setText("");
             passcodeField.setText("");
@@ -566,61 +847,224 @@ public class UI extends JFrame implements ActionListener {
             cardLayout.show(getContentPane(), "Login");
         } else if (e.getSource() == authenticateBtn) {
             String inputCode = authField.getText(); // get the input from user
-            if(database.validateAuthCode(inputCode)) {
+            if (database.validateAuthCode(inputCode) != null) {
                 System.out.println("Success! Valid code.");
-                authField.setText("");
                 cardLayout.show(getContentPane(), "InstrReg");
             } else {
                 System.out.println("Failure. Invalid code.");
             }
         } else if (e.getSource() == registerButtonIR) {
             // gets text from respective JTextField components
-            String firstName = firstNameFieldIR.getText();
-            String lastName = lastNameFieldIR.getText();
-            String username = userFieldIR.getText();
-            String email = emailFieldIR.getText();
+            String firstName = capitalizeRemoveTrailingSpaces(firstNameFieldIR.getText());
+            String lastName = capitalizeRemoveTrailingSpaces(lastNameFieldIR.getText());
+            String username = userFieldIR.getText().trim();
+            userFieldIR.setText(username);
+            String email = emailFieldIR.getText().trim();
+            emailFieldIR.setText(email);
             String password = new String(passFieldIR.getPassword());
-            String confirmPassword = new String(confirmPassFieldIR.getPassword());
+            String confirmPass = new String(confirmPassFieldIR.getPassword());
+            err1.setText("");
+            err2.setText("");
+            err3.setText("");
+            err4.setText("");
 
-            if (username.length() < 3) {
-                System.out.println("Username must be at least " +
-                        "3 characters long");
-                return;
-            }
+            boolean check = true;
 
             if (firstName.isEmpty() || lastName.isEmpty()) {
                 System.out.println("First and last name fields " +
                         "must not be empty");
-                return;
+                err1.setText("<HTML>*Names cannot be<BR> left blank</HTML>");
+                check = false;
             }
 
             if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
                 System.out.println("Invalid email format");
-                return;
+                err2.setText("*Invalid email format");
+                check = false;
             }
 
-            if (!password.equals(confirmPassword)) {
+            if (username.length() < 3) {
+                System.out.println("Username must be at least " +
+                        "3 characters long");
+                err3.setText("<html>*Usernames must be<BR>at least 3 " +
+                             "characters</html>");
+                check = false;
+            }
+
+            if (password.isEmpty()) {
+                System.out.println("*Passwords cannot be left blank");
+                err4.setText("<HTML>*Passwords cannot be<BR>left blank</HTML>");
+            } else if (!password.equals(confirmPass)) {
                 System.out.println("Passwords do not match, try again");
+                err4.setText("*Passwords must match");
+                check = false;
+            }
+
+            if (!check) {
                 return;
             }
 
-            if (database.register(firstName, lastName, username,
-                    email, password, 2)) { // checks for uniqueness
-                System.out.println("Instructor registered successfully"); // console msg
+
+
+            if (database.claimInstructor(database.validateAuthCode(authField.getText()), firstName, lastName, username,
+                    email, password)) { // uniqueness
+                authField.setText("");
+                System.out.println("Instructor registered successfully");
                 // console messages for testing
                 System.out.println("Name: " + firstName + " " + lastName);
                 System.out.println("Username: " + username);
                 System.out.println("Email: " + email);
                 System.out.println("Password: " + password);
-                System.out.println("Confirm Password: " + confirmPassword);
+                System.out.println("Confirm Password: " + confirmPass);
 
                 // Switch the card layout back to the login panel + reset JTFs
                 usernameField.setText("");
                 passcodeField.setText("");
                 cardLayout.show(getContentPane(), "Login");
             } else {
+                err3.setText("<HTML>*Username already<BR>exists<HTML>");
                 System.out.println("Username already exists"); // F console msg
             }
+        } else if (e.getSource() == viewClassOfferings) {
+            viewOfferingsPanel.add(back2dash);
+            cardLayout.show(getContentPane(), "Offerings");
+        } else if (e.getSource() == dailyWorkoutTips) {
+            workoutTipsPanel.add(back2dash);
+            cardLayout.show(getContentPane(), "Daily Workout Tips");
+        } else if (e.getSource() == enrolBtn) {
+            enrolPanel.add(back2dash);
+            Object[][] enrolTableData = new Object[database.gym.getWorkouts().size()][];
+            int _etd_idx = 0;
+            for (Workout c : database.gym.getWorkouts()) {
+                enrolTableData[_etd_idx] = new Object[]{c.name, "", ""};
+                _etd_idx++;
+            }
+            String[] enrolTableCols = {"Workout", "Room", "Time"};
+            enrolTable = new JTable(enrolTableData, enrolTableCols);
+            JScrollPane p = new JScrollPane(enrolTable);
+            p.setBounds(50, 50, 500, 500);
+            enrolPanel.add(p);
+
+            cardLayout.show(getContentPane(), "Enrolment");
+        } else if (e.getSource() == addWorkoutBtn) {
+            String name = JOptionPane.showInputDialog(this,
+                            "Course name?", null);
+            if ((name != null) && (name.length() > 0)) {
+                database.gym.addWorkout(new Workout(name));
+            }
+        } else if (e.getSource() == settings) {
+            settingsPanel.add(firstNameLabel);
+            settingsPanel.add(firstNameField);
+            firstNameField.setText(database.activeUser.firstName); // set FN
+            settingsPanel.add(lastNameLabel);
+            settingsPanel.add(lastNameField);
+            lastNameField.setText(database.activeUser.lastName); // set LN
+            settingsPanel.add(emailLabel);
+            settingsPanel.add(emailField);
+            emailField.setText(database.activeUser.email); // set email
+            settingsPanel.add(signupUsernameLabel);
+            settingsPanel.add(userField);
+            userField.setText(database.activeUser.getName());
+            settingsPanel.add(err1);
+            settingsPanel.add(err2);
+            settingsPanel.add(err3);
+            settingsPanel.add(err4);
+            settingsPanel.add(back2dash);
+            back2dash.setBounds(12, 12, 138, 68);
+            cardLayout.show(getContentPane(), "Account Settings");
+        } else if (e.getSource() == viewEntireSchedule) {
+            schedulePanel.add(back2dash);
+
+            Object[][] scheduleTableData = new Object[10][8];
+            for (int i = 0; i < 10; i++) {
+                scheduleTableData[i][0] = (8 + i) + ":00";
+            }
+            String[] scheduleTableCols = {"", "M", "T", "W", "Tu", "F", "S", "Su"};
+            scheduleTable = new JTable(scheduleTableData, scheduleTableCols);
+            scheduleTable.setRowHeight(50);
+            JScrollPane p = new JScrollPane(scheduleTable);
+            p.setBounds(50, 50, 500, 500);
+            schedulePanel.add(p);
+
+            cardLayout.show(getContentPane(), "Schedule");
+        } else if (e.getSource() == logout_icon) {
+            database.activeUser = null;
+            signupPanel.add(firstNameLabel);
+            signupPanel.add(firstNameField);
+            signupPanel.add(lastNameLabel);
+            signupPanel.add(lastNameField);
+            signupPanel.add(emailLabel);
+            signupPanel.add(emailField);
+            signupPanel.add(signupUsernameLabel);
+            signupPanel.add(userField);
+            signupPanel.add(back2loginBtn);
+            signupPanel.add(registerButton);
+            signupPanel.add(haveCodeLabel);
+            signupPanel.add(regIndicator);
+            signupPanel.add(signInTextSU);
+            signupPanel.add(signupTransparentBtn);
+            signupPanel.add(registerTextSU);
+            signupPanel.add(err1);
+            signupPanel.add(err2);
+            signupPanel.add(err3);
+            signupPanel.add(err4);
+            System.out.println("Logged out successfully");
+            cardLayout.show(getContentPane(), "Login");
+        } else if (e.getSource() == back2dash) {
+            back2dash.setBounds(592, 478, 138, 68);
+            cardLayout.show(getContentPane(), activeDash);
+        } else if (e.getSource() == saveAccountChanges) {
+            String firstName = capitalizeRemoveTrailingSpaces(firstNameField.getText());
+            firstNameField.setText(firstName);
+            String lastName = capitalizeRemoveTrailingSpaces(lastNameField.getText());
+            lastNameField.setText(lastName);
+            String username = userField.getText().trim();
+            String email = emailField.getText().trim();
+            emailField.setText(email);
+            err1.setText("");
+            err2.setText("");
+            err3.setText("");
+            err4.setText("");
+
+            if (!firstName.equals(database.activeUser.firstName)) {
+                if (!firstName.isEmpty()) {
+                    database.activeUser.firstName = firstName;
+                } else {
+                    System.out.println("Name fields cannot be left blank");
+                }
+            }
+
+            if (!lastName.equals(database.activeUser.lastName)) {
+                if (!lastName.isEmpty()) {
+                    database.activeUser.lastName = lastName;
+                } else {
+                    System.out.println("Name fields cannot be left blank");
+                }
+            }
+
+            if (!email.equals(database.activeUser.email)) {
+                if (email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+                    database.activeUser.email = email;
+                } else {
+                    System.out.println("Invalid email format.");
+                }
+            }
+
+            if (!username.equals(database.activeUser.firstName)) {
+                // TODO
+            }
+        }
+    }
+
+    // removes trailing spaces from the front -used for names
+    public static String capitalizeRemoveTrailingSpaces(String input) {
+        String trimmedInput = input.trim(); // removes whitespace on both ends
+
+        // capitalizes the first letter
+        if (!trimmedInput.isEmpty()) { // checks that there is a first letter
+            return Character.toUpperCase(trimmedInput.charAt(0)) + trimmedInput.substring(1);
+        } else {
+            return ""; // no letters = empty string
         }
     }
 }

@@ -2,11 +2,10 @@ package ebr;
 
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
 
-public class Instructor extends RegisteredUser implements Serializable {
+public class Instructor extends User implements Serializable {
     // N.B. Set code below to null when instructor account is claimed
     private String tempAuth;
     public Set<String> certs;
@@ -27,8 +26,8 @@ public class Instructor extends RegisteredUser implements Serializable {
     public String getAuthCode() {
         return tempAuth;
     }
-    public void claim(String auth, String name, String passHash, String firstName, String lastName, String email) {
-        if (tempAuth != null && tempAuth == auth) {
+    public void claim(String name, String passHash, String firstName, String lastName, String email) {
+        if (tempAuth != null) {
             tempAuth = null;
             this.name = name;
             this.passHash = passHash;
@@ -36,6 +35,11 @@ public class Instructor extends RegisteredUser implements Serializable {
             this.lastName = lastName;
             this.email = email;
         }
+    }
+
+    @Override
+    public String getName() {
+        return this.name == null ? "UNCLAIMED INSTRUCTOR" : this.name;
     }
 
     @Override

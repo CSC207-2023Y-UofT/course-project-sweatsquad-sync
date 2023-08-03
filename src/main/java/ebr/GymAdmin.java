@@ -1,4 +1,4 @@
 package ebr;
 
-public class GymAdmin extends RegisteredUser {
+public class GymAdmin extends User {
 }
