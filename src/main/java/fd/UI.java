@@ -22,12 +22,14 @@ public class UI extends JFrame implements ActionListener {
     private JPasswordField passFieldIR, confirmPassFieldIR;
     private JPanel loginPanel, signupPanel, authCodePanel, instrRegPanel, mainP;
     private JPanel schedulePanel, enrolPanel, smthPanel;
+    private JTable enrolTable, scheduleTable;
     private JPanel userDash, regUserDash, instructorDash, adminDash;
     private JLabel haveCodeLabel, welcomeUser, err1, err2, err3, err4, viewType;
     private JLabel dashboardTitle;
     private JButton viewClassOfferings, dailyWorkoutTips;
     private JPanel viewOfferingsPanel, workoutTipsPanel, settingsPanel;
     private JButton back2dash, logout_icon;
+    private JButton addWorkoutBtn;
     private RoundBtn roundBtn = new RoundBtn();
     private RoundField roundField = new RoundField();
 
@@ -647,6 +649,11 @@ public class UI extends JFrame implements ActionListener {
         enrolPanel.setLayout(null);
         enrolPanel.setBackground(Color.decode("#DADADA"));
 
+        addWorkoutBtn = new JButton("Add Workout");
+        addWorkoutBtn.setBounds(0, 0, 211, 47);
+        addWorkoutBtn.addActionListener(this);
+        enrolPanel.add(addWorkoutBtn);
+
         // Login panel
         smthPanel = new JPanel();
         smthPanel.setLayout(null);
@@ -914,12 +921,42 @@ public class UI extends JFrame implements ActionListener {
             cardLayout.show(getContentPane(), "Daily Workout Tips");
         } else if (e.getSource() == enrolBtn) {
             enrolPanel.add(back2dash);
+            Object[][] enrolTableData = new Object[database.gym.getWorkouts().size()][];
+            int _etd_idx = 0;
+            for (Workout c : database.gym.getWorkouts()) {
+                enrolTableData[_etd_idx] = new Object[]{c.name, "", ""};
+                _etd_idx++;
+            }
+            String[] enrolTableCols = {"Workout", "Room", "Time"};
+            enrolTable = new JTable(enrolTableData, enrolTableCols);
+            JScrollPane p = new JScrollPane(enrolTable);
+            p.setBounds(50, 50, 500, 500);
+            enrolPanel.add(p);
+
             cardLayout.show(getContentPane(), "Enrolment");
+        } else if (e.getSource() == addWorkoutBtn) {
+            String name = JOptionPane.showInputDialog(this,
+                            "Course name?", null);
+            if ((name != null) && (name.length() > 0)) {
+                database.gym.addWorkout(new Workout(name));
+            }
         } else if (e.getSource() == settings) {
             settingsPanel.add(back2dash);
             cardLayout.show(getContentPane(), "Account Settings");
         } else if (e.getSource() == viewEntireSchedule) {
             schedulePanel.add(back2dash);
+
+            Object[][] scheduleTableData = new Object[10][8];
+            for (int i = 0; i < 10; i++) {
+                scheduleTableData[i][0] = (8 + i) + ":00";
+            }
+            String[] scheduleTableCols = {"", "M", "T", "W", "Tu", "F", "S", "Su"};
+            scheduleTable = new JTable(scheduleTableData, scheduleTableCols);
+            scheduleTable.setRowHeight(50);
+            JScrollPane p = new JScrollPane(scheduleTable);
+            p.setBounds(50, 50, 500, 500);
+            schedulePanel.add(p);
+
             cardLayout.show(getContentPane(), "Schedule");
         } else if (e.getSource() == logout_icon) {
             database.activeUser = null;
