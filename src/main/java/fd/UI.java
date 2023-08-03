@@ -25,10 +25,10 @@ public class UI extends JFrame implements ActionListener {
     private JTable enrolTable, scheduleTable;
     private JPanel userDash, regUserDash, instructorDash, adminDash;
     private JLabel haveCodeLabel, welcomeUser, err1, err2, err3, err4, viewType;
-    private JLabel dashboardTitle;
+    private JLabel dashboardTitle, firstNameLabel, lastNameLabel, emailLabel, signupUsernameLabel, signupPasswordLabel, signUpConfirmLabel, confirmPasswordLabel, regIndicator, signInTextSU, registerTextSU;
     private JButton viewClassOfferings, dailyWorkoutTips;
     private JPanel viewOfferingsPanel, workoutTipsPanel, settingsPanel;
-    private JButton back2dash, logout_icon;
+    private JButton back2dash, logout_icon, saveAccountChanges;
     private JButton addWorkoutBtn;
     private RoundBtn roundBtn = new RoundBtn();
     private RoundField roundField = new RoundField();
@@ -163,7 +163,7 @@ public class UI extends JFrame implements ActionListener {
         signupPanel.setBackground(Color.decode("#DADADA"));
 
         // first name label
-        JLabel firstNameLabel = new JLabel("First Name");
+        firstNameLabel = new JLabel("First Name");
         firstNameLabel.setFont(new Font("Monsterrat", Font.BOLD, 15));
         firstNameLabel.setBounds(189, 98, 422, 25);
         signupPanel.add(firstNameLabel);
@@ -175,7 +175,7 @@ public class UI extends JFrame implements ActionListener {
         signupPanel.add(firstNameField);
 
         // last name label
-        JLabel lastNameLabel = new JLabel("Last Name");
+        lastNameLabel = new JLabel("Last Name");
         lastNameLabel.setFont(new Font("Monsterrat", Font.BOLD, 15));
         lastNameLabel.setBounds(413, 98, 422, 25);
         signupPanel.add(lastNameLabel);
@@ -187,7 +187,7 @@ public class UI extends JFrame implements ActionListener {
         signupPanel.add(lastNameField);
 
         // email label
-        JLabel emailLabel = new JLabel("Email");
+        emailLabel = new JLabel("Email");
         emailLabel.setFont(new Font("Monsterrat", Font.BOLD, 15));
         emailLabel.setBounds(189, 185, 422, 25);
         signupPanel.add(emailLabel);
@@ -199,7 +199,7 @@ public class UI extends JFrame implements ActionListener {
         signupPanel.add(emailField);
 
         // username label
-        JLabel signupUsernameLabel = new JLabel("Username");
+        signupUsernameLabel = new JLabel("Username");
         signupUsernameLabel.setFont(new Font("Monsterrat", Font.BOLD, 15));
         signupUsernameLabel.setBounds(189, 272, 422, 25);
         signupPanel.add(signupUsernameLabel);
@@ -211,7 +211,7 @@ public class UI extends JFrame implements ActionListener {
         signupPanel.add(userField);
 
         // password label
-        JLabel signupPasswordLabel = new JLabel("Password");
+        signupPasswordLabel = new JLabel("Password");
         signupPasswordLabel.setFont(new Font("Monsterrat", Font.BOLD, 15));
         signupPasswordLabel.setBounds(189, 359, 422, 25);
         signupPanel.add(signupPasswordLabel);
@@ -223,7 +223,7 @@ public class UI extends JFrame implements ActionListener {
         signupPanel.add(passField);
 
         // confirm password label
-        JLabel confirmPasswordLabel = new JLabel("Password");
+        confirmPasswordLabel = new JLabel("Password");
         confirmPasswordLabel.setFont(new Font("Monsterrat", Font.BOLD, 15));
         confirmPasswordLabel.setBounds(189, 359, 422, 25);
         signupPanel.add(confirmPasswordLabel);
@@ -274,13 +274,13 @@ public class UI extends JFrame implements ActionListener {
         signupPanel.add(haveCodeLabel);
 
         // login indicator bar JLabel
-        JLabel regIndicator = new JLabel("");
+        regIndicator = new JLabel("");
         regIndicator.setIcon(new ImageIcon("images/00201-reg-indicator.png"));
         regIndicator.setBounds(189, 65, 422, 9);
         signupPanel.add(regIndicator);
 
         // Sign In JLabel
-        JLabel signInTextSU = new JLabel("Sign In", SwingConstants.CENTER);
+        signInTextSU = new JLabel("Sign In", SwingConstants.CENTER);
         signInTextSU.setFont(new Font("Monsterrat", Font.BOLD, 14));
         signInTextSU.setForeground(Color.decode("#000000"));
         signInTextSU.setBounds(189, 27, 211, 47);
@@ -308,7 +308,7 @@ public class UI extends JFrame implements ActionListener {
         signupPanel.add(signupTransparentBtn);
 
         // Register JLabel
-        JLabel registerTextSU = new JLabel("Register", SwingConstants.CENTER);
+        registerTextSU = new JLabel("Register", SwingConstants.CENTER);
         registerTextSU.setFont(new Font("Monsterrat", Font.BOLD, 16));
         registerTextSU.setForeground(Color.decode("#001561"));
         registerTextSU.setBounds(400, 25, 211, 47);
@@ -588,6 +588,13 @@ public class UI extends JFrame implements ActionListener {
         settingsPanel.setLayout(null);
         settingsPanel.setBackground(Color.decode("#DADADA"));
 
+        saveAccountChanges = roundBtn.genRoundBtn("Save Changes", 50, "#001561", false);
+        saveAccountChanges.setFont(new Font("Monsterrat", Font.BOLD, 13));
+        saveAccountChanges.setForeground(Color.decode("#FFFFFF"));
+        saveAccountChanges.setBounds(189, 450, 422, 50);
+        saveAccountChanges.addActionListener(this);
+        settingsPanel.add(saveAccountChanges);
+
         // main logged-in view panel
         instructorDash = new JPanel();
         instructorDash.setLayout(null);
@@ -682,11 +689,12 @@ public class UI extends JFrame implements ActionListener {
         if (e.getSource() == loginButton) { // checks 4 loginButton; login logic
 
             // fetches username + passcode from JTextField components
-            String username = usernameField.getText();
+            String username = usernameField.getText().trim();
+            usernameField.setText(username);
             String password = new String(passcodeField.getPassword());
 
             // checks if credentials are correct; uses Database.validateLogin
-            if(database.validateLogin(username, password)) {
+            if (database.validateLogin(username, password)) {
                 System.out.println("Logged in successfully"); // console msg
                 usernameField.setText("");
                 passcodeField.setText("");
@@ -746,8 +754,10 @@ public class UI extends JFrame implements ActionListener {
             // gets text from respective JTextField components
             String firstName = capitalizeRemoveTrailingSpaces(firstNameField.getText());
             String lastName = capitalizeRemoveTrailingSpaces(lastNameField.getText());
-            String username = userField.getText();
-            String email = emailField.getText();
+            String username = userField.getText().trim();
+            userField.setText(username);
+            String email = emailField.getText().trim();
+            emailField.setText(email);
             String password = new String(passField.getPassword());
             String confirmPassword = new String(confirmPassField.getPassword());
             err1.setText("");
@@ -845,10 +855,12 @@ public class UI extends JFrame implements ActionListener {
             }
         } else if (e.getSource() == registerButtonIR) {
             // gets text from respective JTextField components
-            String firstName = firstNameFieldIR.getText();
-            String lastName = lastNameFieldIR.getText();
-            String username = userFieldIR.getText();
-            String email = emailFieldIR.getText();
+            String firstName = capitalizeRemoveTrailingSpaces(firstNameFieldIR.getText());
+            String lastName = capitalizeRemoveTrailingSpaces(lastNameFieldIR.getText());
+            String username = userFieldIR.getText().trim();
+            userFieldIR.setText(username);
+            String email = emailFieldIR.getText().trim();
+            emailFieldIR.setText(email);
             String password = new String(passFieldIR.getPassword());
             String confirmPass = new String(confirmPassFieldIR.getPassword());
             err1.setText("");
@@ -941,7 +953,24 @@ public class UI extends JFrame implements ActionListener {
                 database.gym.addWorkout(new Workout(name));
             }
         } else if (e.getSource() == settings) {
+            settingsPanel.add(firstNameLabel);
+            settingsPanel.add(firstNameField);
+            firstNameField.setText(database.activeUser.firstName); // set FN
+            settingsPanel.add(lastNameLabel);
+            settingsPanel.add(lastNameField);
+            lastNameField.setText(database.activeUser.lastName); // set LN
+            settingsPanel.add(emailLabel);
+            settingsPanel.add(emailField);
+            emailField.setText(database.activeUser.email); // set email
+            settingsPanel.add(signupUsernameLabel);
+            settingsPanel.add(userField);
+            userField.setText(database.activeUser.getName());
+            settingsPanel.add(err1);
+            settingsPanel.add(err2);
+            settingsPanel.add(err3);
+            settingsPanel.add(err4);
             settingsPanel.add(back2dash);
+            back2dash.setBounds(12, 12, 138, 68);
             cardLayout.show(getContentPane(), "Account Settings");
         } else if (e.getSource() == viewEntireSchedule) {
             schedulePanel.add(back2dash);
@@ -960,10 +989,70 @@ public class UI extends JFrame implements ActionListener {
             cardLayout.show(getContentPane(), "Schedule");
         } else if (e.getSource() == logout_icon) {
             database.activeUser = null;
+            signupPanel.add(firstNameLabel);
+            signupPanel.add(firstNameField);
+            signupPanel.add(lastNameLabel);
+            signupPanel.add(lastNameField);
+            signupPanel.add(emailLabel);
+            signupPanel.add(emailField);
+            signupPanel.add(signupUsernameLabel);
+            signupPanel.add(userField);
+            signupPanel.add(back2loginBtn);
+            signupPanel.add(registerButton);
+            signupPanel.add(haveCodeLabel);
+            signupPanel.add(regIndicator);
+            signupPanel.add(signInTextSU);
+            signupPanel.add(signupTransparentBtn);
+            signupPanel.add(registerTextSU);
+            signupPanel.add(err1);
+            signupPanel.add(err2);
+            signupPanel.add(err3);
+            signupPanel.add(err4);
             System.out.println("Logged out successfully");
             cardLayout.show(getContentPane(), "Login");
         } else if (e.getSource() == back2dash) {
+            back2dash.setBounds(592, 478, 138, 68);
             cardLayout.show(getContentPane(), activeDash);
+        } else if (e.getSource() == saveAccountChanges) {
+            String firstName = capitalizeRemoveTrailingSpaces(firstNameField.getText());
+            firstNameField.setText(firstName);
+            String lastName = capitalizeRemoveTrailingSpaces(lastNameField.getText());
+            lastNameField.setText(lastName);
+            String username = userField.getText().trim();
+            String email = emailField.getText().trim();
+            emailField.setText(email);
+            err1.setText("");
+            err2.setText("");
+            err3.setText("");
+            err4.setText("");
+
+            if (!firstName.equals(database.activeUser.firstName)) {
+                if (!firstName.isEmpty()) {
+                    database.activeUser.firstName = firstName;
+                } else {
+                    System.out.println("Name fields cannot be left blank");
+                }
+            }
+
+            if (!lastName.equals(database.activeUser.lastName)) {
+                if (!lastName.isEmpty()) {
+                    database.activeUser.lastName = lastName;
+                } else {
+                    System.out.println("Name fields cannot be left blank");
+                }
+            }
+
+            if (!email.equals(database.activeUser.email)) {
+                if (email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+                    database.activeUser.email = email;
+                } else {
+                    System.out.println("Invalid email format.");
+                }
+            }
+
+            if (!username.equals(database.activeUser.firstName)) {
+                // TODO
+            }
         }
     }
 
