@@ -178,7 +178,11 @@ public class Database {
                 u -> new String[]{
                         u.firstName == null ? "N/A" : u.firstName + " " + u.lastName,
                         u.getName(),
-                        u.getClass().getSimpleName()
+                        u.getClass().getSimpleName(),
+                        u instanceof Instructor ?
+                                ((Instructor) u).certs.isEmpty() ? "None" :
+                                        String.join(", ", ((Instructor) u).certs) :
+                                "N/A"
                 }).collect(Collectors.toList());
     }
 

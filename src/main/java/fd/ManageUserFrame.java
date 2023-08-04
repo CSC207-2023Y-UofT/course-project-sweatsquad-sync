@@ -12,7 +12,7 @@ import java.util.List;
 
 public class ManageUserFrame extends JDialog implements ActionListener {
     private AbstractTableModel userTable = new AbstractTableModel() {
-        private final String[] cols = {"Name", "Username", "Type"};
+        private final String[] cols = {"Name", "Username", "Type", "Certs"};
         public int getColumnCount() { return cols.length; }
         public int getRowCount() { return (int)App.db.getCurrentUsers().size(); }
         public String getColumnName(int col) {
@@ -24,7 +24,7 @@ public class ManageUserFrame extends JDialog implements ActionListener {
         }
     };
 
-    private JButton delete, addInstructor;
+    private JButton delete, addInstructor, addCerts;
     JTable table;
     public ManageUserFrame() {
         setTitle("Manage Users"); // window title
@@ -43,7 +43,10 @@ public class ManageUserFrame extends JDialog implements ActionListener {
         table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                delete.setEnabled(table.getSelectedRow() != -1);
+                boolean sel = table.getSelectedRow() != -1;
+                delete.setEnabled(sel);
+                if (sel)
+                    addCerts.setVisible(table.getValueAt(table.getSelectedColumn(), 2).toString().equals("Instructor"));
             }
         });
         JScrollPane p = new JScrollPane(table);
@@ -60,6 +63,12 @@ public class ManageUserFrame extends JDialog implements ActionListener {
         delete.addActionListener(this);
         delete.setEnabled(false);
         this.add(delete);
+
+        addCerts = new JButton("Add Cert");
+        addCerts.setBounds(250, 0, 100, 40);
+        addCerts.addActionListener(this);
+        addCerts.setVisible(false);
+        this.add(addCerts);
     }
 
     public void refreshShow() {
@@ -77,6 +86,13 @@ public class ManageUserFrame extends JDialog implements ActionListener {
         }
         else if (e.getSource() == delete)
             App.db.removeUser(table.getSelectedRow());
+        else if (e.getSource() == addCerts) {
+            String cert = JOptionPane.showInputDialog(this, "Cert name?", null);
+            if ((cert != null) && (!cert.isEmpty()) && !cert.equals("None"))
+                App.db.instructorAddCert(table.getSelectedRow(), cert);
+            else
+                JOptionPane.showMessageDialog(this, "Invalid name!");
+        }
 
         userTable.fireTableDataChanged();
     }
