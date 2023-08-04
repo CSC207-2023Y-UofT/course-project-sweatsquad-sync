@@ -69,7 +69,7 @@ public class Database {
         return true;
     }
 
-    public boolean claimInstructor(Instructor i, String firstName, String lastName, String username,
+    public boolean claimInstructor(String auth, String firstName, String lastName, String username,
                                      String email, String passcode) {
         if (!validateInput(username)) {
             System.out.println("Invalid input");
@@ -83,7 +83,7 @@ public class Database {
             }
         }
 
-        i.claim(username, hashPassword(passcode), firstName, lastName, email);
+        validateAuthCode(auth).claim(username, hashPassword(passcode), firstName, lastName, email);
         return true;
     }
 
