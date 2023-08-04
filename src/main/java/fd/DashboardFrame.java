@@ -1,8 +1,5 @@
 package fd;
 
-import ebr.GymAdmin;
-import ebr.Instructor;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -11,12 +8,13 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class DashboardFrame extends JFrame implements ActionListener {
-    private JButton viewEntireSchedule, enrolBtn, logout, logout_icon, settings, dailyWorkoutTips;
+    private JButton viewEntireSchedule, enrolBtn, logout, logout_icon, settings, dailyWorkoutTips,
+            manageRooms, manageUsers;
     private JLabel welcomeUser, upcomingC, upcomingC1, upcomingC2, upcomingC3;
 
     private CourseFrame courseBrowser = new CourseFrame();
     private ScheduleFrame scheduleView = new ScheduleFrame();
-    private UserInfoFrame userInfoEdit= new UserInfoFrame();
+    private UserInfoFrame userInfoEdit = new UserInfoFrame();
 
     public DashboardFrame() {
         setTitle("Dashboard"); // window title
@@ -110,37 +108,52 @@ public class DashboardFrame extends JFrame implements ActionListener {
         enrolBtn.setForeground(Color.decode("#FFFFFF"));
         enrolBtn.setBounds(490, 180, 218, 75);
         enrolBtn.addActionListener(this);
+
+        manageRooms = UI.genRoundBtn("Manage Rooms", 30, "#001561", false);
+        manageRooms.setFont(UI.MB23);
+        manageRooms.setForeground(Color.decode("#FFFFFF"));
+        manageRooms.setBounds(66, 180, 218, 75);
+        manageRooms.addActionListener(this);
+
+        manageUsers = UI.genRoundBtn("Manage Users", 30, "#001561", false);
+        manageUsers.setFont(UI.MB23);
+        manageUsers.setForeground(Color.decode("#FFFFFF"));
+        manageUsers.setBounds(66, 380, 218, 75);
+        manageUsers.addActionListener(this);
+    }
+
+    public void userRefresh() {
+        this.add(dailyWorkoutTips);
+        this.add(upcomingC);
+        this.add(upcomingC1);
+        this.add(upcomingC2);
+        this.add(upcomingC3);
+        this.add(viewEntireSchedule);
+        this.add(enrolBtn);
+        this.remove(manageRooms);
+        this.remove(manageUsers);
+    }
+
+    public void instructorRefresh() {
+        userRefresh();
+    }
+
+    public void adminRefresh() {
+        this.remove(dailyWorkoutTips);
+        this.remove(upcomingC);
+        this.remove(upcomingC1);
+        this.remove(upcomingC2);
+        this.remove(upcomingC3);
+        this.remove(viewEntireSchedule);
+        this.add(enrolBtn);
+        this.add(manageRooms);
+        this.add(manageUsers);
     }
 
     public void refreshShow() {
-        welcomeUser.setText("Welcome Back, " + App.db.activeUser.firstName + "!");
+        welcomeUser.setText("Welcome Back, " + App.db.getActiveUserFirstName() + "!");
         this.setVisible(true);
-        // TODO refactor this away from fd
-        java.util.function.Function<Void, Void> userView = (Void) -> {
-            this.add(dailyWorkoutTips);
-            this.add(upcomingC);
-            this.add(upcomingC1);
-            this.add(upcomingC2);
-            this.add(upcomingC3);
-            this.add(viewEntireSchedule);
-            this.add(enrolBtn);
-            return null;
-        };
-        if (App.db.activeUser instanceof GymAdmin) {
-            this.remove(dailyWorkoutTips);
-            this.remove(upcomingC);
-            this.remove(upcomingC1);
-            this.remove(upcomingC2);
-            this.remove(upcomingC3);
-            this.remove(viewEntireSchedule);
-            this.remove(enrolBtn);
-        }
-        else if (App.db.activeUser instanceof Instructor) {
-            userView.apply(null);
-        }
-        else {
-            userView.apply(null);
-        }
+        App.db.dashRefresh(this);
     }
 
     @Override
