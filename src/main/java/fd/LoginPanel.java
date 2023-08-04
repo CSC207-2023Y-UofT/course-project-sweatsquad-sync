@@ -51,6 +51,10 @@ public class LoginPanel extends JPanel implements ActionListener {
 
             if (!App.login(username, password))
                 JOptionPane.showMessageDialog(this, "Invalid credentials");
+            else {
+                usernameField.setText("");
+                passcodeField.setText("");
+            }
         }
     }
 }
