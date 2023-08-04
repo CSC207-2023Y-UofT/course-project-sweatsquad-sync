@@ -22,10 +22,8 @@ public class App {
     }
     public static void main(String[] args) {
         entry.setVisible(true);
-        if (db.isEmpty()) {
-            entry.signupCard();
-            entry.signupPanel.setAdminView();
-        }
+        if (db.isEmpty())
+            entry.adminSignupCard();
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             try {
