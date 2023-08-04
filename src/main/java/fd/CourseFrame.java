@@ -60,6 +60,7 @@ public class CourseFrame extends JDialog implements ActionListener {
     }
     public void refreshShow() {
         this.setVisible(true);
+        courseTable.fireTableDataChanged();
     }
 
     @Override

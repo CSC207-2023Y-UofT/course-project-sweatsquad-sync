@@ -64,6 +64,7 @@ public class ManageUserFrame extends JDialog implements ActionListener {
 
     public void refreshShow() {
         this.setVisible(true);
+        userTable.fireTableDataChanged();
     }
 
     @Override
@@ -75,7 +76,7 @@ public class ManageUserFrame extends JDialog implements ActionListener {
             JOptionPane.showMessageDialog(this, "Registration code has been copied to clipboard!");
         }
         else if (e.getSource() == delete)
-            App.db.removeUser(userTable.getValueAt(table.getSelectedRow(), table.getSelectedColumn()).toString());
+            App.db.removeUser(table.getSelectedRow());
 
         userTable.fireTableDataChanged();
     }

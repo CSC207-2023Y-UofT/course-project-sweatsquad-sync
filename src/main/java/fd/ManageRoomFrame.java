@@ -62,6 +62,7 @@ public class ManageRoomFrame extends JDialog implements ActionListener {
 
     public void refreshShow() {
         this.setVisible(true);
+        roomTable.fireTableDataChanged();
     }
 
     @Override
@@ -70,7 +71,7 @@ public class ManageRoomFrame extends JDialog implements ActionListener {
             String name = JOptionPane.showInputDialog(this, "Room name?", null);
             if ((name != null) && (!name.isEmpty()))
                 if (!App.db.addRoom(name))
-                    JOptionPane.showMessageDialog(this, "Room already exists or invalid capacity!");
+                    JOptionPane.showMessageDialog(this, "Room already exists!");
         }
         else if (e.getSource() == removeRoom)
             App.db.removeRoom(roomTable.getValueAt(table.getSelectedRow(), table.getSelectedColumn()).toString());

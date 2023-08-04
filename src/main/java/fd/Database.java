@@ -170,7 +170,7 @@ public class Database {
     }
 
     public List<String> getCurrentRooms() {
-        return gym.getRooms().stream().map(Object::toString).collect(Collectors.toList());
+        return gym.getRooms().stream().map(r -> r.name).collect(Collectors.toList());
     }
 
     public List<String[]> getCurrentUsers() {
@@ -210,12 +210,8 @@ public class Database {
         return i.getAuthCode();
     }
 
-    public void removeUser(String uname) {
-        for (User u : gym.getUsers())
-            if (u.getName().equals(uname)) {
-                gym.removeUser(u);
-                return;
-            }
+    public void removeUser(int i) {
+        gym.removeUser(gym.getUsers().stream().collect(Collectors.toList()).get(i));
     }
 
     public boolean addRoom(String name) {
