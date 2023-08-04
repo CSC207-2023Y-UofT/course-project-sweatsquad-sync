@@ -8,18 +8,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class EntryPointFrame extends JFrame implements ActionListener {
-    private MouseAdapter cursorHover = new MouseAdapter() {
-        @Override
-        public void mouseEntered(MouseEvent e) {
-            setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        }
-
-        @Override
-        public void mouseExited(MouseEvent e) {
-            setCursor(Cursor.getDefaultCursor());
-        }
-    };
-
     private JButton loginTab, signupTab;
     private JLabel signIndicator;
     private CardLayout cardLayout = new CardLayout();
@@ -79,14 +67,12 @@ public class EntryPointFrame extends JFrame implements ActionListener {
         cardLayout.show(cards, "Login");
 
         loginTab.setFocusable(false);
-        loginTab.removeMouseListener(cursorHover);
-        signupTab.setFocusable(true);
-        signupTab.addMouseListener(cursorHover);
-
-        signupTab.setFont(UI.MB14);
-        signupTab.setForeground(Color.decode("#000000"));
         loginTab.setFont(UI.MB16);
         loginTab.setForeground(Color.decode("#001561"));
+
+        signupTab.setFocusable(true);
+        signupTab.setFont(UI.MB14);
+        signupTab.setForeground(Color.decode("#000000"));
 
         signIndicator.setIcon(new ImageIcon("images/00101-sign-indicator.png"));
     }
@@ -94,15 +80,13 @@ public class EntryPointFrame extends JFrame implements ActionListener {
     public void signupCard() {
         cardLayout.show(cards, "Signup");
 
-        signupTab.setFocusable(false);
-        signupTab.removeMouseListener(cursorHover);
         loginTab.setFocusable(true);
-        loginTab.addMouseListener(cursorHover);
-
-        signupTab.setFont(UI.MB16);
-        signupTab.setForeground(Color.decode("#001561"));
         loginTab.setFont(UI.MB14);
         loginTab.setForeground(Color.decode("#000000"));
+
+        signupTab.setFocusable(false);
+        signupTab.setFont(UI.MB16);
+        signupTab.setForeground(Color.decode("#001561"));
 
         signIndicator.setIcon(new ImageIcon("images/00201-reg-indicator.png"));
     }
@@ -110,15 +94,12 @@ public class EntryPointFrame extends JFrame implements ActionListener {
     public void authCodeCard() {
         cardLayout.show(cards, "AuthCode");
 
-        signupTab.setFocusable(true);
-        signupTab.addMouseListener(cursorHover);
         loginTab.setFocusable(true);
-        loginTab.addMouseListener(cursorHover);
-
-        signupTab.setFont(UI.MB14);
-        signupTab.setForeground(Color.decode("#000000"));
         loginTab.setFont(UI.MB14);
         loginTab.setForeground(Color.decode("#000000"));
+        signupTab.setFocusable(true);
+        signupTab.setFont(UI.MB14);
+        signupTab.setForeground(Color.decode("#000000"));
 
         signIndicator.setIcon(new ImageIcon("images/00301-auth-indicator.png"));
     }

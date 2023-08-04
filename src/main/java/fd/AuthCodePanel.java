@@ -26,7 +26,7 @@ class AuthCodePanel extends JPanel implements ActionListener {
         authenticateBtn = UI.genRoundBtn("Authenticate", 50, "#001561", false);
         authenticateBtn.setFont(UI.MB13);
         authenticateBtn.setForeground(Color.decode("#FFFFFF"));
-        authenticateBtn.setBounds(413, 292, 196, 50);
+        authenticateBtn.setBounds(189, 292, 422, 50);
         authenticateBtn.addActionListener(this);
         this.add(authenticateBtn);
     }
