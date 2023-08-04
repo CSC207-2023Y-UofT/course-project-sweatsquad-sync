@@ -9,16 +9,17 @@ public class Workout implements Serializable {
     public String name;
     public Set<String> requiredCerts;
     private Set<User> users;
+    public final int capacity;
 
-    enum Weekday {
+    public enum Weekday {
         Monday, Tuesday, Wednesday, Thursday, Friday
     }
 
     static public class Offering {
-        Weekday day;
-        LocalTime start;
-        Duration duration;
-        Room room;
+        public Weekday day;
+        public LocalTime start;
+        public Duration duration;
+        public Room room;
         public Offering(Weekday day, LocalTime start, Duration duration, Room room) {
             this.day = day;
             this.start = start;
@@ -29,11 +30,12 @@ public class Workout implements Serializable {
 
     public List<Offering> offerings;
 
-    public Workout(String name) {
+    public Workout(String name, int capacity) {
         this.name = name;
         this.requiredCerts = new HashSet<>();
         this.offerings = new ArrayList<>();
         this.users = new HashSet<>();
+        this.capacity = capacity;
     }
 
     public Set<String> getRequiredCerts() {
@@ -52,6 +54,10 @@ public class Workout implements Serializable {
         requiredCerts.remove(cert);
     }
 
+    public int getNonStaffUserCount() {
+        return (int)this.users.stream().filter(a -> a.getClass().equals(User.class)).count();
+    }
+
     protected boolean addUser(User u) {
         if (u instanceof Instructor) {
             if (validateCerts(((Instructor)u).certs)) {
@@ -61,7 +67,8 @@ public class Workout implements Serializable {
             else return false;
         }
         else {
-            this.users.add(u);
+            if (this.getNonStaffUserCount() < capacity)
+                this.users.add(u);
             return true;
         }
     }
