@@ -1,7 +1,4 @@
 package ia;
 
-public class Controller {
-
-
-
+public interface Controller {
 }

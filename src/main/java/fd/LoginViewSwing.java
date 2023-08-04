@@ -1,12 +1,17 @@
 package fd;
 
 // import statements
+import abr.requestAndResponse.authenticationFields.*;
+import ia.LoginFrameController;
+import ia.LoginView;
+
 import java.awt.*;
 import java.awt.event.*;
-import java.io.IOException;
 import javax.swing.*;
 
-public class LoginView extends JFrame implements ActionListener {
+public class LoginViewSwing extends JFrame implements ActionListener, LoginView {
+
+    private LoginFrameController controller;
 
     // declaring UI components / layout
     private CardLayout cardLayout = new CardLayout();
@@ -18,36 +23,18 @@ public class LoginView extends JFrame implements ActionListener {
     private JTextField lastNameFieldIR, emailFieldIR, userFieldIR;
     private JPasswordField passcodeField, passField, confirmPassField;
     private JPasswordField passFieldIR, confirmPassFieldIR;
-    private JPanel loginPanel, signupPanel, authCodePanel, instrRegPanel, mainP;
-    private JLabel haveCodeLabel, welcomeUser;
+    private JPanel loginPanel, signupPanel, authCodePanel, instrRegPanel;
+    private JLabel haveCodeLabel, err1, err2, err3, err4, err5;
     private RoundBtn roundBtn = new RoundBtn();
     private RoundField roundField = new RoundField();
 
-    // declaring the database instance (database.java)
-    private FileDatabase gymDatabase;
-
-    // entry point of the program; creates instance of the UI class
     public static void main(String[] args) {
-        new LoginView();
+        new LoginViewSwing();
     }
 
     // UI constructor - has a database, and covers login/registration
-    public LoginView() {
+    public LoginViewSwing() {
 
-        //init Database instance
-        gymDatabase = new FileDatabase();
-
-        this.addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosing(WindowEvent winEvt) {
-                try {
-                    gymDatabase.save();
-                }
-                catch (IOException e) {
-                    e.printStackTrace();
-                    System.err.println("Failed to write gym!");
-                }
-            }
-        });
 
         // ui 'defaults'
         setTitle("SweatSquad Sync System"); // window title
@@ -122,6 +109,7 @@ public class LoginView extends JFrame implements ActionListener {
         registerTextLI.setForeground(Color.decode("#000000"));
         registerTextLI.setBounds(400, 27, 211, 47);
         loginPanel.add(registerTextLI);
+
 
         // Register Transparent Button
         registerTransparentBtn = new JButton("");
@@ -300,6 +288,30 @@ public class LoginView extends JFrame implements ActionListener {
         registerTextSU.setBounds(400, 25, 211, 47);
         signupPanel.add(registerTextSU);
 
+        // error messages
+        err1 = new JLabel("");
+        err1.setFont(new Font("Monsterrat", Font.BOLD, 12));
+        err1.setBounds(620, 124, 130, 40);
+        signupPanel.add(err1);
+
+        // error messages
+        err2 = new JLabel("");
+        err2.setFont(new Font("Monsterrat", Font.BOLD, 12));
+        err2.setBounds(620, 211, 150, 40);
+        signupPanel.add(err2);
+
+        // error messages
+        err3 = new JLabel("");
+        err3.setFont(new Font("Monsterrat", Font.BOLD, 12));
+        err3.setBounds(620, 298, 150, 40);
+        signupPanel.add(err3);
+
+        // error messages
+        err4 = new JLabel("");
+        err4.setFont(new Font("Monsterrat", Font.BOLD, 12));
+        err4.setBounds(620, 385, 150, 40);
+        signupPanel.add(err4);
+
         // instructor authenticate code panel
         authCodePanel = new JPanel();
         authCodePanel.setLayout(null);
@@ -449,53 +461,28 @@ public class LoginView extends JFrame implements ActionListener {
         instrRegText.setBounds(189, 25, 422, 47);
         instrRegPanel.add(instrRegText);
 
-        // main logged-in view panel
-        mainP = new JPanel();
-        mainP.setLayout(null);
-        mainP.setBackground(Color.decode("#DADADA"));
-
-        welcomeUser = new JLabel("", SwingConstants.CENTER);
-        welcomeUser.setFont(new Font("Monsterrat", Font.BOLD, 16));
-        welcomeUser.setForeground(Color.decode("#001561"));
-        welcomeUser.setBounds(189, 25, 422, 47);
-        mainP.add(welcomeUser);
-
         add(loginPanel, "Login"); // adds panel to the card "deck"
         add(signupPanel, "Signup"); // adds panel to the card "deck"
         add(authCodePanel, "AuthCode"); // adds panel to the card "deck"
         add(instrRegPanel, "InstrReg"); // adds panel to the card "deck"
-        add(mainP, "main"); // adds panel to the card "deck"
 
         setVisible(true);
     }
 
     // button action listener response function
     public void actionPerformed(ActionEvent e) {
+        clearInputs();
         if (e.getSource() == loginButton) { // checks 4 loginButton; login logic
 
             // fetches username + passcode from JTextField components
             String username = usernameField.getText();
             String password = new String(passcodeField.getPassword());
 
-            // checks if credentials are correct; uses Database.validateLogin
-            if(gymDatabase.validateLogin(username, password)) {
-                System.out.println("Logged in successfully"); // console msg -  change to JLabel custom
-                welcomeUser.setText("Welcome back, " + gymDatabase.activeUser.firstName + "!");
-                cardLayout.show(getContentPane(), "main");
-            } else {
-                System.out.println("Invalid credentials"); // failed console msg - change to JLabel custom
-            }
+            controller.loginAttempted(username, password);
 
         } else if ((e.getSource() == signupButton) ||
                    (e.getSource() == registerTransparentBtn)) { // signup logic if pressed
-            cardLayout.show(getContentPane(), "Signup"); // switches to SU panel
-            // resets fields (signup screen)
-            firstNameField.setText("");
-            lastNameField.setText("");
-            userField.setText("");
-            emailField.setText("");
-            passField.setText("");
-            confirmPassField.setText("");
+            provideSignup();
 
         } else if (e.getSource() == registerButton) { // register logic
             // gets text from respective JTextField components
@@ -506,85 +493,18 @@ public class LoginView extends JFrame implements ActionListener {
             String password = new String(passField.getPassword());
             String confirmPassword = new String(confirmPassField.getPassword());
 
-            boolean check = true;
+            controller.regularRegistrationAttempted(firstName, lastName, username, email, password, confirmPassword);
 
-            if (firstName.isEmpty() || lastName.isEmpty()) {
-                System.out.println("First and last name fields " +
-                        "must not be empty");
-                check = false;
-            }
-
-            if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
-                System.out.println("Invalid email format");
-                check = false;
-            }
-
-            if (username.length() < 3) {
-                System.out.println("Username must be at least " +
-                        "3 characters long");
-                check = false;
-            }
-
-            if (!password.equals(confirmPassword)) {
-                System.out.println("Passwords do not match, try again");
-                check = false;
-            }
-
-            if (!check) {
-                return;
-            }
-
-            if(gymDatabase.register(firstName, lastName, username,
-                    email, password, 0)) { // checks for uniqueness
-                System.out.println("Registered successfully"); // console msg
-
-                // console messages for testing
-                System.out.println("Name: " + firstName + " " + lastName);
-                System.out.println("Username: " + username);
-                System.out.println("Email: " + email);
-                System.out.println("Password: " + password);
-                System.out.println("Confirm Password: " + confirmPassword);
-
-                // Switch the card layout back to the login panel + reset JTFs
-                usernameField.setText("");
-                passcodeField.setText("");
-                cardLayout.show(getContentPane(), "Login");
-            } else {
-                System.out.println("Username already exists"); // F console msg
-            }
         } else if ((e.getSource() == back2loginBtn) ||
                    (e.getSource() == signupTransparentBtn)) { // if back button clicked
-            // clears all the fields
-            usernameField.setText("");
-            passcodeField.setText("");
-            userField.setText("");
-            emailField.setText("");
-            passField.setText("");
-            confirmPassField.setText("");
 
-            // switches the card layout back to log-in panel
-            cardLayout.show(getContentPane(), "Login");
+            provideLogin();
         } else if (e.getSource() == returnLoginBtn) {
-            // clears all the fields
-            usernameField.setText("");
-            passcodeField.setText("");
-            userField.setText("");
-            emailField.setText("");
-            passField.setText("");
-            confirmPassField.setText("");
-            authField.setText("");
-
-            // switches the card layout back to log-in panel
-            cardLayout.show(getContentPane(), "Login");
+            provideLogin();
         } else if (e.getSource() == authenticateBtn) {
             String inputCode = authField.getText(); // get the input from user
-            if(gymDatabase.validateAuthCode(inputCode)) {
-                System.out.println("Success! Valid code.");
-                authField.setText("");
-                cardLayout.show(getContentPane(), "InstrReg");
-            } else {
-                System.out.println("Failure. Invalid code.");
-            }
+
+            controller.codeActivationAttempted(inputCode);
         } else if (e.getSource() == registerButtonIR) {
             // gets text from respective JTextField components
             String firstName = firstNameFieldIR.getText();
@@ -594,51 +514,109 @@ public class LoginView extends JFrame implements ActionListener {
             String password = new String(passFieldIR.getPassword());
             String confirmPassword = new String(confirmPassFieldIR.getPassword());
 
-            boolean check = true;
-
-            if (firstName.isEmpty() || lastName.isEmpty()) {
-                System.out.println("First and last name fields " +
-                        "must not be empty");
-                check = false;
-            }
-
-            if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
-                System.out.println("Invalid email format");
-                check = false;
-            }
-
-            if (username.length() < 3) {
-                System.out.println("Username must be at least " +
-                        "3 characters long");
-                check = false;
-            }
-
             if (!password.equals(confirmPassword)) {
-                System.out.println("Passwords do not match, try again");
-                check = false;
-            }
-
-            if (!check) {
+                displayInfoMessage("Passwords do not match, try again");
                 return;
             }
+            controller.instructorRegistrationAttempted(firstName, lastName, username, email, password, confirmPassword);
 
-            if (gymDatabase.register(firstName, lastName, username,
-                    email, password, 2)) { // checks for uniqueness
-                System.out.println("Instructor registered successfully"); // console msg to be changed later to JLabel for viewing
-                // console messages for testing
-                System.out.println("Name: " + firstName + " " + lastName);
-                System.out.println("Username: " + username);
-                System.out.println("Email: " + email);
-                System.out.println("Password: " + password);
-                System.out.println("Confirm Password: " + confirmPassword);
-
-                // Switch the card layout back to the login panel + reset JTFs
-                usernameField.setText("");
-                passcodeField.setText("");
-                cardLayout.show(getContentPane(), "Login");
-            } else {
-                System.out.println("Username already exists"); // F console msg to be changed later to JLabel for viewing
-            }
         }
+    }
+
+    @Override
+    public void provideInstrSignup() {
+        clearInputs();
+        cardLayout.show(getContentPane(), "InstrReg");
+    }
+    @Override
+    public void provideSignup() {
+        clearInputs();
+        cardLayout.show(getContentPane(), "Signup");
+    }
+    @Override
+    public void provideInstrAuthentication() {
+        clearInputs();
+        cardLayout.show(getContentPane(), "AuthCode");
+    }
+
+    @Override
+    public void displayFieldError(Field inputField, String message) {
+
+        if (inputField instanceof LoginField lf) {
+            switch (lf) {
+
+                case USERNAME, PASSWORD -> {
+
+                    displayInfoMessage(message);
+
+                }
+            }
+        } else if (inputField instanceof RegistrationField rf) {
+            switch (rf) {
+
+                case USERNAME -> {
+                    err3.setText(formatFieldError(message));
+                }
+                case FIRST_NAME, LAST_NAME -> {
+                    err1.setText(formatFieldError(message));
+                }
+                case EMAIL -> {
+                    err2.setText(formatFieldError(message));
+                } case PASSWORD -> {
+                    err4.setText(formatFieldError(message));
+                }
+            }
+        } else if (inputField instanceof ActivationCodeField) {
+
+            displayInfoMessage(message);
+        }
+
+
+    }
+    private String formatFieldError(String s) {
+        return ("<html>*" + s + "<html>");
+    }
+
+    @Override
+    public void provideLogin() {
+        clearInputs();
+        cardLayout.show(getContentPane(), "Login");
+    }
+
+    @Override
+    public void clearInputs() {
+        SwingUtil.clearPanel(authCodePanel);
+        SwingUtil.clearPanel(loginPanel);
+        SwingUtil.clearPanel(signupPanel);
+        SwingUtil.clearPanel(instrRegPanel);
+        err1.setText("");
+        err2.setText("");
+        err3.setText("");
+        err4.setText("");
+    }
+
+    @Override
+    public void displayInfoMessage(String message) {
+        JOptionPane.showMessageDialog(this, message);
+    }
+
+    @Override
+    public void displayErrorMessage(String message) {
+        JOptionPane.showMessageDialog(this, message, "", JOptionPane.ERROR_MESSAGE);
+    }
+
+    @Override
+    public void setController(LoginFrameController c) {
+        controller = c;
+    }
+
+    @Override
+    public void showView() {
+        setVisible(true);
+    }
+
+    @Override
+    public void hideView() {
+
     }
 }
