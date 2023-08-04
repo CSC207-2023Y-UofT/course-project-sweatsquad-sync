@@ -234,4 +234,12 @@ public class Database {
                 return;
             }
     }
+    public void instructorAddCert(int i, String cert) {
+        ((Instructor)gym.getUsers().stream().collect(Collectors.toList()).get(i)).certs.add(cert);
+    }
+
+    public String[] nextClasses() {
+//    todo    activeUser.getWorkouts().stream().flatMap(w -> w.offerings.stream()).map(o -> o.start);
+        return new String[]{};
+    }
 }

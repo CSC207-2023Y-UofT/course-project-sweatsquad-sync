@@ -9,7 +9,7 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 public class CourseFrame extends JDialog implements ActionListener {
-    private JButton addCourse, editCourse;
+    private JButton addCourse, editCourse, removeCourse, enrolCourse;
     private AbstractTableModel courseTable = new AbstractTableModel() {
         private final String[] enrolTableCols = {"Workout", "Room", "Time", "Instructor", "Status"};
         public int getColumnCount() { return enrolTableCols.length; }
@@ -30,16 +30,24 @@ public class CourseFrame extends JDialog implements ActionListener {
         setLayout(null);
         setModal(true);
 
-        addCourse = new JButton("add");
+        addCourse = new JButton("Add");
         addCourse.setBounds(0, 0, 100, 40);
         addCourse.addActionListener(this);
-        this.add(addCourse);
 
-        editCourse = new JButton("edit");
-        editCourse.setBounds(0, 0, 100, 40);
+        editCourse = new JButton("Edit");
+        editCourse.setBounds(100, 0, 100, 40);
         editCourse.addActionListener(this);
         editCourse.setEnabled(false);
-        this.add(editCourse);
+
+        removeCourse = new JButton("Remove");
+        removeCourse.setBounds(200, 0, 100, 40);
+        removeCourse.addActionListener(this);
+        removeCourse.setEnabled(false);
+
+        enrolCourse = new JButton("Enrol");
+        enrolCourse.setBounds(690, 0, 100, 40);
+        enrolCourse.addActionListener(this);
+        enrolCourse.setVisible(false);
 
         JTable enrolTable = new JTable(courseTable);
         enrolTable.getTableHeader().setResizingAllowed(false);
@@ -50,7 +58,9 @@ public class CourseFrame extends JDialog implements ActionListener {
         enrolTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
+                removeCourse.setEnabled(enrolTable.getSelectedRow() != -1);
                 editCourse.setEnabled(enrolTable.getSelectedRow() != -1);
+                enrolCourse.setVisible(enrolTable.getSelectedRow() != -1);
             }
         });
         JScrollPane p = new JScrollPane(enrolTable);
@@ -61,6 +71,29 @@ public class CourseFrame extends JDialog implements ActionListener {
     public void refreshShow() {
         this.setVisible(true);
         courseTable.fireTableDataChanged();
+    }
+
+    public void userView() {
+        this.add(enrolCourse);
+        enrolCourse.setText("Enrol");
+        this.remove(addCourse);
+        this.remove(editCourse);
+        this.remove(removeCourse);
+    }
+
+    public void instructorView() {
+        this.add(enrolCourse);
+        enrolCourse.setText("Teach");
+        this.add(addCourse);
+        this.add(editCourse);
+        this.remove(removeCourse);
+    }
+
+    public void adminView() {
+        this.remove(enrolCourse);
+        this.add(addCourse);
+        this.add(editCourse);
+        this.add(removeCourse);
     }
 
     @Override
@@ -80,5 +113,6 @@ public class CourseFrame extends JDialog implements ActionListener {
                 }
             }
         }
+        App.dashboard.refreshShow();
     }
 }
