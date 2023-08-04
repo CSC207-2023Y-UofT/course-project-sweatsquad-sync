@@ -15,6 +15,8 @@ public class DashboardFrame extends JFrame implements ActionListener {
     private CourseFrame courseBrowser = new CourseFrame();
     private ScheduleFrame scheduleView = new ScheduleFrame();
     private UserInfoFrame userInfoEdit = new UserInfoFrame();
+    private ManageUserFrame userManager = new ManageUserFrame();
+    private ManageRoomFrame roomManager = new ManageRoomFrame();
 
     public DashboardFrame() {
         setTitle("Dashboard"); // window title
@@ -168,6 +170,10 @@ public class DashboardFrame extends JFrame implements ActionListener {
             scheduleView.refreshShow();
         else if (e.getSource() == logout_icon)
             App.logout();
+        else if (e.getSource() == manageRooms)
+            roomManager.refreshShow();
+        else if (e.getSource() == manageUsers)
+            userManager.refreshShow();
     }
 
 }

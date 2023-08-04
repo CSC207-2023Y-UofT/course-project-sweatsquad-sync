@@ -40,12 +40,6 @@ public class Database {
         ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename));
         Gym g = (Gym)ois.readObject();
         ois.close();
-
-        // todo take out after -admin can add instructor functionality is added
-        Instructor instructor = new Instructor();
-        System.out.println(instructor.getAuthCode());
-        g.addUser(instructor);
-
         return g;
     }
 
@@ -166,7 +160,6 @@ public class Database {
     }
 
     public List<String[]> getCurrentWorkouts() {
-        // TODO
         return gym.getWorkouts().stream().map(w -> new String[]{
                 w.name,
                 w.offerings.stream().map(o -> o.room.name).collect(Collectors.joining(", ")),
@@ -174,6 +167,19 @@ public class Database {
                 w.getUsers().stream().filter(u -> u instanceof Instructor).map(Object::toString).collect(Collectors.joining(", ")),
                 w.getUsers().size() + "/" + w.capacity
         }).collect(Collectors.toList());
+    }
+
+    public List<String> getCurrentRooms() {
+        return gym.getRooms().stream().map(Object::toString).collect(Collectors.toList());
+    }
+
+    public List<String[]> getCurrentUsers() {
+        return gym.getUsers().stream().map(
+                u -> new String[]{
+                        u.firstName + " " + u.lastName,
+                        u.getName(),
+                        u.getClass().toString()
+                }).collect(Collectors.toList());
     }
 
     public boolean addWorkout(String name, int capacity) {
@@ -196,5 +202,36 @@ public class Database {
 
     public boolean isEmpty() {
         return gym.getUsers().isEmpty();
+    }
+
+    public String newInstructor() {
+        Instructor i = new Instructor();
+        gym.addUser(i);
+        return i.getAuthCode();
+    }
+
+    public void removeUser(String uname) {
+        for (User u : gym.getUsers())
+            if (u.getName().equals(uname)) {
+                gym.removeUser(u);
+                return;
+            }
+    }
+
+    public boolean addRoom(String name) {
+        for (Room r : gym.getRooms())
+            if (r.name.equals(name))
+                return false;
+
+        gym.addRoom(new Room(name));
+        return true;
+    }
+
+    public void removeRoom(String name) {
+        for (Room r: gym.getRooms())
+            if (r.name.equals(name)) {
+                gym.removeRooms(r);
+                return;
+            }
     }
 }
