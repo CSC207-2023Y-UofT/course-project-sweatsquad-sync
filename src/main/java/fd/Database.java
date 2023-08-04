@@ -176,9 +176,9 @@ public class Database {
     public List<String[]> getCurrentUsers() {
         return gym.getUsers().stream().map(
                 u -> new String[]{
-                        u.firstName + " " + u.lastName,
+                        u.firstName == null ? "N/A" : u.firstName + " " + u.lastName,
                         u.getName(),
-                        u.getClass().toString()
+                        u.getClass().getSimpleName()
                 }).collect(Collectors.toList());
     }
 

@@ -51,12 +51,12 @@ public class ManageUserFrame extends JDialog implements ActionListener {
         this.add(p);
 
         addInstructor = new JButton("Add Instructor");
-        addInstructor.setBounds(0, 0, 100, 40);
+        addInstructor.setBounds(0, 0, 150, 40);
         addInstructor.addActionListener(this);
         this.add(addInstructor);
 
         delete = new JButton("Remove");
-        delete.setBounds(100, 0, 100, 40);
+        delete.setBounds(150, 0, 100, 40);
         delete.addActionListener(this);
         delete.setEnabled(false);
         this.add(delete);
