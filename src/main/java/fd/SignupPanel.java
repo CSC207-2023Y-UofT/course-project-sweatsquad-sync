@@ -121,10 +121,8 @@ class SignupPanel extends JPanel implements ActionListener {
         userField.setText("");
         passField.setText("");
         confirmPassField.setText("");
-        err1.setText("");
-        err2.setText("");
-        err3.setText("");
-        err4.setText("");
+        for (JLabel l : new JLabel[]{err1,err2,err3,err4})
+            l.setText("");
     }
 
     private String auth;
@@ -154,10 +152,9 @@ class SignupPanel extends JPanel implements ActionListener {
 
             userField.setText(username);
             emailField.setText(email);
-            err1.setText("");
-            err2.setText("");
-            err3.setText("");
-            err4.setText("");
+
+            for (JLabel l : new JLabel[]{err1,err2,err3,err4})
+                l.setText("");
 
             boolean err = false;
 

@@ -1,7 +1,5 @@
 package fd;
 
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.IOException;
 
 public class App {
@@ -11,11 +9,16 @@ public class App {
     static boolean login(String user, String pass) {
         if (db.validateLogin(user, pass)) {
             entry.setVisible(false);
-            dashboard.setVisible(true);
+            dashboard.refreshShow();
             return true;
         }
         else
             return false;
+    }
+    static void logout() {
+        db.activeUser = null;
+        entry.setVisible(true);
+        dashboard.setVisible(false);
     }
     public static void main(String[] args) {
         entry.setVisible(true);

@@ -9,60 +9,19 @@ import javax.swing.*;
 public class UI {
     public static Font
             A16  = new Font("Arial", Font.PLAIN, 16),
+            MP12 = new Font("Monsterrat", Font.PLAIN, 12),
+            MP16 = new Font("Monsterrat", Font.PLAIN, 16),
             MB12 = new Font("Monsterrat", Font.BOLD, 12),
             MB13 = new Font("Monsterrat", Font.BOLD, 13),
             MB14 = new Font("Monsterrat", Font.BOLD, 14),
             MB15 = new Font("Monsterrat", Font.BOLD, 15),
             MB16 = new Font("Monsterrat", Font.BOLD, 16),
+            MB19 = new Font("Monsterrat", Font.BOLD, 19),
+            MB20 = new Font("Monsterrat", Font.BOLD, 20),
+            MB23 = new Font("Monsterrat", Font.BOLD, 23),
             CB13 = new Font("Comfortaa", Font.BOLD, 13),
             CB18 = new Font("Comfortaa", Font.BOLD, 18);
 
-
-
-//    // button action listener response function
-//    public void actionPerformed(ActionEvent e) {
-//        if (e.getSource() == saveAccountChanges) {
-//            String firstName = capitalizeRemoveTrailingSpaces(firstNameField.getText());
-//            firstNameField.setText(firstName);
-//            String lastName = capitalizeRemoveTrailingSpaces(lastNameField.getText());
-//            lastNameField.setText(lastName);
-//            String username = userField.getText().trim();
-//            String email = emailField.getText().trim();
-//            emailField.setText(email);
-//            err1.setText("");
-//            err2.setText("");
-//            err3.setText("");
-//            err4.setText("");
-//
-//            if (!firstName.equals(database.activeUser.firstName)) {
-//                if (!firstName.isEmpty()) {
-//                    database.activeUser.firstName = firstName;
-//                } else {
-//                    System.out.println("Name fields cannot be left blank");
-//                }
-//            }
-//
-//            if (!lastName.equals(database.activeUser.lastName)) {
-//                if (!lastName.isEmpty()) {
-//                    database.activeUser.lastName = lastName;
-//                } else {
-//                    System.out.println("Name fields cannot be left blank");
-//                }
-//            }
-//
-//            if (!email.equals(database.activeUser.email)) {
-//                if (email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
-//                    database.activeUser.email = email;
-//                } else {
-//                    System.out.println("Invalid email format.");
-//                }
-//            }
-//
-//            if (!username.equals(database.activeUser.firstName)) {
-//                // TODO
-//            }
-//        }
-//    }
 
     public static JButton genRoundBtn(String text, int roundness,
                                       String colorHex, boolean light) {
@@ -199,13 +158,11 @@ public class UI {
             }
         });
 
-        // return the custom rounded JTextField
         return roundedField;
     }
 
     // creates custom rounded JPasswordField
     public static JPasswordField genRoundPasswordField(String text, int roundness, String colorHex, boolean light) {
-        // create a custom JPasswordField with the specified text and overridden painting
         JPasswordField roundedField = new JPasswordField(text) {
             @Override
             // custom painting for the rounded background
@@ -213,14 +170,11 @@ public class UI {
                 Graphics2D g2 = (Graphics2D) g.create();
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-                // decode the colorHex to a Color object
                 Color defaultColor = Color.decode(colorHex);
 
-                // round rectangle fill to create the rounded effect w/input val
                 g2.setColor(defaultColor);
                 g2.fill(new RoundRectangle2D.Float(0, 0, getWidth(), getHeight(), roundness, roundness));
 
-                // calling paintComponent from superclass for text rendering
                 super.paintComponent(g);
 
                 g2.dispose();
@@ -228,14 +182,11 @@ public class UI {
 
             @Override
             public Dimension getPreferredSize() {
-                // set the preferred size for custom field
                 return new Dimension(330, 30);
             }
 
             @Override
-            protected void paintBorder(Graphics g) {
-                // do nothing
-            }
+            protected void paintBorder(Graphics g) {}
         };
 
         // add mouse listener to handle hover effects -just in case
@@ -257,7 +208,6 @@ public class UI {
             }
         });
 
-        // return custom rounded JPasswordField
         return roundedField;
     }
 }
