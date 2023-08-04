@@ -22,7 +22,14 @@ public class UI {
             CB13 = new Font("Comfortaa", Font.BOLD, 13),
             CB18 = new Font("Comfortaa", Font.BOLD, 18);
 
+    static public String capitalizeRemoveTrailingSpaces(String input) {
+        String trimmedInput = input.trim();
 
+        if (!trimmedInput.isEmpty())
+            return Character.toUpperCase(trimmedInput.charAt(0)) + trimmedInput.substring(1);
+        else
+            return "";
+    }
     public static JButton genRoundBtn(String text, int roundness,
                                       String colorHex, boolean light) {
 

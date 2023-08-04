@@ -81,6 +81,8 @@ public class EntryPointFrame extends JFrame implements ActionListener {
     }
 
     public void signupCard() {
+        signupPanel.reset();
+
         cardLayout.show(cards, "Signup");
 
         loginTab.setFocusable(true);
@@ -109,13 +111,29 @@ public class EntryPointFrame extends JFrame implements ActionListener {
         signIndicator.setIcon(new ImageIcon("images/00301-auth-indicator.png"));
     }
 
-    public void instructorSignupCard() {
+    public void instructorSignupCard(String auth) {
+        signupPanel.setInstructorView(auth);
+
         cardLayout.show(cards, "Signup");
 
         this.remove(loginTab);
         this.remove(signupTab);
 
         authCodeLabel.setText("Instructor Registration");
+        this.add(authCodeLabel);
+
+        signIndicator.setIcon(new ImageIcon("images/00301-auth-indicator.png"));
+    }
+
+    public void adminSignupCard() {
+        signupPanel.setAdminView();
+
+        cardLayout.show(cards, "Signup");
+
+        this.remove(loginTab);
+        this.remove(signupTab);
+
+        authCodeLabel.setText("Administrator Registration");
         this.add(authCodeLabel);
 
         signIndicator.setIcon(new ImageIcon("images/00301-auth-indicator.png"));

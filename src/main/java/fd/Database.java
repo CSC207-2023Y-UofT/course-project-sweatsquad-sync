@@ -1,21 +1,20 @@
 package fd;
 
 // import statements
-import ebr.Gym;
-import ebr.Instructor;
-import ebr.User;
+import ebr.*;
 
 import java.util.*;
 import java.io.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.stream.Collectors;
 
 public class Database {
 
     // declares database vars - hashmap, txt file, and hash toggle
     private final String filename = "gym.bin";
-    public Gym gym;
-    public User activeUser;
+    private Gym gym;
+    private User activeUser;
 
     // database constructor
     public Database() {
@@ -87,6 +86,24 @@ public class Database {
         return true;
     }
 
+    public boolean registerAdmin(String firstName, String lastName, String username,
+                                   String email, String passcode) {
+        if (!validateInput(username)) {
+            System.out.println("Invalid input");
+            return false;
+        }
+
+        for (User u : gym.getUsers()) {
+            if (u.getName().equals(username)) {
+                System.out.println("Username already exists");
+                return false;
+            }
+        }
+
+        gym.addUser(new GymAdmin(username, hashPassword(passcode), firstName, lastName, email));
+        return true;
+    }
+
     // method to check if login credentials are valid
     public boolean validateLogin(String username, String password) {
         for (User u : gym.getUsers())
@@ -125,7 +142,6 @@ public class Database {
 
     private String hashPassword(String password) {
         try {
-            // inst of the SHA-256 messageDigest
             MessageDigest md = MessageDigest.getInstance("SHA-256");
             // hashes password
             byte[] hashedPassword = md.digest(password.getBytes());
@@ -139,5 +155,46 @@ public class Database {
             e.printStackTrace();
             throw new RuntimeException("Cannot use SHA-256"); // Don't fail silently
         }
+    }
+
+    public void logout() {
+        this.activeUser = null;
+    }
+
+    public String getActiveUserFirstName() {
+        return this.activeUser == null ? "Guest" : this.activeUser.firstName;
+    }
+
+    public List<String[]> getCurrentWorkouts() {
+        // TODO
+        return gym.getWorkouts().stream().map(w -> new String[]{
+                w.name,
+                w.offerings.stream().map(o -> o.room.name).collect(Collectors.joining(", ")),
+                w.offerings.stream().map(o -> o.start.toString()).collect(Collectors.joining(", ")),
+                w.getUsers().stream().filter(u -> u instanceof Instructor).map(Object::toString).collect(Collectors.joining(", ")),
+                w.getUsers().size() + "/" + w.capacity
+        }).collect(Collectors.toList());
+    }
+
+    public boolean addWorkout(String name, int capacity) {
+        for (Workout w : gym.getWorkouts())
+            if (w.name.equals(name))
+                return false;
+
+        gym.addWorkout(new Workout(name, capacity));
+        return true;
+    }
+
+    public void dashRefresh(DashboardFrame dash) {
+        if (activeUser instanceof GymAdmin)
+            dash.adminRefresh();
+        else if (activeUser instanceof Instructor)
+            dash.instructorRefresh();
+        else
+            dash.userRefresh();
+    }
+
+    public boolean isEmpty() {
+        return gym.getUsers().isEmpty();
     }
 }

@@ -43,9 +43,8 @@ class AuthCodePanel extends JPanel implements ActionListener {
         if (e.getSource() == authenticateBtn) {
             String inputCode = authField.getText(); // get the input from user
             if (App.db.validateAuthCode(inputCode) != null) {
-                App.entry.signupPanel.setInstructor(authField.getText());
+                App.entry.instructorSignupCard(authField.getText());
                 authField.setText("");
-                App.entry.instructorSignupCard();
             }
             else
                 JOptionPane.showMessageDialog(this,"Failure. Invalid code.");

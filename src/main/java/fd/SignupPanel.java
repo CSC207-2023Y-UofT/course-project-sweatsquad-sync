@@ -12,7 +12,16 @@ class SignupPanel extends JPanel implements ActionListener {
     private JPasswordField passField, confirmPassField;
     private JButton registerButton;
     private JLabel err1, err2, err3, err4, haveCodeLabel;
+
+    @FunctionalInterface
+    public interface RegisterMethod {
+        public boolean apply(String firstName, String lastName, String username, String email, String password);
+    }
+    private RegisterMethod registerDispatch;
+
     SignupPanel() {
+        registerDispatch = App.db::registerBasicUser;
+
         this.setLayout(null);
         this.setOpaque(false);
 
@@ -125,26 +134,31 @@ class SignupPanel extends JPanel implements ActionListener {
             l.setText("");
     }
 
-    private String auth;
-    public void setInstructor(String auth) {
-        this.auth = auth;
+    public void reset() {
+        clearFields();
+        registerDispatch = App.db::registerBasicUser;
+        this.add(haveCodeLabel);
+    }
+
+    public void setInstructorView(String auth) {
+        setRegisterDispatch((fn, ln, un, em, pw) -> App.db.claimInstructor(auth, fn, ln, un, em, pw));
         this.remove(haveCodeLabel);
     }
 
-    static private String capitalizeRemoveTrailingSpaces(String input) {
-        String trimmedInput = input.trim();
+    public void setAdminView() {
+        setRegisterDispatch(App.db::registerAdmin);
+        this.remove(haveCodeLabel);
+    }
 
-        if (!trimmedInput.isEmpty())
-            return Character.toUpperCase(trimmedInput.charAt(0)) + trimmedInput.substring(1);
-        else
-            return "";
+    public void setRegisterDispatch(RegisterMethod f) {
+        registerDispatch = f;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == registerButton) { // register logic
-            String firstName = capitalizeRemoveTrailingSpaces(firstNameField.getText()),
-                    lastName = capitalizeRemoveTrailingSpaces(lastNameField.getText()),
+            String firstName = UI.capitalizeRemoveTrailingSpaces(firstNameField.getText()),
+                    lastName = UI.capitalizeRemoveTrailingSpaces(lastNameField.getText()),
                     username = userField.getText().trim(),
                     email = emailField.getText().trim(),
                     password = new String(passField.getPassword()),
@@ -190,11 +204,9 @@ class SignupPanel extends JPanel implements ActionListener {
             if (err)
                 return;
 
-            if (auth != null ? App.db.claimInstructor(auth, firstName, lastName, username, email, password)
-                    : App.db.registerBasicUser(firstName, lastName, username, email, password)) {
-                clearFields();
+            if (registerDispatch.apply(firstName, lastName, username, email, password)) {
+                this.reset();
                 App.entry.loginCard();
-                this.add(haveCodeLabel);
             }
             else
                 err3.setText("<HTML>*Username already<BR>exists<HTML>");

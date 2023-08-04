@@ -16,12 +16,16 @@ public class App {
             return false;
     }
     static void logout() {
-        db.activeUser = null;
+        db.logout();
         entry.setVisible(true);
         dashboard.setVisible(false);
     }
     public static void main(String[] args) {
         entry.setVisible(true);
+        if (db.isEmpty()) {
+            entry.signupCard();
+            entry.signupPanel.setAdminView();
+        }
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             try {
