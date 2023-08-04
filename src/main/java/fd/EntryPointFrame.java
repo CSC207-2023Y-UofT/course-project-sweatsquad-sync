@@ -4,12 +4,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class EntryPointFrame extends JFrame implements ActionListener {
     private JButton loginTab, signupTab;
-    private JLabel signIndicator;
+    private JLabel signIndicator, authCodeLabel;
     private CardLayout cardLayout = new CardLayout();
     private JPanel cards = new JPanel(cardLayout);
 
@@ -32,8 +30,6 @@ public class EntryPointFrame extends JFrame implements ActionListener {
         loginTab.setContentAreaFilled(false);
         loginTab.setBorderPainted(false);
         loginTab.setFocusPainted(false);
-        loginTab.setFont(UI.MB14);
-        loginTab.setForeground(Color.decode("#001561"));
         add(loginTab);
 
         signupTab = new JButton("Register");
@@ -43,14 +39,17 @@ public class EntryPointFrame extends JFrame implements ActionListener {
         signupTab.setContentAreaFilled(false);
         signupTab.setBorderPainted(false);
         signupTab.setFocusPainted(false);
-        signupTab.setFont(UI.MB14);
-        signupTab.setForeground(Color.decode("#000000"));
         add(signupTab);
 
         signIndicator = new JLabel("");
-        signIndicator.setIcon(new ImageIcon("images/00101-sign-indicator.png"));
         signIndicator.setBounds(189, 65, 422, 9);
         add(signIndicator);
+
+        authCodeLabel = new JLabel("Instructor Authentication", SwingConstants.CENTER);
+        authCodeLabel.setFont(UI.MB16);
+        authCodeLabel.setForeground(Color.decode("#001561"));
+        authCodeLabel.setBounds(189, 25, 422, 47);
+        authCodePanel.add(authCodeLabel);
 
         cards.add(loginPanel, "Login");
         cards.add(signupPanel, "Signup");
@@ -69,10 +68,14 @@ public class EntryPointFrame extends JFrame implements ActionListener {
         loginTab.setFocusable(false);
         loginTab.setFont(UI.MB16);
         loginTab.setForeground(Color.decode("#001561"));
+        this.add(loginTab);
 
         signupTab.setFocusable(true);
         signupTab.setFont(UI.MB14);
         signupTab.setForeground(Color.decode("#000000"));
+        this.add(signupTab);
+
+        this.remove(authCodeLabel);
 
         signIndicator.setIcon(new ImageIcon("images/00101-sign-indicator.png"));
     }
@@ -83,10 +86,14 @@ public class EntryPointFrame extends JFrame implements ActionListener {
         loginTab.setFocusable(true);
         loginTab.setFont(UI.MB14);
         loginTab.setForeground(Color.decode("#000000"));
+        this.add(loginTab);
 
         signupTab.setFocusable(false);
         signupTab.setFont(UI.MB16);
         signupTab.setForeground(Color.decode("#001561"));
+        this.add(signupTab);
+
+        this.remove(authCodeLabel);
 
         signIndicator.setIcon(new ImageIcon("images/00201-reg-indicator.png"));
     }
@@ -94,12 +101,22 @@ public class EntryPointFrame extends JFrame implements ActionListener {
     public void authCodeCard() {
         cardLayout.show(cards, "AuthCode");
 
-        loginTab.setFocusable(true);
-        loginTab.setFont(UI.MB14);
-        loginTab.setForeground(Color.decode("#000000"));
-        signupTab.setFocusable(true);
-        signupTab.setFont(UI.MB14);
-        signupTab.setForeground(Color.decode("#000000"));
+        this.remove(loginTab);
+        this.remove(signupTab);
+
+        this.add(authCodeLabel);
+
+        signIndicator.setIcon(new ImageIcon("images/00301-auth-indicator.png"));
+    }
+
+    public void instructorSignupCard() {
+        cardLayout.show(cards, "Signup");
+
+        this.remove(loginTab);
+        this.remove(signupTab);
+
+        authCodeLabel.setText("Instructor Registration");
+        this.add(authCodeLabel);
 
         signIndicator.setIcon(new ImageIcon("images/00301-auth-indicator.png"));
     }

@@ -23,10 +23,17 @@ class AuthCodePanel extends JPanel implements ActionListener {
         authField.setHorizontalAlignment(SwingConstants.CENTER); // c-align
         this.add(authField);
 
+        JButton backButton = UI.genRoundBtn("Back", 50, "#001561", false);
+        backButton.setFont(UI.MB13);
+        backButton.setForeground(Color.decode("#FFFFFF"));
+        backButton.setBounds(189, 292, 196, 50);
+        backButton.addActionListener(this);
+        this.add(backButton);
+
         authenticateBtn = UI.genRoundBtn("Authenticate", 50, "#001561", false);
         authenticateBtn.setFont(UI.MB13);
         authenticateBtn.setForeground(Color.decode("#FFFFFF"));
-        authenticateBtn.setBounds(189, 292, 422, 50);
+        authenticateBtn.setBounds(413, 292, 196, 50);
         authenticateBtn.addActionListener(this);
         this.add(authenticateBtn);
     }
@@ -37,7 +44,8 @@ class AuthCodePanel extends JPanel implements ActionListener {
             String inputCode = authField.getText(); // get the input from user
             if (App.db.validateAuthCode(inputCode) != null) {
                 App.entry.signupPanel.setInstructor(authField.getText());
-                App.entry.signupCard();
+                authField.setText("");
+                App.entry.instructorSignupCard();
             }
             else
                 JOptionPane.showMessageDialog(this,"Failure. Invalid code.");

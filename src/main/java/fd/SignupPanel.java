@@ -114,6 +114,19 @@ class SignupPanel extends JPanel implements ActionListener {
         this.add(err4);
     }
 
+    private void clearFields() {
+        firstNameField.setText("");
+        lastNameField.setText("");
+        emailField.setText("");
+        userField.setText("");
+        passField.setText("");
+        confirmPassField.setText("");
+        err1.setText("");
+        err2.setText("");
+        err3.setText("");
+        err4.setText("");
+    }
+
     private String auth;
     public void setInstructor(String auth) {
         this.auth = auth;
@@ -181,8 +194,11 @@ class SignupPanel extends JPanel implements ActionListener {
                 return;
 
             if (auth != null ? App.db.claimInstructor(auth, firstName, lastName, username, email, password)
-                    : App.db.registerBasicUser(firstName, lastName, username, email, password))
+                    : App.db.registerBasicUser(firstName, lastName, username, email, password)) {
+                clearFields();
                 App.entry.loginCard();
+                this.add(haveCodeLabel);
+            }
             else
                 err3.setText("<HTML>*Username already<BR>exists<HTML>");
         }
