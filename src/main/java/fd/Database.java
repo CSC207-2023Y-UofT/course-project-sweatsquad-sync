@@ -164,8 +164,8 @@ public class Database {
                 w.name,
                 w.offerings.stream().map(o -> o.room.name).collect(Collectors.joining(", ")),
                 w.offerings.stream().map(o -> o.start.toString()).collect(Collectors.joining(", ")),
-                w.getUsers().stream().filter(u -> u instanceof Instructor).map(Object::toString).collect(Collectors.joining(", ")),
-                w.getUsers().size() + "/" + w.capacity
+                w.getUsers().stream().filter(u -> u instanceof Instructor).map(i -> i.firstName + " " + i.lastName).collect(Collectors.joining(", ")),
+                w.getNonStaffUserCount() + "/" + w.capacity
         }).collect(Collectors.toList());
     }
 
