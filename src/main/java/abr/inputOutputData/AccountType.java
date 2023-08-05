@@ -1,7 +1,9 @@
-package abr.requestAndResponse;
+package abr.inputOutputData;
 
 public enum AccountType {
     INSTRUCTOR,
     REGULAR,
-    ADMIN
+
+    REGISTERED,
+    ADMIN;
 }

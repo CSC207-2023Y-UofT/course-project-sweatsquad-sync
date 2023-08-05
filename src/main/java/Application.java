@@ -1,9 +1,3 @@
-import abr.Authenticator;
-import fd.FileDatabase;
-import fd.LoginViewSwing;
-import ia.LoginView;
-import ia.LoginFrameController;
-
 import javax.swing.*;
 
 

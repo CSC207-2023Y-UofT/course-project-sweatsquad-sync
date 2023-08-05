@@ -1,17 +1,19 @@
 package abr;
 
-import abr.requestAndResponse.LoginLogout;
+import abr.inputOutputData.AccountType;
+import abr.inputOutputData.LoginEvent;
 import ebr.GymAdmin;
 import ebr.Instructor;
+import ebr.RegisteredUser;
 import ebr.User;
 
 public class ActiveUserManager {
 
     private User activeUser;
     private UserAccountManager uam;
-    private OutputBoundary<LoginLogout> loginListener;
+    private OutputBoundary<LoginEvent> loginListener;
 
-    public ActiveUserManager(UserAccountManager uam, OutputBoundary<LoginLogout> loginListener) {
+    public ActiveUserManager(UserAccountManager uam, OutputBoundary<LoginEvent> loginListener) {
         this.uam = uam;
         this.loginListener = loginListener;
     }
@@ -24,13 +26,16 @@ public class ActiveUserManager {
 
         activeUser = u;
         if (u instanceof Instructor) {
-            loginListener.receiveResponse(LoginLogout.LOGIN_INSTRUCTOR);
+            loginListener.receiveResponse(new LoginEvent(AccountType.INSTRUCTOR));
 
         } else if (u instanceof GymAdmin) {
-            loginListener.receiveResponse(LoginLogout.LOGIN_ADMIN);
+            loginListener.receiveResponse(new LoginEvent(AccountType.ADMIN));
 
-        } else{
-            loginListener.receiveResponse(LoginLogout.LOGIN_REGULAR_USER);
+        } else if (u instanceof RegisteredUser){
+            loginListener.receiveResponse(new LoginEvent(AccountType.REGISTERED));
+        } else {
+
+            loginListener.receiveResponse(new LoginEvent(AccountType.REGULAR));
         }
 
     };

@@ -1,7 +1,7 @@
 package abr;
 
-import abr.requestAndResponse.*;
-import abr.requestAndResponse.authenticationFields.*;
+import abr.inputOutputData.*;
+import abr.inputOutputData.authenticationFields.*;
 
 
 public class Authenticator implements InputBoundary<AuthenticationRequestModel> {
@@ -38,11 +38,10 @@ public class Authenticator implements InputBoundary<AuthenticationRequestModel> 
 
         if (!issues.isEmpty()) {
             return new LoginResponse(false, issues);
+        } else {
+            aum.loginUser(uam.retrieveUser(ld));
+            return new LoginResponse(true, new IssueList<>());
         }
-
-        aum.loginUser(uam.retrieveUser(ld));
-        return new LoginResponse(true, new IssueList<>());
-
 
     }
 

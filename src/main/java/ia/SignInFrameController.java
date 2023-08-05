@@ -1,13 +1,13 @@
 package ia;
 
 import abr.*;
-import abr.requestAndResponse.*;
+import abr.inputOutputData.*;
 
-public class LoginFrameController implements LoginViewController {
+public class SignInFrameController implements LoginViewController {
 
     private final InputBoundary<AuthenticationRequestModel> authenticationModel;
 
-    public LoginFrameController(Authenticator authenticationModel) {
+    public SignInFrameController(Authenticator authenticationModel) {
         this.authenticationModel = authenticationModel;
     }
 

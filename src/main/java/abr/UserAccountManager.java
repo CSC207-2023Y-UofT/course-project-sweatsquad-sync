@@ -1,8 +1,8 @@
 package abr;
 
-import abr.requestAndResponse.RegisterDetails;
-import abr.requestAndResponse.ActivationCodeDetails;
-import abr.requestAndResponse.LoginDetails;
+import abr.inputOutputData.RegisterDetails;
+import abr.inputOutputData.ActivationCodeDetails;
+import abr.inputOutputData.LoginDetails;
 import ebr.*;
 import fd.GymDatabase;
 import org.jetbrains.annotations.NotNull;
@@ -36,7 +36,7 @@ public class UserAccountManager {
             }
             case REGULAR -> {
 
-                gym.addUser(new RegisteredUser(d.username(), hashPassword(d.password()), d.firstName(), d.lastName(), d.email()));
+                gym.addUser(new User(d.username(), hashPassword(d.password()), d.firstName(), d.lastName(), d.email()));
             }
             case ADMIN -> {
 

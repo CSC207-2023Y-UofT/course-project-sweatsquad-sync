@@ -1,9 +1,9 @@
-package abr.requestAndResponse;
+package abr.inputOutputData;
 
 import abr.ResponseModel;
-import abr.requestAndResponse.authenticationFields.Field;
-import abr.requestAndResponse.authenticationFields.FieldIssue;
-import abr.requestAndResponse.authenticationFields.IssueList;
+import abr.inputOutputData.authenticationFields.Field;
+import abr.inputOutputData.authenticationFields.FieldIssue;
+import abr.inputOutputData.authenticationFields.IssueList;
 
 import java.util.List;
 

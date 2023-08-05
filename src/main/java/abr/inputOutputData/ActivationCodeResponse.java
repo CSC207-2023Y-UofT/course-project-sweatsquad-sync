@@ -1,7 +1,7 @@
-package abr.requestAndResponse;
+package abr.inputOutputData;
 
-import abr.requestAndResponse.authenticationFields.ActivationCodeField;
-import abr.requestAndResponse.authenticationFields.IssueList;
+import abr.inputOutputData.authenticationFields.ActivationCodeField;
+import abr.inputOutputData.authenticationFields.IssueList;
 
 public class ActivationCodeResponse extends AuthenticationResponseModel<ActivationCodeField> {
     public ActivationCodeResponse(boolean success, IssueList<ActivationCodeField> fieldIssues) {

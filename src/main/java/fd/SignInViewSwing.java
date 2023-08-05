@@ -1,17 +1,18 @@
 package fd;
 
 // import statements
-import abr.requestAndResponse.authenticationFields.*;
-import ia.LoginFrameController;
-import ia.LoginView;
+import abr.inputOutputData.authenticationFields.*;
+import ia.RegisterViewModel;
+import ia.SignInFrameController;
+import ia.SignInView;
 
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class LoginViewSwing extends JFrame implements ActionListener, LoginView {
+public class SignInViewSwing extends JFrame implements ActionListener, SignInView {
 
-    private LoginFrameController controller;
+    private SignInFrameController controller;
 
     // declaring UI components / layout
     private CardLayout cardLayout = new CardLayout();
@@ -29,11 +30,11 @@ public class LoginViewSwing extends JFrame implements ActionListener, LoginView 
     private RoundField roundField = new RoundField();
 
     public static void main(String[] args) {
-        new LoginViewSwing();
+        new SignInViewSwing();
     }
 
     // UI constructor - has a database, and covers login/registration
-    public LoginViewSwing() {
+    public SignInViewSwing() {
 
 
         // ui 'defaults'
@@ -482,7 +483,7 @@ public class LoginViewSwing extends JFrame implements ActionListener, LoginView 
 
         } else if ((e.getSource() == signupButton) ||
                    (e.getSource() == registerTransparentBtn)) { // signup logic if pressed
-            provideSignup();
+            displaySignUpPane();
 
         } else if (e.getSource() == registerButton) { // register logic
             // gets text from respective JTextField components
@@ -498,9 +499,9 @@ public class LoginViewSwing extends JFrame implements ActionListener, LoginView 
         } else if ((e.getSource() == back2loginBtn) ||
                    (e.getSource() == signupTransparentBtn)) { // if back button clicked
 
-            provideLogin();
+            displayLoginPane();
         } else if (e.getSource() == returnLoginBtn) {
-            provideLogin();
+            displayLoginPane();
         } else if (e.getSource() == authenticateBtn) {
             String inputCode = authField.getText(); // get the input from user
 
@@ -523,20 +524,35 @@ public class LoginViewSwing extends JFrame implements ActionListener, LoginView 
         }
     }
 
-    @Override
-    public void provideInstrSignup() {
+
+    public void displayInstrRegPane() {
         clearInputs();
         cardLayout.show(getContentPane(), "InstrReg");
     }
-    @Override
-    public void provideSignup() {
+
+    public void displaySignUpPane() {
         clearInputs();
         cardLayout.show(getContentPane(), "Signup");
     }
-    @Override
-    public void provideInstrAuthentication() {
+
+    public void displayActivationPane() {
         clearInputs();
         cardLayout.show(getContentPane(), "AuthCode");
+    }
+
+    public void displayLoginPane() {
+        clearInputs();
+        cardLayout.show(getContentPane(), "Login");
+    }
+
+    @Override
+    public void displayErrorsInstrSignup(RegisterViewModel model) {
+
+    }
+
+    @Override
+    public void displayErrorsRegSignup(RegisterViewModel model) {
+
     }
 
     @Override
@@ -577,11 +593,6 @@ public class LoginViewSwing extends JFrame implements ActionListener, LoginView 
         return ("<html>*" + s + "<html>");
     }
 
-    @Override
-    public void provideLogin() {
-        clearInputs();
-        cardLayout.show(getContentPane(), "Login");
-    }
 
     @Override
     public void clearInputs() {
@@ -606,7 +617,7 @@ public class LoginViewSwing extends JFrame implements ActionListener, LoginView 
     }
 
     @Override
-    public void setController(LoginFrameController c) {
+    public void setController(SignInFrameController c) {
         controller = c;
     }
 

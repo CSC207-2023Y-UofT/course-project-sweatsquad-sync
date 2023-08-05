@@ -1,4 +1,4 @@
-package abr.requestAndResponse;
+package abr.inputOutputData;
 
 import abr.RequestModel;
 

@@ -1,4 +1,4 @@
-package abr.requestAndResponse;
+package abr.inputOutputData;
 
 public record RegisterDetails(String firstName, String lastName, String username, String email, String password, String confirmPassword, AccountType accountType) implements AuthenticationRequestModel {
 
