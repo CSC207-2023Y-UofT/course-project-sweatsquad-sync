@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 
 class AuthCodePanel extends JPanel implements ActionListener {
     private JTextField authField;
-    private JButton authenticateBtn;
+    private JButton authenticateBtn, backButton;
     AuthCodePanel() {
         this.setLayout(null);
         this.setOpaque(false);
@@ -23,7 +23,7 @@ class AuthCodePanel extends JPanel implements ActionListener {
         authField.setHorizontalAlignment(SwingConstants.CENTER); // c-align
         this.add(authField);
 
-        JButton backButton = UI.genRoundBtn("Back", 50, "#001561", false);
+        backButton = UI.genRoundBtn("Back", 50, "#001561", false);
         backButton.setFont(UI.MB13);
         backButton.setForeground(Color.decode("#FFFFFF"));
         backButton.setBounds(189, 292, 196, 50);
@@ -48,6 +48,10 @@ class AuthCodePanel extends JPanel implements ActionListener {
             }
             else
                 JOptionPane.showMessageDialog(this,"Failure. Invalid code.");
+        }
+        else if (e.getSource() == backButton) {
+            App.entry.signupCard();
+            authField.setText("");
         }
     }
 }
