@@ -242,4 +242,41 @@ public class Database {
 //    todo    activeUser.getWorkouts().stream().flatMap(w -> w.offerings.stream()).map(o -> o.start);
         return new String[]{};
     }
+
+    public String adminReqInstructorAuthCode(int i) {
+        return ((Instructor)gym.getUsers().stream().collect(Collectors.toList()).get(i)).getAuthCode();
+    }
+
+    public void removeWorkout(int i) {
+        gym.removeWorkout(gym.getWorkouts().stream().collect(Collectors.toList()).get(i));
+    }
+
+    public String[] toggleEnrol(int i) {
+        Workout w = gym.getWorkouts().stream().collect(Collectors.toList()).get(i);
+        if (activeUser instanceof Instructor)
+            if (w.getUsers().contains(activeUser))
+                return new String[]{"Teach", "You already teach this class!"};
+            else {
+                activeUser.addWorkout(w);
+                return new String[]{"Teach", "You now teach this class!"};
+            }
+        else {
+            if (w.getUsers().contains(activeUser)) {
+                activeUser.removeWorkout(w);
+                return new String[]{"Enrol", null};
+            }
+            else {
+                activeUser.addWorkout(w);
+                return new String[]{"Drop", null};
+            }
+        }
+    }
+
+    public List<String[]> getCurrentOfferings(int i) {
+        return gym.getWorkouts().stream().collect(Collectors.toList()).get(i).offerings.stream().map(o -> new String[]{
+                o.day.toString() + o.start.toString(),
+                o.duration.toString(),
+                o.room.toString()
+        }).collect(Collectors.toList());
+    }
 }

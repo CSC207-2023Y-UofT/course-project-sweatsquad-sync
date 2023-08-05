@@ -6,6 +6,8 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.List;
 
 public class CourseFrame extends JDialog implements ActionListener {
@@ -22,6 +24,8 @@ public class CourseFrame extends JDialog implements ActionListener {
             return workouts.get(row)[col].isEmpty() ? "TBD" : workouts.get(row)[col];
         }
     };
+    private JTable enrolTable;
+    private WorkoutOfferingFrame workoutOfferingFrame = new WorkoutOfferingFrame();
     public CourseFrame() {
         setTitle("Courses"); // window title
         setSize(800, 600); // window dimensions
@@ -49,7 +53,7 @@ public class CourseFrame extends JDialog implements ActionListener {
         enrolCourse.addActionListener(this);
         enrolCourse.setVisible(false);
 
-        JTable enrolTable = new JTable(courseTable);
+        enrolTable = new JTable(courseTable);
         enrolTable.getTableHeader().setResizingAllowed(false);
         enrolTable.getTableHeader().setReorderingAllowed(false);
         enrolTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -67,6 +71,11 @@ public class CourseFrame extends JDialog implements ActionListener {
         p.setBounds(0, 40, 800, 500);
         this.add(p);
 
+        this.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                App.dashboard.refreshShow();
+            }
+        });
     }
     public void refreshShow() {
         this.setVisible(true);
@@ -105,7 +114,6 @@ public class CourseFrame extends JDialog implements ActionListener {
                 if ((capacity != null) && (!capacity.isEmpty())) {
                     try {
                         App.db.addWorkout(name, Integer.parseInt(capacity));
-                        courseTable.fireTableDataChanged();
                     }
                     catch (NumberFormatException exp) {
                         JOptionPane.showMessageDialog(this, "Workout already exists or invalid capacity!");
@@ -113,6 +121,17 @@ public class CourseFrame extends JDialog implements ActionListener {
                 }
             }
         }
-        App.dashboard.refreshShow();
+        else if (e.getSource() == removeCourse)
+            App.db.removeWorkout(enrolTable.getSelectedRow());
+        else if (e.getSource() == editCourse)
+            workoutOfferingFrame.refreshShow(enrolTable.getSelectedRow());
+        else if (e.getSource() == enrolCourse) {
+            String[] ret = App.db.toggleEnrol(enrolTable.getSelectedRow());
+            enrolCourse.setText(ret[0]);
+            if (ret[1] != null)
+                JOptionPane.showMessageDialog(this, ret[1]);
+        }
+
+        courseTable.fireTableDataChanged();
     }
 }
