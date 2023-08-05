@@ -69,9 +69,14 @@ public class ManageRoomFrame extends JDialog implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == addRoom) {
             String name = JOptionPane.showInputDialog(this, "Room name?", null);
-            if ((name != null) && (!name.isEmpty()))
-                if (!App.db.addRoom(name))
-                    JOptionPane.showMessageDialog(this, "Room already exists!");
+            if (name != null) {
+                if (!name.isEmpty()) {
+                    if (!App.db.addRoom(name))
+                        JOptionPane.showMessageDialog(this, "Room already exists!");
+                }
+                else
+                    JOptionPane.showMessageDialog(this, "Invalid name!");
+            }
         }
         else if (e.getSource() == removeRoom)
             App.db.removeRoom(roomTable.getValueAt(table.getSelectedRow(), table.getSelectedColumn()).toString());
