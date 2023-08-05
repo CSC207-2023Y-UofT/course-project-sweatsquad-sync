@@ -165,7 +165,8 @@ public class Database {
                 w.offerings.stream().map(o -> o.room.name).collect(Collectors.joining(", ")),
                 w.offerings.stream().map(o -> o.start.toString()).collect(Collectors.joining(", ")),
                 w.getUsers().stream().filter(u -> u instanceof Instructor).map(i -> i.firstName + " " + i.lastName).collect(Collectors.joining(", ")),
-                w.getNonStaffUserCount() + "/" + w.capacity
+                w.getNonStaffUserCount() + "/" + w.capacity,
+                activeUser instanceof Instructor ? "Teach" : (w.getUsers().contains(activeUser) ? "Drop" : "Enrol")
         }).collect(Collectors.toList());
     }
 
@@ -251,24 +252,23 @@ public class Database {
         gym.removeWorkout(gym.getWorkouts().stream().collect(Collectors.toList()).get(i));
     }
 
-    public String[] toggleEnrol(int i) {
+    public String toggleEnrol(int i) {
         Workout w = gym.getWorkouts().stream().collect(Collectors.toList()).get(i);
         if (activeUser instanceof Instructor)
             if (w.getUsers().contains(activeUser))
-                return new String[]{"Teach", "You already teach this class!"};
+                return "You already teach this class!";
             else {
                 activeUser.addWorkout(w);
-                return new String[]{"Teach", "You now teach this class!"};
+                return "You now teach this class!";
             }
         else {
             if (w.getUsers().contains(activeUser)) {
                 activeUser.removeWorkout(w);
-                return new String[]{"Enrol", null};
             }
             else {
                 activeUser.addWorkout(w);
-                return new String[]{"Drop", null};
             }
+            return null;
         }
     }
 

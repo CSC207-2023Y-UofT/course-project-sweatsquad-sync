@@ -13,8 +13,8 @@ import java.util.List;
 public class CourseFrame extends JDialog implements ActionListener {
     private JButton addCourse, editCourse, removeCourse, enrolCourse;
     private AbstractTableModel courseTable = new AbstractTableModel() {
-        private final String[] enrolTableCols = {"Workout", "Room", "Time", "Instructor", "Status"};
-        public int getColumnCount() { return enrolTableCols.length; }
+        private final String[] enrolTableCols = {"Workout", "Room", "Time", "Instructor", "Status", "ButtonText"};
+        public int getColumnCount() { return enrolTableCols.length - 1; }
         public int getRowCount() { return (int)App.db.getCurrentWorkouts().size(); }
         public String getColumnName(int col) {
             return enrolTableCols[col];
@@ -65,6 +65,8 @@ public class CourseFrame extends JDialog implements ActionListener {
                 removeCourse.setEnabled(enrolTable.getSelectedRow() != -1);
                 editCourse.setEnabled(enrolTable.getSelectedRow() != -1);
                 enrolCourse.setVisible(enrolTable.getSelectedRow() != -1);
+                if (enrolTable.getSelectedRow() != -1)
+                    enrolCourse.setText(courseTable.getValueAt(enrolTable.getSelectedRow(), 5).toString());
             }
         });
         JScrollPane p = new JScrollPane(enrolTable);
@@ -126,10 +128,9 @@ public class CourseFrame extends JDialog implements ActionListener {
         else if (e.getSource() == editCourse)
             workoutOfferingFrame.refreshShow(enrolTable.getSelectedRow());
         else if (e.getSource() == enrolCourse) {
-            String[] ret = App.db.toggleEnrol(enrolTable.getSelectedRow());
-            enrolCourse.setText(ret[0]);
-            if (ret[1] != null)
-                JOptionPane.showMessageDialog(this, ret[1]);
+            String msg = App.db.toggleEnrol(enrolTable.getSelectedRow());
+            if (msg != null)
+                JOptionPane.showMessageDialog(this, msg);
         }
 
         courseTable.fireTableDataChanged();
