@@ -24,7 +24,7 @@ public class ManageUserFrame extends JDialog implements ActionListener {
         }
     };
 
-    private JButton delete, addInstructor, addCerts;
+    private JButton delete, addInstructor, addCerts, copyCode;
     JTable table;
     public ManageUserFrame() {
         setTitle("Manage Users"); // window title
@@ -45,8 +45,15 @@ public class ManageUserFrame extends JDialog implements ActionListener {
             public void valueChanged(ListSelectionEvent e) {
                 boolean sel = table.getSelectedRow() != -1;
                 delete.setEnabled(sel);
-                if (sel)
-                    addCerts.setVisible(table.getValueAt(table.getSelectedColumn(), 2).toString().equals("Instructor"));
+                if (sel) {
+                    addCerts.setVisible(table.getValueAt(table.getSelectedRow(), 2).toString().equals("Instructor"));
+                    copyCode.setVisible(table.getValueAt(table.getSelectedRow(), 2).toString().equals("Instructor"));
+                    copyCode.setEnabled(table.getValueAt(table.getSelectedRow(), 0).toString().equals("N/A"));
+                }
+                else  {
+                    addCerts.setVisible(false);
+                    copyCode.setVisible(false);
+                }
             }
         });
         JScrollPane p = new JScrollPane(table);
@@ -69,11 +76,18 @@ public class ManageUserFrame extends JDialog implements ActionListener {
         addCerts.addActionListener(this);
         addCerts.setVisible(false);
         this.add(addCerts);
+
+        copyCode = new JButton("Copy AuthCode");
+        copyCode.setBounds(350, 0, 150, 40);
+        copyCode.addActionListener(this);
+        copyCode.setVisible(false);
+        this.add(copyCode);
     }
 
     public void refreshShow() {
         this.setVisible(true);
         userTable.fireTableDataChanged();
+        table.clearSelection();
     }
 
     @Override
@@ -84,14 +98,24 @@ public class ManageUserFrame extends JDialog implements ActionListener {
                     .setContents(new StringSelection(App.db.newInstructor()),null);
             JOptionPane.showMessageDialog(this, "Registration code has been copied to clipboard!");
         }
-        else if (e.getSource() == delete)
-            App.db.removeUser(table.getSelectedRow());
+        else if (e.getSource() == delete) {
+            if (table.getValueAt(table.getSelectedRow(), 2).toString().equals("GymAdmin"))
+                JOptionPane.showMessageDialog(this, "Cannot delete admin!");
+            else
+                App.db.removeUser(table.getSelectedRow());
+        }
         else if (e.getSource() == addCerts) {
             String cert = JOptionPane.showInputDialog(this, "Cert name?", null);
             if ((cert != null) && (!cert.isEmpty()) && !cert.equals("None"))
                 App.db.instructorAddCert(table.getSelectedRow(), cert);
             else
                 JOptionPane.showMessageDialog(this, "Invalid name!");
+        }
+        else if (e.getSource() == copyCode) {
+            Toolkit.getDefaultToolkit()
+                    .getSystemClipboard()
+                    .setContents(new StringSelection(App.db.adminReqInstructorAuthCode(table.getSelectedRow())),null);
+            JOptionPane.showMessageDialog(this, "Registration code has been copied to clipboard!");
         }
 
         userTable.fireTableDataChanged();
