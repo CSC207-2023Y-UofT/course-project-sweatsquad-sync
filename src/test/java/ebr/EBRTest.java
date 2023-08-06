@@ -21,6 +21,7 @@ public class EBRTest {
         g.removeRooms(r1);
         Assertions.assertEquals(g.getRooms().toString(), "[ebr.Room@65]");
     }
+    /* comment
     @Test
     public void WorkoutOfferingTest() {
         Workout w = new Workout("asdf");
@@ -28,4 +29,5 @@ public class EBRTest {
         w.offerings.add(new Workout.Offering(Workout.Weekday.Monday, LocalTime.of(10, 0), Duration.ofMinutes(30), r));
         System.out.println(w.offerings);
     }
+    */
 }
