@@ -12,7 +12,7 @@ public class UserInfoFrame extends JFrame implements ActionListener {
 
     public JTextField firstNameInfoField, lastNameInfoField, emailInfoField, userInfoField;
     private JPasswordField passField;
-    private JButton updateButton;
+    private JButton saveChangesBtn, updatePasscodeBtn;
     private JLabel err1, err2, err3, err4;
 
     private CardLayout cardLayout = new CardLayout();

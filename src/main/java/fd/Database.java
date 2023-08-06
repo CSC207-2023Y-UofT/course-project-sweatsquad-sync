@@ -14,7 +14,7 @@ public class Database {
     // declares database vars - hashmap, txt file, and hash toggle
     private final String filename = "gym.bin";
     private Gym gym;
-    User activeUser;
+    private User activeUser;
 
     // database constructor
     public Database() {
@@ -157,6 +157,18 @@ public class Database {
 
     public String getActiveUserFirstName() {
         return this.activeUser == null ? "Guest" : this.activeUser.firstName;
+    }
+
+    public String getActiveUserLastName() {
+        return this.activeUser == null ? "Guest" : this.activeUser.lastName;
+    }
+
+    public String getActiveUserEmail() {
+        return this.activeUser == null ? "Guest" : this.activeUser.email;
+    }
+
+    public String getActiveUserUsername() {
+        return this.activeUser == null ? "Guest" : this.activeUser.getName();
     }
 
     public List<String[]> getCurrentWorkouts() {
