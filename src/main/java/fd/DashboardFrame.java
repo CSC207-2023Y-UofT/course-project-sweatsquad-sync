@@ -102,25 +102,25 @@ public class DashboardFrame extends JFrame implements ActionListener {
                 "#001561", false);
         viewEntireSchedule.setFont(UI.MB20);
         viewEntireSchedule.setForeground(Color.decode("#FFFFFF"));
-        viewEntireSchedule.setBounds(66, 445, 320, 40);
+        viewEntireSchedule.setBounds(66, 445, 280, 140);
         viewEntireSchedule.addActionListener(this);
 
         enrolBtn = UI.genRoundBtn("Manage Classes", 30, "#001561", false);
         enrolBtn.setFont(UI.MB23);
         enrolBtn.setForeground(Color.decode("#FFFFFF"));
-        enrolBtn.setBounds(490, 180, 218, 75);
+        enrolBtn.setBounds(413, 123, 280, 140);
         enrolBtn.addActionListener(this);
 
         manageRooms = UI.genRoundBtn("Manage Rooms", 30, "#001561", false);
         manageRooms.setFont(UI.MB23);
         manageRooms.setForeground(Color.decode("#FFFFFF"));
-        manageRooms.setBounds(66, 180, 218, 75);
+        manageRooms.setBounds(107, 123, 280, 140);
         manageRooms.addActionListener(this);
 
         manageUsers = UI.genRoundBtn("Manage Users", 30, "#001561", false);
         manageUsers.setFont(UI.MB23);
         manageUsers.setForeground(Color.decode("#FFFFFF"));
-        manageUsers.setBounds(66, 380, 218, 75);
+        manageUsers.setBounds(107, 300, 280, 140);
         manageUsers.addActionListener(this);
     }
 
