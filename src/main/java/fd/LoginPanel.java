@@ -9,6 +9,7 @@ public class LoginPanel extends JPanel implements ActionListener {
     private JButton loginButton;
     private JTextField usernameField;
     private JPasswordField passcodeField;
+
     LoginPanel() {
         this.setLayout(null); // layout form, switches between cards
         this.setOpaque(false);
