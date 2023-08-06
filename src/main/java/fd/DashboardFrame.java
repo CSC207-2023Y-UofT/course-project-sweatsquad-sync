@@ -15,6 +15,8 @@ public class DashboardFrame extends JFrame implements ActionListener {
     private CourseFrame courseBrowser = new CourseFrame();
     private ScheduleFrame scheduleView = new ScheduleFrame();
     private UserInfoFrame userInfoEdit = new UserInfoFrame();
+    private ManageUserFrame userManager = new ManageUserFrame();
+    private ManageRoomFrame roomManager = new ManageRoomFrame();
 
     public DashboardFrame() {
         setTitle("Dashboard"); // window title
@@ -123,19 +125,31 @@ public class DashboardFrame extends JFrame implements ActionListener {
     }
 
     public void userRefresh() {
-        this.add(dailyWorkoutTips);
-        this.add(upcomingC);
-        this.add(upcomingC1);
-        this.add(upcomingC2);
-        this.add(upcomingC3);
-        this.add(viewEntireSchedule);
+        String[] next = App.db.nextClasses();
+        if (next.length != 0) {
+            this.add(upcomingC);
+            this.add(upcomingC1);
+            this.add(upcomingC2);
+            this.add(upcomingC3);
+            this.add(viewEntireSchedule);
+        }
+        else {
+            this.remove(upcomingC);
+            this.remove(upcomingC1);
+            this.remove(upcomingC2);
+            this.remove(upcomingC3);
+            this.remove(viewEntireSchedule);
+        }
         this.add(enrolBtn);
+        this.add(dailyWorkoutTips);
         this.remove(manageRooms);
         this.remove(manageUsers);
+        courseBrowser.userView();
     }
 
     public void instructorRefresh() {
         userRefresh();
+        courseBrowser.instructorView();
     }
 
     public void adminRefresh() {
@@ -148,6 +162,7 @@ public class DashboardFrame extends JFrame implements ActionListener {
         this.add(enrolBtn);
         this.add(manageRooms);
         this.add(manageUsers);
+        courseBrowser.adminView();
     }
 
     public void refreshShow() {
@@ -168,6 +183,10 @@ public class DashboardFrame extends JFrame implements ActionListener {
             scheduleView.refreshShow();
         else if (e.getSource() == logout_icon)
             App.logout();
+        else if (e.getSource() == manageRooms)
+            roomManager.refreshShow();
+        else if (e.getSource() == manageUsers)
+            userManager.refreshShow();
     }
 
 }

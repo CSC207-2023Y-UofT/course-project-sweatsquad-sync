@@ -40,12 +40,6 @@ public class Database {
         ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename));
         Gym g = (Gym)ois.readObject();
         ois.close();
-
-        // todo take out after -admin can add instructor functionality is added
-        Instructor instructor = new Instructor();
-        System.out.println(instructor.getAuthCode());
-        g.addUser(instructor);
-
         return g;
     }
 
@@ -166,14 +160,31 @@ public class Database {
     }
 
     public List<String[]> getCurrentWorkouts() {
-        // TODO
         return gym.getWorkouts().stream().map(w -> new String[]{
                 w.name,
                 w.offerings.stream().map(o -> o.room.name).collect(Collectors.joining(", ")),
                 w.offerings.stream().map(o -> o.start.toString()).collect(Collectors.joining(", ")),
-                w.getUsers().stream().filter(u -> u instanceof Instructor).map(Object::toString).collect(Collectors.joining(", ")),
-                w.getUsers().size() + "/" + w.capacity
+                w.getUsers().stream().filter(u -> u instanceof Instructor).map(i -> i.firstName + " " + i.lastName).collect(Collectors.joining(", ")),
+                w.getNonStaffUserCount() + "/" + w.capacity,
+                activeUser instanceof Instructor ? "Teach" : (w.getUsers().contains(activeUser) ? "Drop" : "Enrol")
         }).collect(Collectors.toList());
+    }
+
+    public List<String> getCurrentRooms() {
+        return gym.getRooms().stream().map(r -> r.name).collect(Collectors.toList());
+    }
+
+    public List<String[]> getCurrentUsers() {
+        return gym.getUsers().stream().map(
+                u -> new String[]{
+                        u.firstName == null ? "N/A" : u.firstName + " " + u.lastName,
+                        u.getName(),
+                        u.getClass().getSimpleName(),
+                        u instanceof Instructor ?
+                                ((Instructor) u).certs.isEmpty() ? "None" :
+                                        String.join(", ", ((Instructor) u).certs) :
+                                "N/A"
+                }).collect(Collectors.toList());
     }
 
     public boolean addWorkout(String name, int capacity) {
@@ -196,5 +207,76 @@ public class Database {
 
     public boolean isEmpty() {
         return gym.getUsers().isEmpty();
+    }
+
+    public String newInstructor() {
+        Instructor i = new Instructor();
+        gym.addUser(i);
+        return i.getAuthCode();
+    }
+
+    public void removeUser(int i) {
+        gym.removeUser(gym.getUsers().stream().collect(Collectors.toList()).get(i));
+    }
+
+    public boolean addRoom(String name) {
+        for (Room r : gym.getRooms())
+            if (r.name.equals(name))
+                return false;
+
+        gym.addRoom(new Room(name));
+        return true;
+    }
+
+    public void removeRoom(String name) {
+        for (Room r: gym.getRooms())
+            if (r.name.equals(name)) {
+                gym.removeRooms(r);
+                return;
+            }
+    }
+    public void instructorAddCert(int i, String cert) {
+        ((Instructor)gym.getUsers().stream().collect(Collectors.toList()).get(i)).certs.add(cert);
+    }
+
+    public String[] nextClasses() {
+//    todo    activeUser.getWorkouts().stream().flatMap(w -> w.offerings.stream()).map(o -> o.start);
+        return new String[]{};
+    }
+
+    public String adminReqInstructorAuthCode(int i) {
+        return ((Instructor)gym.getUsers().stream().collect(Collectors.toList()).get(i)).getAuthCode();
+    }
+
+    public void removeWorkout(int i) {
+        gym.removeWorkout(gym.getWorkouts().stream().collect(Collectors.toList()).get(i));
+    }
+
+    public String toggleEnrol(int i) {
+        Workout w = gym.getWorkouts().stream().collect(Collectors.toList()).get(i);
+        if (activeUser instanceof Instructor)
+            if (w.getUsers().contains(activeUser))
+                return "You already teach this class!";
+            else {
+                activeUser.addWorkout(w);
+                return "You now teach this class!";
+            }
+        else {
+            if (w.getUsers().contains(activeUser)) {
+                activeUser.removeWorkout(w);
+            }
+            else {
+                activeUser.addWorkout(w);
+            }
+            return null;
+        }
+    }
+
+    public List<String[]> getCurrentOfferings(int i) {
+        return gym.getWorkouts().stream().collect(Collectors.toList()).get(i).offerings.stream().map(o -> new String[]{
+                o.day.toString() + o.start.toString(),
+                o.duration.toString(),
+                o.room.toString()
+        }).collect(Collectors.toList());
     }
 }

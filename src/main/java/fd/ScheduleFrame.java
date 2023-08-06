@@ -10,11 +10,11 @@ import java.util.List;
 
 public class ScheduleFrame extends JDialog implements ActionListener {
     private AbstractTableModel scheduleTable = new AbstractTableModel() {
-        private final String[] enrolTableCols = {"", "M", "T", "W", "Tu", "F", "S", "Su"};
-        public int getColumnCount() { return 8; }
+        private final String[] cols = {"", "M", "T", "W", "Tu", "F", "S", "Su"};
+        public int getColumnCount() { return cols.length; }
         public int getRowCount() { return 10; }
         public String getColumnName(int col) {
-            return enrolTableCols[col];
+            return cols[col];
         }
         public Object getValueAt(int row, int col) {
             if (col == 0)
@@ -35,6 +35,7 @@ public class ScheduleFrame extends JDialog implements ActionListener {
         t.setRowHeight(50);
         t.getTableHeader().setResizingAllowed(false);
         t.getTableHeader().setReorderingAllowed(false);
+        t.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         JScrollPane p = new JScrollPane(t);
         this.add(p);
     }
