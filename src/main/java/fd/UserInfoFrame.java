@@ -81,7 +81,7 @@ public class UserInfoFrame extends JFrame implements ActionListener {
         passChange.setFont(UI.MB16);
         passChange.setForeground(Color.decode("#001561"));
 
-        underLine.setIcon(new ImageIcon("images/00101-sign-indicator.png"));
+        underLine.setIcon(new ImageIcon("images/00201-reg-indicator.png"));
     }
 
     public void refreshShow() {
