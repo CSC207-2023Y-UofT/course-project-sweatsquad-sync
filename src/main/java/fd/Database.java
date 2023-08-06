@@ -14,7 +14,7 @@ public class Database {
     // declares database vars - hashmap, txt file, and hash toggle
     private final String filename = "gym.bin";
     private Gym gym;
-    private User activeUser;
+    User activeUser;
 
     // database constructor
     public Database() {

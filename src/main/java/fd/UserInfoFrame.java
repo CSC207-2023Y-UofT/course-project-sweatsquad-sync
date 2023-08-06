@@ -4,15 +4,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class UserInfoFrame extends JFrame implements ActionListener {
 
     private JButton infoChange, passChange;
     private JLabel underLine;
 
-    private JTextField firstNameField, lastNameField, emailField, userField;
+    public JTextField firstNameInfoField, lastNameInfoField, emailInfoField, userInfoField;
     private JPasswordField passField;
     private JButton updateButton;
     private JLabel err1, err2, err3, err4;
@@ -57,40 +55,40 @@ public class UserInfoFrame extends JFrame implements ActionListener {
         firstNameLabel.setBounds(189, 98, 422, 25);
         this.add(firstNameLabel);
 
-        firstNameField = UI.genRoundTextField("", 20, "#FFFFFF", false);
-        firstNameField.setBounds(189, 123, 198, 45);
-        firstNameField.setFont(UI.CB18);
-        this.add(firstNameField);
+        firstNameInfoField = UI.genRoundTextField("", 20, "#FFFFFF", false);
+        firstNameInfoField.setBounds(189, 123, 198, 45);
+        firstNameInfoField.setFont(UI.CB18);
+        this.add(firstNameInfoField);
 
         JLabel lastNameLabel = new JLabel("Last Name");
         lastNameLabel.setFont(UI.MB15);
         lastNameLabel.setBounds(413, 98, 422, 25);
         this.add(lastNameLabel);
 
-        lastNameField = UI.genRoundTextField("", 20, "#FFFFFF", false);
-        lastNameField.setBounds(413, 123, 198, 45);
-        lastNameField.setFont(UI.CB18);
-        this.add(lastNameField);
+        lastNameInfoField = UI.genRoundTextField("", 20, "#FFFFFF", false);
+        lastNameInfoField.setBounds(413, 123, 198, 45);
+        lastNameInfoField.setFont(UI.CB18);
+        this.add(lastNameInfoField);
 
         JLabel emailLabel = new JLabel("Email");
         emailLabel.setFont(UI.MB15);
         emailLabel.setBounds(189, 185, 422, 25);
         this.add(emailLabel);
 
-        emailField = UI.genRoundTextField("", 20, "#FFFFFF", false);
-        emailField.setBounds(189, 210, 422, 45);
-        emailField.setFont(UI.CB18);
-        this.add(emailField);
+        emailInfoField = UI.genRoundTextField("", 20, "#FFFFFF", false);
+        emailInfoField.setBounds(189, 210, 422, 45);
+        emailInfoField.setFont(UI.CB18);
+        this.add(emailInfoField);
 
         JLabel signupUsernameLabel = new JLabel("Username");
         signupUsernameLabel.setFont(UI.MB15);
         signupUsernameLabel.setBounds(189, 272, 422, 25);
         this.add(signupUsernameLabel);
 
-        userField = UI.genRoundTextField("", 20, "#FFFFFF", false);
-        userField.setBounds(189, 297, 422, 45);
-        userField.setFont(UI.CB18);
-        this.add(userField);
+        userInfoField = UI.genRoundTextField("", 20, "#FFFFFF", false);
+        userInfoField.setBounds(189, 297, 422, 45);
+        userInfoField.setFont(UI.CB18);
+        this.add(userInfoField);
 
         JLabel signupPasswordLabel = new JLabel("Password");
         signupPasswordLabel.setFont(UI.MB15);
@@ -118,7 +116,6 @@ public class UserInfoFrame extends JFrame implements ActionListener {
         err4.setFont(UI.MB12);
         err4.setBounds(620, 385, 150, 40);
         this.add(err4);
-
 
         // adding panels to cards
         cards.add(detailsPanel, "Details");
