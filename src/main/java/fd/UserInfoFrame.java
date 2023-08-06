@@ -6,152 +6,87 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class UserInfoFrame extends JFrame implements ActionListener {
-
-    private JButton infoChange, passChange;
-    private JLabel underLine;
-
-    public JTextField firstNameInfoField, lastNameInfoField, emailInfoField, userInfoField;
-    private JPasswordField passField;
-    private JButton saveChangesBtn, updatePasscodeBtn;
-    private JLabel err1, err2, err3, err4;
-
+    private JButton detailsTab, passChangeTab;
+    private JLabel signIndicator;
     private CardLayout cardLayout = new CardLayout();
     private JPanel cards = new JPanel(cardLayout);
-    private JPanel detailsPanel = new JPanel();
-    private JPanel passChangePanel = new JPanel();
+
+    public DetailsPanel detailsPanel = new DetailsPanel();
 
     public UserInfoFrame() {
-        setTitle("Edit User Information");
+        setTitle("Details");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 600);
         setResizable(false);
         setLocationRelativeTo(null);
         setLayout(null);
+        setBackground(Color.decode("#DADADA"));
 
-        infoChange = new JButton("Account Details"); // left tab
-        infoChange.setBounds(180, 27, 225, 50);
-        infoChange.addActionListener(this);
-        infoChange.setOpaque(false);
-        infoChange.setContentAreaFilled(false);
-        infoChange.setBorderPainted(false);
-        infoChange.setFocusPainted(false);
-        add(infoChange);
+        detailsTab = new JButton("Account Details");
+        detailsTab.setBounds(180, 27, 225, 50);
+        detailsTab.addActionListener(this);
+        detailsTab.setOpaque(false);
+        detailsTab.setContentAreaFilled(false);
+        detailsTab.setBorderPainted(false);
+        detailsTab.setFocusPainted(false);
+        add(detailsTab);
 
-        passChange = new JButton("Change Password"); // right tab
-        passChange.setBounds(395, 27, 225, 50);
-        passChange.addActionListener(this);
-        passChange.setOpaque(false);
-        passChange.setContentAreaFilled(false);
-        passChange.setBorderPainted(false);
-        passChange.setFocusPainted(false);
-        add(passChange);
+        passChangeTab = new JButton("Change Password");
+        passChangeTab.setBounds(395, 27, 225, 50);
+        passChangeTab.addActionListener(this);
+        passChangeTab.setOpaque(false);
+        passChangeTab.setContentAreaFilled(false);
+        passChangeTab.setBorderPainted(false);
+        passChangeTab.setFocusPainted(false);
+        add(passChangeTab);
 
-        underLine = new JLabel(""); // underline
-        underLine.setBounds(189, 65, 422, 9);
-        add(underLine);
+        signIndicator = new JLabel("");
+        signIndicator.setBounds(189, 65, 422, 9);
+        add(signIndicator);
 
-        // transferred content
-        JLabel firstNameLabel = new JLabel("First Name");
-        firstNameLabel.setFont(UI.MB15);
-        firstNameLabel.setBounds(189, 98, 422, 25);
-        this.add(firstNameLabel);
-
-        firstNameInfoField = UI.genRoundTextField("", 20, "#FFFFFF", false);
-        firstNameInfoField.setBounds(189, 123, 198, 45);
-        firstNameInfoField.setFont(UI.CB18);
-        this.add(firstNameInfoField);
-
-        JLabel lastNameLabel = new JLabel("Last Name");
-        lastNameLabel.setFont(UI.MB15);
-        lastNameLabel.setBounds(413, 98, 422, 25);
-        this.add(lastNameLabel);
-
-        lastNameInfoField = UI.genRoundTextField("", 20, "#FFFFFF", false);
-        lastNameInfoField.setBounds(413, 123, 198, 45);
-        lastNameInfoField.setFont(UI.CB18);
-        this.add(lastNameInfoField);
-
-        JLabel emailLabel = new JLabel("Email");
-        emailLabel.setFont(UI.MB15);
-        emailLabel.setBounds(189, 185, 422, 25);
-        this.add(emailLabel);
-
-        emailInfoField = UI.genRoundTextField("", 20, "#FFFFFF", false);
-        emailInfoField.setBounds(189, 210, 422, 45);
-        emailInfoField.setFont(UI.CB18);
-        this.add(emailInfoField);
-
-        JLabel signupUsernameLabel = new JLabel("Username");
-        signupUsernameLabel.setFont(UI.MB15);
-        signupUsernameLabel.setBounds(189, 272, 422, 25);
-        this.add(signupUsernameLabel);
-
-        userInfoField = UI.genRoundTextField("", 20, "#FFFFFF", false);
-        userInfoField.setBounds(189, 297, 422, 45);
-        userInfoField.setFont(UI.CB18);
-        this.add(userInfoField);
-
-        JLabel signupPasswordLabel = new JLabel("Password");
-        signupPasswordLabel.setFont(UI.MB15);
-        signupPasswordLabel.setBounds(189, 359, 422, 25);
-        this.add(signupPasswordLabel);
-
-        passField = UI.genRoundPasswordField("", 20, "#FFFFFF", false);
-        passField.setBounds(189, 384, 422, 45);
-        passField.setFont(UI.CB18);
-        this.add(passField);
-
-        err1 = new JLabel("");
-        err1.setFont(UI.MB12);
-        err1.setBounds(620, 124, 130, 40);
-        this.add(err1);
-        err2 = new JLabel("");
-        err2.setFont(UI.MB12);
-        err2.setBounds(620, 211, 150, 40);
-        this.add(err2);
-        err3 = new JLabel("");
-        err3.setFont(UI.MB12);
-        err3.setBounds(620, 298, 150, 40);
-        this.add(err3);
-        err4 = new JLabel("");
-        err4.setFont(UI.MB12);
-        err4.setBounds(620, 385, 150, 40);
-        this.add(err4);
-
-        // adding panels to cards
-        cards.add(detailsPanel, "Details");
-        cards.add(passChangePanel, "PassChange");
-        cards.setBounds(180, 100, 600, 450);
+        cards.add(detailsPanel, "Change Details");
+        //cards.add(passChangePanel, "Change Passcode");
+        cards.setBounds(0, 0, 800, 700);
+        cards.setOpaque(false);
+        cardLayout.show(cards, "Login");
         add(cards);
 
-        infoChangeCard();  // default card (left tab)
+        detailsCard();
     }
 
-    public void infoChangeCard() {
+    public void detailsCard() {
         cardLayout.show(cards, "Details");
 
-        infoChange.setFocusable(false);
-        infoChange.setFont(UI.MB16);  // Placeholder font
-        infoChange.setForeground(Color.decode("#001561"));
+        detailsTab.setFocusable(false);
+        detailsTab.setFont(UI.MB16);
+        detailsTab.setForeground(Color.decode("#001561"));
+        this.add(detailsTab);
 
-        passChange.setFocusable(true);
-        passChange.setFont(UI.MB14);  // Placeholder font
-        passChange.setForeground(Color.decode("#000000"));
+        passChangeTab.setFocusable(true);
+        passChangeTab.setFont(UI.MB14);
+        passChangeTab.setForeground(Color.decode("#000000"));
+        this.add(passChangeTab);
 
-        underLine.setIcon(new ImageIcon("images/00101-sign-indicator.png"));
+        // Assuming some indicator for the DetailsPanel
+        signIndicator.setIcon(new ImageIcon("images/00101-sign-indicator.png"));
     }
 
     public void passChangeCard() {
-        cardLayout.show(cards, "PassChange");
+        //passChangePanel.reset();
 
-        infoChange.setFocusable(true);
-        infoChange.setFont(UI.MB14);
-        infoChange.setForeground(Color.decode("#000000"));
+        cardLayout.show(cards, "Signup");
 
-        passChange.setFocusable(false);
-        passChange.setFont(UI.MB16);
-        passChange.setForeground(Color.decode("#001561"));
+        detailsTab.setFocusable(true);
+        detailsTab.setFont(UI.MB14);
+        detailsTab.setForeground(Color.decode("#000000"));
+        this.add(detailsTab);
 
-        underLine.setIcon(new ImageIcon("images/00201-reg-indicator.png"));
+        passChangeTab.setFocusable(false);
+        passChangeTab.setFont(UI.MB16);
+        passChangeTab.setForeground(Color.decode("#001561"));
+        this.add(passChangeTab);
+
+        signIndicator.setIcon(new ImageIcon("images/00201-reg-indicator.png"));
     }
 
     public void refreshShow() {
@@ -160,13 +95,9 @@ public class UserInfoFrame extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == infoChange)
-            infoChangeCard();
-        else if (e.getSource() == passChange)
+        if (e.getSource() == detailsTab)
+            detailsCard();
+        else
             passChangeCard();
-    }
-
-    public static void main(String[] args) {  // Just for testing
-        new UserInfoFrame();
     }
 }

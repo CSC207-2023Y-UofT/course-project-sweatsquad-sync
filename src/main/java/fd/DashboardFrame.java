@@ -179,10 +179,10 @@ public class DashboardFrame extends JFrame implements ActionListener {
             JOptionPane.showMessageDialog(this, "todo: huh????");
         else if (e.getSource() == settings) {
             userInfoEdit.refreshShow();
-            userInfoEdit.firstNameInfoField.setText(App.db.getActiveUserFirstName());
-            userInfoEdit.lastNameInfoField.setText(App.db.getActiveUserLastName());
-            userInfoEdit.emailInfoField.setText(App.db.getActiveUserEmail());
-            userInfoEdit.userInfoField.setText(App.db.getActiveUserUsername());
+//            userInfoEdit.firstNameInfoField.setText(App.db.getActiveUserFirstName());
+//            userInfoEdit.lastNameInfoField.setText(App.db.getActiveUserLastName());
+//            userInfoEdit.emailInfoField.setText(App.db.getActiveUserEmail());
+//            userInfoEdit.userInfoField.setText(App.db.getActiveUserUsername());
         } else if (e.getSource() == viewEntireSchedule)
             scheduleView.refreshShow();
         else if (e.getSource() == logout_icon)
