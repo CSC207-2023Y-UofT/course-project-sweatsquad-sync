@@ -53,7 +53,7 @@ class PassChangePanel extends JPanel implements ActionListener {
         confirmNewPasscode.setFont(UI.CB18);
         this.add(confirmNewPasscode);
 
-        savePasscodeBtn = UI.genRoundBtn("Save Changes", 50, "#001561", false);
+        savePasscodeBtn = UI.genRoundBtn("Update Password", 50, "#001561", false);
         savePasscodeBtn.setFont(UI.MB13);
         savePasscodeBtn.setForeground(Color.decode("#FFFFFF"));
         savePasscodeBtn.setBounds(189, 450, 422, 50);
@@ -77,7 +77,7 @@ class PassChangePanel extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == savePasscodeBtn) {
-            // passcode change logic here
+            //todo come back here
         }
     }
 }
