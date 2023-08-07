@@ -60,7 +60,7 @@ public class UI {
 
 
                 // hover status
-                boolean hoverStatus = (boolean) getClientProperty("isHovering");
+                Object hoverStatus = getClientProperty("isHovering");
                 //checks if the mouse is hovering the button
                 boolean isHovering = Boolean.TRUE.equals(hoverStatus);
 
