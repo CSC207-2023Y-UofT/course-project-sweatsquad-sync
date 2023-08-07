@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class EntryPointFrame extends JFrame implements ActionListener {
     private JButton loginTab, signupTab;
@@ -68,11 +70,31 @@ public class EntryPointFrame extends JFrame implements ActionListener {
         loginTab.setFocusable(false);
         loginTab.setFont(UI.MB16);
         loginTab.setForeground(Color.decode("#001561"));
+        // mouse event to revert mouse to default cursor
+        dispatchEvent(new MouseEvent(signupTab, MouseEvent.MOUSE_MOVED, System.currentTimeMillis(), 0, 0, 0, 0, false));
+        loginTab.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                // no longer shows that the button area's clickable
+                setCursor(Cursor.getDefaultCursor());
+            }
+        });
         this.add(loginTab);
 
         signupTab.setFocusable(true);
         signupTab.setFont(UI.MB14);
         signupTab.setForeground(Color.decode("#000000"));
+        signupTab.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                setCursor(Cursor.getDefaultCursor());
+            }
+        });
         this.add(signupTab);
 
         this.remove(authCodeLabel);
@@ -88,11 +110,31 @@ public class EntryPointFrame extends JFrame implements ActionListener {
         loginTab.setFocusable(true);
         loginTab.setFont(UI.MB14);
         loginTab.setForeground(Color.decode("#000000"));
+        loginTab.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                setCursor(Cursor.getDefaultCursor());
+            }
+        });
         this.add(loginTab);
 
         signupTab.setFocusable(false);
         signupTab.setFont(UI.MB16);
         signupTab.setForeground(Color.decode("#001561"));
+        // mouse event to revert mouse to default cursor
+        dispatchEvent(new MouseEvent(loginTab, MouseEvent.MOUSE_MOVED, System.currentTimeMillis(), 0, 0, 0, 0, false));
+        signupTab.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                // no longer shows that the button area's clickable
+                setCursor(Cursor.getDefaultCursor());
+            }
+        });
         this.add(signupTab);
 
         this.remove(authCodeLabel);
