@@ -15,7 +15,7 @@ import java.util.List;
 public class WorkoutOfferingFrame extends JDialog implements ActionListener {
     private JButton add, edit, remove;
     private AbstractTableModel offeringTable = new AbstractTableModel() {
-        private final String[] cols = {"Time", "Duration", "Room"};
+        private final String[] cols = {"Time", "Duration (Hour)", "Room"};
         public int getColumnCount() { return cols.length; }
         public int getRowCount() { return (int)App.db.getCurrentOfferings(courseIndex).size(); }
         public String getColumnName(int col) {
