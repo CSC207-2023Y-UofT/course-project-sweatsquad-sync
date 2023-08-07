@@ -370,8 +370,8 @@ public class Database {
 
         Workout w = gym.getWorkouts().stream().collect(Collectors.toList()).get(course);
         for (Workout.Offering o : w.offerings) {
-            if ((o.start.isBefore(s) && !o.start.plus(o.duration).isBefore(s))
-                    || (!o.start.isAfter(s.plus(d))))
+            if (o.day == day && ((!o.start.isAfter(s) && s.isBefore(o.start.plus(o.duration)))
+                    || (o.start.isAfter(s) && o.start.isBefore(s.plus(d)))))
                 return false;
         }
 
