@@ -125,6 +125,12 @@ public class DashboardFrame extends JFrame implements ActionListener {
     }
 
     public void userRefresh() {
+
+        // button reorganization
+        enrolBtn.setBounds(490, 180, 218, 75);
+        dailyWorkoutTips.setBounds(490, 280, 218, 75);
+        settings.setBounds(490, 380, 218, 75);
+
         String[] next = App.db.nextClasses();
         if (next.length != 0) {
             this.add(upcomingC);
@@ -149,6 +155,9 @@ public class DashboardFrame extends JFrame implements ActionListener {
 
     public void instructorRefresh() {
         userRefresh();
+        enrolBtn.setBounds(490, 210, 280, 140);
+        dailyWorkoutTips.setBounds(490, 295, 218, 75);
+        settings.setBounds(490, 385, 280, 140);
         courseBrowser.instructorView();
     }
 
@@ -162,6 +171,9 @@ public class DashboardFrame extends JFrame implements ActionListener {
         this.add(enrolBtn);
         this.add(manageRooms);
         this.add(manageUsers);
+        dailyWorkoutTips.setBounds(490, 295, 218, 75);
+        enrolBtn.setBounds(413, 123, 280, 140);
+        settings.setBounds(413, 300, 280, 140);
         courseBrowser.adminView();
     }
 
