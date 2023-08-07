@@ -19,7 +19,7 @@ class PassChangePanel extends JPanel implements ActionListener {
         oldPassLabel.setBounds(189, 98, 422, 25);
         this.add(oldPassLabel);
 
-        oldPasscode = UI.genRoundPasswordField("", 20, "#FFFFFF", false);
+        oldPasscode = UI.genRoundPasswordField("", 20, "#FFFFFF");
         oldPasscode.setBounds(189, 123, 422, 45);
         oldPasscode.setFont(UI.CB18);
         this.add(oldPasscode);
@@ -29,7 +29,7 @@ class PassChangePanel extends JPanel implements ActionListener {
         newPassLabel.setBounds(189, 185, 422, 25);
         this.add(newPassLabel);
 
-        newPasscode = UI.genRoundPasswordField("", 20, "#FFFFFF", false);
+        newPasscode = UI.genRoundPasswordField("", 20, "#FFFFFF");
         newPasscode.setBounds(189, 210, 422, 45);
         newPasscode.setFont(UI.CB18);
         this.add(newPasscode);
@@ -39,7 +39,7 @@ class PassChangePanel extends JPanel implements ActionListener {
         confirmNewPassLabel.setBounds(189, 272, 422, 25);
         this.add(confirmNewPassLabel);
 
-        confirmNewPasscode = UI.genRoundPasswordField("", 20, "#FFFFFF", false);
+        confirmNewPasscode = UI.genRoundPasswordField("", 20, "#FFFFFF");
         confirmNewPasscode.setBounds(189, 297, 422, 45);
         confirmNewPasscode.setFont(UI.CB18);
         this.add(confirmNewPasscode);

@@ -61,7 +61,7 @@ class DetailsPanel extends JPanel implements ActionListener {
         signupPasswordLabel.setBounds(189, 359, 422, 25);
         this.add(signupPasswordLabel);
 
-        passField = UI.genRoundPasswordField("", 20, "#FFFFFF", false);
+        passField = UI.genRoundPasswordField("", 20, "#FFFFFF");
         passField.setBounds(189, 384, 422, 45);
         passField.setFont(UI.CB18);
         this.add(passField);

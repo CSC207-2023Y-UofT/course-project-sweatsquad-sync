@@ -29,8 +29,7 @@ public class LoginPanel extends JPanel implements ActionListener {
         passwordLabel.setBounds(189, 185, 422, 25);
         this.add(passwordLabel);
 
-        passcodeField = UI.genRoundPasswordField("", 20, "#FFFFFF",
-                false);
+        passcodeField = UI.genRoundPasswordField("", 20, "#FFFFFF");
         passcodeField.setFont(UI.A16);
         passcodeField.setBounds(189, 210, 422, 45);
         this.add(passcodeField);

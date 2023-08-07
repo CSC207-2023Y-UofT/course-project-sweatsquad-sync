@@ -9,7 +9,7 @@ import javax.swing.*;
 public class UI {
     public static Font
             A16  = new Font("Arial", Font.PLAIN, 16),
-            MP12 = new Font("Monsterrat", Font.PLAIN, 12),
+            // MP12 = new Font("Monsterrat", Font.PLAIN, 12), unused
             MP16 = new Font("Monsterrat", Font.PLAIN, 16),
             MB12 = new Font("Monsterrat", Font.BOLD, 12),
             MB13 = new Font("Monsterrat", Font.BOLD, 13),
@@ -25,11 +25,14 @@ public class UI {
     static public String capitalizeRemoveTrailingSpaces(String input) {
         String trimmedInput = input.trim();
 
-        if (!trimmedInput.isEmpty())
-            return Character.toUpperCase(trimmedInput.charAt(0)) + trimmedInput.substring(1);
+        if (!trimmedInput.isEmpty()) {
+            return Character.toUpperCase(trimmedInput.charAt(0))
+                    + trimmedInput.substring(1);
+        }
         else
             return "";
     }
+
     public static JButton genRoundBtn(String text, int roundness,
                                       String colorHex, boolean light) {
 
@@ -55,8 +58,11 @@ public class UI {
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                         RenderingHints.VALUE_ANTIALIAS_ON);
 
+
+                // hover status
+                boolean hoverStatus = (boolean) getClientProperty("isHovering");
                 //checks if the mouse is hovering the button
-                boolean isHovering = Boolean.TRUE.equals(getClientProperty("isHovering"));
+                boolean isHovering = Boolean.TRUE.equals(hoverStatus);
 
                 // choosing button background color based on the hover state
                 Color bgColor;
@@ -70,7 +76,8 @@ public class UI {
                 g2.setColor(bgColor);
 
                 // filling a round rectangle w/ RoundRectangle2D from geom lib.
-                g2.fill(new RoundRectangle2D.Float(0, 0, getWidth(), getHeight(), roundness, roundness));
+                g2.fill(new RoundRectangle2D.Float(0, 0, getWidth(),
+                        getHeight(), roundness, roundness));
 
                 // draw button text centered both vert. and horiz. in the btn
                 g2.setColor(getForeground());
@@ -114,7 +121,7 @@ public class UI {
     }
 
     public static JTextField genRoundTextField(String text, int roundness, String colorHex, boolean light) {
-        JTextField roundedField = new JTextField("") {
+        JTextField roundedField = new JTextField(text) {
             @Override
             // custom painting for the rounded background
             protected void paintComponent(Graphics g) {
@@ -128,7 +135,8 @@ public class UI {
 
                 // fill a round rectangle to create the rounded effect
                 g2.setColor(defaultColor);
-                g2.fill(new RoundRectangle2D.Float(0, 0, getWidth(), getHeight(), roundness, roundness));
+                g2.fill(new RoundRectangle2D.Float(0, 0, getWidth(),
+                        getHeight(), roundness, roundness));
 
                 // call paintComponent (from super) to render the text
                 super.paintComponent(g);
@@ -169,7 +177,9 @@ public class UI {
     }
 
     // creates custom rounded JPasswordField
-    public static JPasswordField genRoundPasswordField(String text, int roundness, String colorHex, boolean light) {
+    public static JPasswordField genRoundPasswordField(String text,
+                                                       int roundness,
+                                                       String colorHex) {
         JPasswordField roundedField = new JPasswordField(text) {
             @Override
             // custom painting for the rounded background

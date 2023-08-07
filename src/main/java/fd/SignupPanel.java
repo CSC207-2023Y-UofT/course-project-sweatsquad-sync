@@ -70,7 +70,7 @@ class SignupPanel extends JPanel implements ActionListener {
         signupPasswordLabel.setBounds(189, 359, 422, 25);
         this.add(signupPasswordLabel);
 
-        passField = UI.genRoundPasswordField("", 20, "#FFFFFF", false);
+        passField = UI.genRoundPasswordField("", 20, "#FFFFFF");
         passField.setBounds(189, 384, 198, 45);
         passField.setFont(UI.CB18);
         this.add(passField);
@@ -80,7 +80,7 @@ class SignupPanel extends JPanel implements ActionListener {
         confirmPasswordLabel.setBounds(189, 359, 422, 25);
         this.add(confirmPasswordLabel);
 
-        confirmPassField = UI.genRoundPasswordField("", 20, "#FFFFFF", false);
+        confirmPassField = UI.genRoundPasswordField("", 20, "#FFFFFF");
         confirmPassField.setBounds(413, 384, 198, 45);
         confirmPassField.setFont(UI.CB18);
         this.add(confirmPassField);
