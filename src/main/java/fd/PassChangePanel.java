@@ -68,7 +68,49 @@ class PassChangePanel extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == savePasscodeBtn) {
-            //todo come back here
+            String oldPass = new String(oldPasscode.getPassword());
+            String newPass = new String(newPasscode.getPassword());
+            String confirmNewPass = new String(confirmNewPasscode.getPassword());
+            err1.setText("");
+            err2.setText("");
+            err3.setText("");
+
+            boolean checksFailed = false;
+
+            // checks if old password is correct
+            if (!App.login(App.db.getActiveUserUsername(), oldPass)) {
+                err1.setText("Incorrect password");
+                JOptionPane.showMessageDialog(this, "*Incorrect password, try again");
+                checksFailed = true;
+            }
+
+            // check empty - new password field
+            if (newPass.isEmpty()) {
+                err2.setText("New password field cannot be left blank");
+                JOptionPane.showMessageDialog(this, "<HTML>*New password field<BR>cannot be left blank</HTML>");
+                checksFailed = true;
+            }
+
+            // check new password + confirm password fields match
+            if (!newPass.equals(confirmNewPass)) {
+                err3.setText("Passwords do not match");
+                JOptionPane.showMessageDialog(this, "<HTML>*New password and confirm password<BR> fields do not match</HTML>");
+                checksFailed = true;
+            }
+
+            if (checksFailed) {
+                oldPasscode.setText("");
+                newPasscode.setText("");
+                confirmNewPasscode.setText("");
+                return;
+            }
+
+            // all checks have passed - update user password
+            App.db.updateActiveUserPasscode(App.db.getActiveUserUsername(), newPass);
+            JOptionPane.showMessageDialog(this, "Password successfully updated!");
+            oldPasscode.setText("");
+            newPasscode.setText("");
+            confirmNewPasscode.setText("");
         }
     }
 }

@@ -201,6 +201,12 @@ public class Database {
         return true;
     }
 
+    public void updateActiveUserPasscode(String user, String newPasscode) {
+        for (User u : gym.getUsers())
+            if (u.getName().equals(user))
+                u.passHash = newPasscode;
+    }
+
     public List<String[]> getCurrentWorkouts() {
         return gym.getWorkouts().stream().map(w -> new String[]{
                 w.name,
