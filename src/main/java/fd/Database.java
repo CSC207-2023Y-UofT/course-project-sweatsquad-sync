@@ -316,6 +316,32 @@ public class Database {
         }
     }
 
+    public List<String[]> getNextThreeOfferings() {
+        class R {
+            LocalDateTime t;
+            String name, room;
+            R(LocalDateTime t, String n, String room) { this.t = t; this.name = n; this.room = room; }
+        }
+        List<R> rs = new ArrayList<>();
+        for (int i = 0; i < 4; i++) {
+            LocalDate wk = LocalDate.now().with(DayOfWeek.SUNDAY).plusWeeks(i);
+            for (Workout w : activeUser.getWorkouts())
+                for (Workout.Offering o : w.offerings)
+                    rs.add(new R(wk.with(o.day).atTime(o.start), w.name, o.room.name));
+        }
+        rs.sort(new Comparator<R>() {
+            @Override
+            public int compare(R o1, R o2) {
+                return o1.t.compareTo(o2.t);
+            }
+        });
+        return rs.stream().filter(r -> r.t.isAfter(LocalDateTime.now())).map(r -> new String[]{
+                r.name,
+                r.room,
+                r.t.format(DateTimeFormatter.ISO_LOCAL_DATE) + " " + r.t.format(DateTimeFormatter.ISO_LOCAL_TIME)
+        }).limit(3).collect(Collectors.toList());
+    }
+
     public List<String[]> getCurrentOfferings(int idx) {
         return gym.getWorkouts().stream().collect(Collectors.toList()).get(idx).offerings.stream().map(o -> new String[]{
                 o.day.toString() + " " + o.start.format(DateTimeFormatter.ofPattern("HH:mm")),

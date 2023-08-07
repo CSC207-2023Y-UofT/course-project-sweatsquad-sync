@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 
 public class DashboardFrame extends JFrame implements ActionListener {
     private JButton viewEntireSchedule, enrolBtn, logout, logout_icon, settings, dailyWorkoutTips,
@@ -76,8 +77,8 @@ public class DashboardFrame extends JFrame implements ActionListener {
         upcomingC.setForeground(Color.decode("#000000"));
         upcomingC.setBounds(66, 130, 422, 47);
 
-        upcomingC1 = new JLabel("<html><b>14:00</b><BR><BR>16:00</html>");
-        upcomingC1.setFont(UI.MP12);
+        upcomingC1 = new JLabel("Class 1 Info");
+        upcomingC1.setFont(UI.MP16);
         upcomingC1.setForeground(Color.decode("#FFFFFF"));
         upcomingC1.setBackground(Color.decode("#40508a"));
         upcomingC1.setOpaque(true);
@@ -125,13 +126,16 @@ public class DashboardFrame extends JFrame implements ActionListener {
     }
 
     public void userRefresh() {
-        String[] next = App.db.nextClasses();
-        if (next.length != 0) {
+        List<String[]> next = App.db.getNextThreeOfferings();
+        if (!next.isEmpty()) {
             this.add(upcomingC);
             this.add(upcomingC1);
             this.add(upcomingC2);
             this.add(upcomingC3);
             this.add(viewEntireSchedule);
+            upcomingC1.setText("<html><b>" + next.get(0)[0] + "</b><BR>" + next.get(0)[1] +"<BR>" + next.get(0)[2] + "</html>");
+            upcomingC2.setText("<html><b>" + next.get(1)[0] + "</b><BR>" + next.get(1)[1] +"<BR>" + next.get(1)[2] + "</html>");
+            upcomingC3.setText("<html><b>" + next.get(2)[0] + "</b><BR>" + next.get(2)[1] +"<BR>" + next.get(2)[2] + "</html>");
         }
         else {
             this.remove(upcomingC);

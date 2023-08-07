@@ -119,6 +119,7 @@ public class CourseFrame extends JDialog implements ActionListener {
         this.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 App.dashboard.refreshShow();
+                App.dashboard.repaint();
             }
         });
     }
