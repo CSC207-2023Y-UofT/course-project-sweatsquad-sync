@@ -287,11 +287,6 @@ public class Database {
         ((Instructor)gym.getUsers().stream().collect(Collectors.toList()).get(i)).certs.add(cert);
     }
 
-    public String[] nextClasses() {
-//    todo    activeUser.getWorkouts().stream().flatMap(w -> w.offerings.stream()).map(o -> o.start);
-        return new String[]{};
-    }
-
     public String adminReqInstructorAuthCode(int i) {
         return ((Instructor)gym.getUsers().stream().collect(Collectors.toList()).get(i)).getAuthCode();
     }
@@ -300,14 +295,20 @@ public class Database {
         gym.removeWorkout(gym.getWorkouts().stream().collect(Collectors.toList()).get(i));
     }
 
+    public void removeOffering(int i, int j) {
+        gym.getWorkouts().stream().collect(Collectors.toList()).get(i).offerings.remove(j);
+    }
+
     public String toggleEnrol(int i) {
         Workout w = gym.getWorkouts().stream().collect(Collectors.toList()).get(i);
         if (activeUser instanceof Instructor)
             if (w.getUsers().contains(activeUser))
                 return "You already teach this class!";
             else {
-                activeUser.addWorkout(w);
-                return "You now teach this class!";
+                if (activeUser.addWorkout(w))
+                    return "You now teach this class!";
+                else
+                    return "You do not have the required certs to teach this class!";
             }
         else {
             if (w.getUsers().contains(activeUser)) {
@@ -320,11 +321,87 @@ public class Database {
         }
     }
 
-    public List<String[]> getCurrentOfferings(int i) {
-        return gym.getWorkouts().stream().collect(Collectors.toList()).get(i).offerings.stream().map(o -> new String[]{
-                o.day.toString() + o.start.toString(),
-                o.duration.toString(),
-                o.room.toString()
+    public List<String[]> getCurrentOfferings(int idx) {
+        return gym.getWorkouts().stream().collect(Collectors.toList()).get(idx).offerings.stream().map(o -> new String[]{
+                o.day.toString() + " " + o.start.format(DateTimeFormatter.ofPattern("HH:mm")),
+                Long.toString(o.duration.toHours()),
+                o.room.name
         }).collect(Collectors.toList());
     }
+
+    public String requireCert(int i, String cert) {
+        Workout w = gym.getWorkouts().stream().collect(Collectors.toList()).get(i);
+        for (User u : w.getUsers())
+            if (u instanceof Instructor)
+                if (!((Instructor) u).certs.contains(cert))
+                    return "Instructor " + u.firstName + " " + u.lastName + " does not have cert " + cert + "!";
+
+        if (w.getRequiredCerts().contains(cert))
+            return "This cert is already required for this workout!";
+
+        w.requireCert(cert);
+        return null;
+    }
+
+    public boolean editOffering(int course, int offering, DayOfWeek day, String start, int duration, String room) {
+        LocalTime s = LocalTime.parse(start, DateTimeFormatter.ofPattern("HH:mm"));
+        Duration d = Duration.ofHours(duration);
+
+        Workout w = gym.getWorkouts().stream().collect(Collectors.toList()).get(course);
+        for (Workout.Offering o : w.offerings) {
+            if ((o.start.isBefore(s) && !o.start.plus(o.duration).isBefore(s))
+                    || (!o.start.isAfter(s.plus(d))))
+                return false;
+        }
+
+        Room r = null;
+        for (Room rr : gym.getRooms())
+            if (rr.name.equals(room)) {
+                r = rr;
+                break;
+            }
+
+        if (offering == -1)
+            w.offerings.add(new Workout.Offering(day, s, d, r));
+        else {
+            Workout.Offering o = w.offerings.get(offering);
+            o.day = day;
+            o.start = s;
+            o.duration = d;
+            o.room = r;
+        }
+        return true;
+    }
+
+    public boolean canEditCourse(int course) {
+        return course != -1 && (!(activeUser instanceof Instructor) || gym.getWorkouts().stream().collect(Collectors.toList()).get(course).getUsers().contains(activeUser));
+    }
+
+    public String[] getCurrentWorkoutCerts(int index) {
+        return gym.getWorkouts().stream().collect(Collectors.toList()).get(index).getRequiredCerts().toArray(new String[]{});
+    }
+
+    public void removeCurrentCert(int i, String cert) {
+        gym.getWorkouts().stream().collect(Collectors.toList()).get(i).deleteCert(cert);
+    }
+
+    public void removeUserFromWorkout(int i, String name) {
+        for (User u : gym.getUsers())
+            if (u.getName().equals(name))
+                u.removeWorkout(gym.getWorkouts().stream().collect(Collectors.toList()).get(i));
+    }
+
+    public List<String[]> getCurrentWorkoutUsers(int i) {
+        return gym.getWorkouts().stream().collect(Collectors.toList()).get(i).getUsers().stream().map(
+                u -> new String[]{
+                        u.firstName == null ? "N/A" : u.firstName + " " + u.lastName,
+                        u.getName(),
+                        u.getClass().getSimpleName(),
+                        u instanceof Instructor ?
+                                ((Instructor) u).certs.isEmpty() ? "None" :
+                                        String.join(", ", ((Instructor) u).certs) :
+                                "N/A"
+                }).collect(Collectors.toList());
+    }
+
 }
