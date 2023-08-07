@@ -185,9 +185,9 @@ class SignupPanel extends JPanel implements ActionListener {
                 err = true;
             }
 
-            if (username.length() < 3) {
-                System.out.println("Username must be at least 3 characters long");
-                err3.setText("<html>*Usernames must be<BR>at least 3 characters</html>");
+            if (username.length() < 2) {
+                System.out.println("Username must be at least 2 characters long");
+                err3.setText("<html>*Usernames must be<BR>at least 2 characters</html>");
                 err = true;
             }
 
@@ -209,7 +209,7 @@ class SignupPanel extends JPanel implements ActionListener {
                 App.entry.loginCard();
             }
             else
-                err3.setText("<HTML>*Username already<BR>exists<HTML>");
+                err3.setText("<HTML>*Username already<BR>in use<HTML>");
         }
     }
 }

@@ -118,27 +118,27 @@ class DetailsPanel extends JPanel implements ActionListener {
 
             if (firstName.isEmpty() || lastName.isEmpty()) {
                 err1.setText("Name fields cannot be left blank");
-                JOptionPane.showMessageDialog(this, "Name fields cannot be left blank");
+                JOptionPane.showMessageDialog(this, "<HTML>*Names cannot be<BR> left blank</HTML>");
                 checksFailed = true;
             }
 
             if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
                 err2.setText("Invalid email format.");
-                JOptionPane.showMessageDialog(this, "Invalid email format.");
+                JOptionPane.showMessageDialog(this, "*Invalid email format");
                 checksFailed = true;
             }
 
             if (username.length() < 2) {
                 userInfoField.setText(App.db.getActiveUserUsername());
                 err3.setText("Username must be at least 2 characters");
-                JOptionPane.showMessageDialog(this, "Username must be at least 2 characters");
+                JOptionPane.showMessageDialog(this, "<html>*Usernames must be<BR>at least 2 characters</html>");
                 checksFailed = true;
             }
 
             if (App.db.takenUsername(username) && !username.equals(App.db.getActiveUserUsername())) {
                 userInfoField.setText(App.db.getActiveUserUsername());
                 err3.setText("This username is already in use");
-                JOptionPane.showMessageDialog(this, "This username is already in use");
+                JOptionPane.showMessageDialog(this, "<HTML>*Username already<BR>in use<HTML>");
                 checksFailed = true;
             }
 
