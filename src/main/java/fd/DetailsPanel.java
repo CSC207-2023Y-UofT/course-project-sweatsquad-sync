@@ -160,7 +160,7 @@ class DetailsPanel extends JPanel implements ActionListener {
 
             if (!email.equals(App.db.getActiveUserEmail())) {
                 if (email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
-                    // set email
+                    App.db.updateUserFirstName(App.db.getActiveUserEmail(), email);
                     System.out.println("Email changed");
                 } else {
                     System.out.println("Invalid email format.");
