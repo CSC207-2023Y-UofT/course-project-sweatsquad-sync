@@ -193,6 +193,17 @@ public class Database {
         }
     }
 
+    public void updateUserEmail(String username, String newEmail) {
+        for (User u : gym.getUsers()) {
+            if (u.getName().equals(username)) {
+                u.firstName = newEmail;  // assuming the attribute firstName in User class is public, or has a setter method
+                System.out.println("User " + u.getName() + "'s email has been changed to: " + newEmail);
+                return;
+            }
+            System.out.println("Invalid function call (USER DNE); try again.");
+        }
+    }
+
     public List<String[]> getCurrentWorkouts() {
         return gym.getWorkouts().stream().map(w -> new String[]{
                 w.name,
