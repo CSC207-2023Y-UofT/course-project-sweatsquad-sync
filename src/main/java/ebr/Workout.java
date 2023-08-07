@@ -11,16 +11,12 @@ public class Workout implements Serializable {
     private Set<User> users;
     public final int capacity;
 
-    public enum Weekday {
-        Monday, Tuesday, Wednesday, Thursday, Friday
-    }
-
-    static public class Offering {
-        public Weekday day;
+    static public class Offering implements Serializable {
+        public DayOfWeek day;
         public LocalTime start;
         public Duration duration;
         public Room room;
-        public Offering(Weekday day, LocalTime start, Duration duration, Room room) {
+        public Offering(DayOfWeek day, LocalTime start, Duration duration, Room room) {
             this.day = day;
             this.start = start;
             this.duration = duration;
