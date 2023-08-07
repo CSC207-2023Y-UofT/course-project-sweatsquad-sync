@@ -142,7 +142,7 @@ class DetailsPanel extends JPanel implements ActionListener {
 
             if (!firstName.equals(App.db.getActiveUserFirstName())) {
                 if (!firstName.isEmpty()) {
-                    // set firstname
+                    App.db.updateUserFirstName(App.db.getActiveUserFirstName(), firstName);
                     System.out.println("First name changed");
                 } else {
                     System.out.println("Name fields cannot be left blank");
