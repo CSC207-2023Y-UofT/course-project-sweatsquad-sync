@@ -100,6 +100,7 @@ public class UserInfoFrame extends JDialog implements ActionListener {
     }
 
     public void refreshShow() {
+        textSetup();
         this.setVisible(true);
     }
 

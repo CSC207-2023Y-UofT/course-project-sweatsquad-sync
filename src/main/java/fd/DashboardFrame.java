@@ -177,10 +177,8 @@ public class DashboardFrame extends JFrame implements ActionListener {
             courseBrowser.refreshShow();
         else if (e.getSource() == dailyWorkoutTips)
             JOptionPane.showMessageDialog(this, "todo: huh????");
-        else if (e.getSource() == settings) {
-            userInfoEdit.textSetup();
+        else if (e.getSource() == settings)
             userInfoEdit.refreshShow();
-        }
         else if (e.getSource() == viewEntireSchedule)
             scheduleView.refreshShow();
         else if (e.getSource() == logout_icon)
