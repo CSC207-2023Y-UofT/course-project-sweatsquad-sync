@@ -24,8 +24,8 @@ public class Gym implements Serializable  {
 
     public void removeUser(User u) {
         members.remove(u);
-        // TODO remove all refs to that user here
-        if (u instanceof Instructor) {}
+        for (Workout w : workouts)
+            u.removeWorkout(w);
     }
 
     public Set<User> getUsers() {
@@ -36,9 +36,10 @@ public class Gym implements Serializable  {
         workouts.add(u);
     }
 
-    public void removeWorkout(Workout u) {
-        workouts.remove(u);
-        // TODO remove all refs to that workout here
+    public void removeWorkout(Workout w) {
+        workouts.remove(w);
+        for (User u : members)
+            u.removeWorkout(w);
     }
 
     public Set<Workout> getWorkouts() {
@@ -51,7 +52,8 @@ public class Gym implements Serializable  {
 
     public void removeRooms(Room r) {
         rooms.remove(r);
-        // TODO remove all refs to that room here
+        for (Workout w : workouts)
+            w.offerings.removeIf(o -> o.room.equals(r));
     }
 
     public Set<Room> getRooms() {
