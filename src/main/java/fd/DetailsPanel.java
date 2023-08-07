@@ -168,7 +168,7 @@ class DetailsPanel extends JPanel implements ActionListener {
             }
 
             if ((!username.equals(App.db.getActiveUserUsername())) & !(username.length() <3)) {
-                // set username
+                App.db.updateUserFirstName(App.db.getActiveUserUsername(), username);
                 System.out.println("Username changed");
             }
         }
