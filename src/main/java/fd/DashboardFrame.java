@@ -67,7 +67,7 @@ public class DashboardFrame extends JFrame implements ActionListener {
         settings = UI.genRoundBtn("Account Settings ⚙", 30, "#001561", false);
         settings.setFont(UI.MB20);
         settings.setForeground(Color.decode("#FFFFFF"));
-        settings.setBounds(490, 410, 218, 75);
+        settings.setBounds(413, 300, 280, 140);
         settings.addActionListener(this);
         this.add(settings);
 
