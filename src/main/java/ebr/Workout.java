@@ -1,6 +1,7 @@
 package ebr;
 
 import java.io.Serializable;
+import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalTime;
 import java.util.*;
