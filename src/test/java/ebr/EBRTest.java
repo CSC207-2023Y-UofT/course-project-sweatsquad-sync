@@ -24,7 +24,7 @@ public class EBRTest {
     /* comment
     @Test
     public void WorkoutOfferingTest() {
-        Workout w = new Workout("asdf");
+        Workout w = new Workout("asdf", 50);
         Room r = new Room("r");
         w.offerings.add(new Workout.Offering(Workout.Weekday.Monday, LocalTime.of(10, 0), Duration.ofMinutes(30), r));
         System.out.println(w.offerings);

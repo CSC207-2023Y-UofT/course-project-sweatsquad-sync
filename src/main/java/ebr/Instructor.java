@@ -43,6 +43,12 @@ public class Instructor extends User implements Serializable {
     }
 
     @Override
+    public void setName(String name) {
+        if (this.name != null)
+            this.name = name;
+    }
+
+    @Override
     public int hashCode() {
         return tempAuth != null ? tempAuth.hashCode() : name.hashCode();
     }

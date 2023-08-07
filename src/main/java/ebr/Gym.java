@@ -57,4 +57,18 @@ public class Gym implements Serializable  {
     public Set<Room> getRooms() {
         return Collections.unmodifiableSet(this.rooms);
     }
+
+    private void readObject(ObjectInputStream input) throws IOException, ClassNotFoundException {
+        input.defaultReadObject();
+        for (Workout w : workouts)
+            eachUser:
+            for (User u: w.getUsers())
+                for (User uu : members)
+                    if (uu.equals(u)) {
+                        w.removeUser(u);
+                        w.addUser(uu);
+                        uu.addWorkout(w);
+                        break eachUser;
+                    }
+    }
 }
