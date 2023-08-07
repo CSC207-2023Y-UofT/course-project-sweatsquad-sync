@@ -204,7 +204,7 @@ public class Database {
     public void updateActiveUserPasscode(String user, String newPasscode) {
         for (User u : gym.getUsers())
             if (u.getName().equals(user))
-                u.passHash = newPasscode;
+                u.passHash = hashPassword(newPasscode);
     }
 
     public List<String[]> getCurrentWorkouts() {
