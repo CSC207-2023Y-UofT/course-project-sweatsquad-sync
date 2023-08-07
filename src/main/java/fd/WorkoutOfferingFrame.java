@@ -8,6 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.time.DayOfWeek;
+import java.time.Duration;
 import java.util.List;
 
 public class WorkoutOfferingFrame extends JDialog implements ActionListener {
@@ -27,7 +29,7 @@ public class WorkoutOfferingFrame extends JDialog implements ActionListener {
     private JTable table = new JTable(offeringTable);
     private int courseIndex = -1;
     public WorkoutOfferingFrame() {
-        setTitle("Courses"); // window title
+        setTitle("Offerings"); // window title
         setSize(600, 400); // window dimensions
         setResizable(false); // disables resizing
         setLocationRelativeTo(null); // centers ui if left 'null'
@@ -60,7 +62,6 @@ public class WorkoutOfferingFrame extends JDialog implements ActionListener {
         table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                add.setEnabled(table.getSelectedRow() != -1);
                 edit.setEnabled(table.getSelectedRow() != -1);
                 remove.setEnabled(table.getSelectedRow() != -1);
             }
@@ -78,17 +79,75 @@ public class WorkoutOfferingFrame extends JDialog implements ActionListener {
     public void refreshShow(int idx) {
         courseIndex = idx;
         this.setVisible(true);
-        offeringTable.fireTableDataChanged();
+        if (courseIndex != -1)
+            offeringTable.fireTableDataChanged();
     }
+
+    private void prompt(int offering) {
+        List<String> rooms = App.db.getCurrentRooms();
+        if (rooms.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "There are no rooms in the gym!");
+            return;
+        }
+        DayOfWeek[] dayData = new DayOfWeek[]{
+                DayOfWeek.SUNDAY,
+                DayOfWeek.MONDAY,
+                DayOfWeek.TUESDAY,
+                DayOfWeek.WEDNESDAY,
+                DayOfWeek.THURSDAY,
+                DayOfWeek.FRIDAY,
+                DayOfWeek.SATURDAY
+        };
+        String[] startData = new String[] {
+                "08:00",
+                "09:00",
+                "10:00",
+                "11:00",
+                "12:00",
+                "13:00",
+                "14:00",
+                "15:00",
+        };
+        Integer[] durationData = new Integer[]{ 1,2,3,4,5 };
+        JComboBox<DayOfWeek> day = new JComboBox<>(dayData);
+        JComboBox<String> start = new JComboBox<>(startData);
+        JComboBox<Integer> duration = new JComboBox<>(durationData);
+        JComboBox<String> room = new JComboBox<>(rooms.toArray(new String[]{}));
+        Object[] message = new Object[] {
+                "Day:", day,
+                "Start Time:", start,
+                "Duration (Hours):", duration,
+                "Room:", room
+        };
+
+        if (offering != -1) {
+            String[] s = App.db.getCurrentOfferings(courseIndex).get(offering);
+            day.setSelectedItem(DayOfWeek.valueOf(s[0].split(" ")[0].toUpperCase()));
+            start.setSelectedItem(s[0].split(" ")[1]);
+            duration.setSelectedItem(Duration.ofHours(Integer.parseInt(s[1])));
+            room.setSelectedItem(s[2]);
+        }
+        int option = JOptionPane.showConfirmDialog(null, message, "Add Offering", JOptionPane.OK_CANCEL_OPTION);
+        if (option == JOptionPane.OK_OPTION)
+            if (!App.db.editOffering(courseIndex, offering, dayData[day.getSelectedIndex()], startData[start.getSelectedIndex()],
+                    durationData[duration.getSelectedIndex()], rooms.get(room.getSelectedIndex())))
+                JOptionPane.showMessageDialog(this, "This collides with another offering of this course!");
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == add)
-            ;
-        else if (e.getSource() == edit)
-            ;
-        else if (e.getSource() == remove)
-            ;
+        if (e.getSource() == add) {
+            prompt(-1);
+            offeringTable.fireTableDataChanged();
+        }
+        else if (e.getSource() == edit) {
+            prompt(table.getSelectedRow());
+            offeringTable.fireTableDataChanged();
+        }
+        else if (e.getSource() == remove) {
+            App.db.removeOffering(courseIndex, table.getSelectedRow());
+            offeringTable.fireTableDataChanged();
+        }
 
-        offeringTable.fireTableDataChanged();
     }
 }
