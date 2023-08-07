@@ -5,7 +5,7 @@ public class GymAdmin extends User {
         super(name, passHash, firstName, lastName, email);
     }
         @Override
-    public void addWorkout(Workout w) {
+    public boolean addWorkout(Workout w) {
         throw new UnsupportedOperationException();
     }
 }

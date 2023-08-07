@@ -32,9 +32,10 @@ public class User implements Serializable {
     }
 
     // Enrol (RegisteredUser) or Teach (Instructor) cert check is done in Workout.addUser
-    public void addWorkout(Workout w) {
+    public boolean addWorkout(Workout w) {
         if (w.addUser(this))
-            this.workouts.add(w);
+            return this.workouts.add(w);
+        else return false;
     }
     public void removeWorkout(Workout w) {
         if (workouts.remove(w)) {
