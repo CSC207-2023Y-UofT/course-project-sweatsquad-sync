@@ -132,6 +132,14 @@ class DetailsPanel extends JPanel implements ActionListener {
             err3.setText("");
             err4.setText("");
 
+            if (firstName.equals(App.db.getActiveUserFirstName()) &&
+                    lastName.equals(App.db.getActiveUserLastName()) &&
+                    email.equals(App.db.getActiveUserEmail()) &&
+                    username.equals(App.db.getActiveUserUsername())) {
+                System.out.println("No changes were made");
+                return;
+            }
+
             if (!firstName.equals(App.db.getActiveUserFirstName())) {
                 if (!firstName.isEmpty()) {
                     // set firstname
