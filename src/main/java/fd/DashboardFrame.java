@@ -155,9 +155,9 @@ public class DashboardFrame extends JFrame implements ActionListener {
 
     public void instructorRefresh() {
         userRefresh();
-        enrolBtn.setBounds(490, 210, 280, 140);
-        dailyWorkoutTips.setBounds(490, 295, 218, 75);
-        settings.setBounds(490, 385, 280, 140);
+        enrolBtn.setBounds(490, 180, 218, 75);
+        dailyWorkoutTips.setBounds(490, 280, 218, 75);
+        settings.setBounds(490, 380, 218, 75);
         courseBrowser.instructorView();
     }
 
