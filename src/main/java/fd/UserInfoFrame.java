@@ -56,6 +56,7 @@ public class UserInfoFrame extends JDialog implements ActionListener {
     }
 
     public void detailsCard() {
+        textSetup();
         cardLayout.show(cards, "Change Details");
 
         detailsTab.setFocusable(false);
@@ -73,6 +74,7 @@ public class UserInfoFrame extends JDialog implements ActionListener {
     }
 
     public void passChangeCard() {
+        //refreshShow();
         //this.setVisible(true);
 
         cardLayout.show(cards, "Change Passcode");
@@ -90,12 +92,15 @@ public class UserInfoFrame extends JDialog implements ActionListener {
         signIndicator.setIcon(new ImageIcon("images/00201-reg-indicator.png"));
     }
 
-    public void refreshShow() {
-        this.setVisible(true);
+    public void textSetup() {
         detailsPanel.firstNameInfoField.setText(App.db.getActiveUserFirstName());
         detailsPanel.lastNameInfoField.setText(App.db.getActiveUserLastName());
         detailsPanel.emailInfoField.setText(App.db.getActiveUserEmail());
         detailsPanel.userInfoField.setText(App.db.getActiveUserUsername());
+    }
+
+    public void refreshShow() {
+        this.setVisible(true);
     }
 
     @Override
