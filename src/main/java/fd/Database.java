@@ -438,6 +438,6 @@ public class Database {
         return "<HTML>" + activeUser.getWorkouts().stream().flatMap(w -> w.offerings.stream()
                 .map(o -> new R(o.start, o.day, o.duration, w.name, o.room.name)))
                 .filter(r -> r.day == day_jump[day] && r.t.getHour() <= hr && hr < r.t.plus(r.d).getHour())
-                .map(r -> r.name + "<BR>" + r.room).collect(Collectors.joining("<BR>")) + "</HTML>";
+                .map(r -> "<B>" + r.name + "</B>" + "<BR>" + r.room).collect(Collectors.joining("<BR>")) + "</HTML>";
     }
 }
