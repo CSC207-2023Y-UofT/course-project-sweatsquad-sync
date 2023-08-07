@@ -6,22 +6,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 class PassChangePanel extends JPanel implements ActionListener {
-
-    //private JButton infoChange, passChange;
-    private JLabel underLine;
-
     private JPasswordField oldPasscode,newPasscode, confirmNewPasscode;
     private JButton savePasscodeBtn;
     private JLabel err1, err2, err3;
 
     public PassChangePanel() {
-
         this.setLayout(null);
         this.setOpaque(false);
-
-        underLine = new JLabel(""); // underline
-        underLine.setBounds(189, 65, 422, 9);
-        add(underLine);
 
         JLabel oldPassLabel = new JLabel("Old Password");
         oldPassLabel.setFont(UI.MB15);
@@ -33,7 +24,7 @@ class PassChangePanel extends JPanel implements ActionListener {
         oldPasscode.setFont(UI.CB18);
         this.add(oldPasscode);
 
-        JLabel newPassLabel = new JLabel("Email");
+        JLabel newPassLabel = new JLabel("New Password");
         newPassLabel.setFont(UI.MB15);
         newPassLabel.setBounds(189, 185, 422, 25);
         this.add(newPassLabel);
@@ -43,7 +34,7 @@ class PassChangePanel extends JPanel implements ActionListener {
         newPasscode.setFont(UI.CB18);
         this.add(newPasscode);
 
-        JLabel confirmNewPassLabel = new JLabel("Username");
+        JLabel confirmNewPassLabel = new JLabel("Confirm New Password");
         confirmNewPassLabel.setFont(UI.MB15);
         confirmNewPassLabel.setBounds(189, 272, 422, 25);
         this.add(confirmNewPassLabel);

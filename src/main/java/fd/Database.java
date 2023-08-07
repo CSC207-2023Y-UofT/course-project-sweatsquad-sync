@@ -3,6 +3,8 @@ package fd;
 // import statements
 import ebr.*;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.*;
 import java.io.*;
 import java.security.MessageDigest;
@@ -171,59 +173,25 @@ public class Database {
         return this.activeUser == null ? "Guest" : this.activeUser.getName();
     }
 
-    public void updateUserFirstName(String username, String newFirstName) {
-        for (User u : gym.getUsers()) {
-            if (u.getName().equals(username)) {
-                u.firstName = newFirstName;  // assuming the attribute firstName in User class is public, or has a setter method
-                System.out.println("User " + u.getName() + "'s first name has been changed to: " + newFirstName);
-                return;
-            }
-            System.out.println("Invalid function call (USER DNE); try again.");
-        }
+    public void updateActiveUserFirstName(String newFirstName) {
+        activeUser.firstName = newFirstName;
     }
 
-    public void updateUserLastName(String username, String newLastName) {
-        for (User u : gym.getUsers()) {
-            if (u.getName().equals(username)) {
-                u.firstName = newLastName;  // assuming the attribute firstName in User class is public, or has a setter method
-                System.out.println("User " + u.getName() + "'s last name has been changed to: " + newLastName);
-                return;
-            }
-            System.out.println("Invalid function call (USER DNE); try again.");
-        }
+    public void updateActiveUserLastName(String newLastName) {
+        activeUser.firstName = newLastName;
     }
 
-    public void updateUserEmail(String username, String newEmail) {
-        for (User u : gym.getUsers()) {
-            if (u.getName().equals(username)) {
-                u.firstName = newEmail;  // assuming the attribute firstName in User class is public, or has a setter method
-                System.out.println("User " + u.getName() + "'s email has been changed to: " + newEmail);
-                return;
-            }
-            System.out.println("Invalid function call (USER DNE); try again.");
-        }
+    public void updateActiveUserEmail(String newEmail) {
+        activeUser.firstName = newEmail;
     }
 
-    public void updateUserUsername(String username, String newUsername) {
-        // checks for duplicate username (if newUsername already belongs to a user)
-        for (User u : gym.getUsers()) {
-            if (u.getName().equals(newUsername)) {
-                System.out.println("Cannot change username to " + newUsername + ". This username is already taken.");
-                return;
-            }
-        }
+    public boolean updateActiveUserUsername(String newUsername) {
+        for (User u : gym.getUsers())
+            if (u.getName().equals(newUsername))
+                return false;
 
-        // looks for existing user
-        for (User u : gym.getUsers()) {
-            if (u.getName().equals(username)) {
-                u.setName(newUsername); // assuming there's a setName method in User class; if not, directly assign with u.name = newUsername;
-                System.out.println("User " + username + "'s username has been changed to: " + newUsername);
-                return;
-            }
-        }
-
-        // otherwise
-        System.out.println("Invalid function call (USER " + username + " DNE); try again.");
+        activeUser.setName(newUsername);
+        return true;
     }
 
     public List<String[]> getCurrentWorkouts() {

@@ -7,40 +7,14 @@ import java.awt.event.ActionListener;
 
 class DetailsPanel extends JPanel implements ActionListener {
 
-    private JButton infoChange, passChange;
-    private JLabel underLine;
-
     public JTextField firstNameInfoField, lastNameInfoField, emailInfoField, userInfoField;
     private JPasswordField passField;
     private JButton saveChangesBtn;
     private JLabel err1, err2, err3, err4;
 
     public DetailsPanel() {
-
         this.setLayout(null);
         this.setOpaque(false);
-
-//        infoChange = new JButton("Account Details"); // left tab
-//        infoChange.setBounds(180, 27, 225, 50);
-//        infoChange.addActionListener(this);
-//        infoChange.setOpaque(false);
-//        infoChange.setContentAreaFilled(false);
-//        infoChange.setBorderPainted(false);
-//        infoChange.setFocusPainted(false);
-//        add(infoChange);
-//
-//        passChange = new JButton("Change Password"); // right tab
-//        passChange.setBounds(395, 27, 225, 50);
-//        passChange.addActionListener(this);
-//        passChange.setOpaque(false);
-//        passChange.setContentAreaFilled(false);
-//        passChange.setBorderPainted(false);
-//        passChange.setFocusPainted(false);
-//        add(passChange);
-
-        underLine = new JLabel(""); // underline
-        underLine.setBounds(189, 65, 422, 9);
-        add(underLine);
 
         JLabel firstNameLabel = new JLabel("First Name");
         firstNameLabel.setFont(UI.MB15);
@@ -142,33 +116,33 @@ class DetailsPanel extends JPanel implements ActionListener {
 
             if (!firstName.equals(App.db.getActiveUserFirstName())) {
                 if (!firstName.isEmpty()) {
-                    App.db.updateUserFirstName(App.db.getActiveUserFirstName(), firstName);
+                    App.db.updateActiveUserFirstName(firstName);
                     System.out.println("First name changed");
-                } else {
-                    System.out.println("Name fields cannot be left blank");
                 }
+                else
+                    System.out.println("Name fields cannot be left blank");
             }
 
             if (!lastName.equals(App.db.getActiveUserLastName())) {
                 if (!lastName.isEmpty()) {
-                    App.db.updateUserFirstName(App.db.getActiveUserLastName(), lastName);
+                    App.db.updateActiveUserLastName(lastName);
                     System.out.println("Last name changed");
-                } else {
-                    System.out.println("Name fields cannot be left blank");
                 }
+                else
+                    System.out.println("Name fields cannot be left blank");
             }
 
             if (!email.equals(App.db.getActiveUserEmail())) {
                 if (email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
-                    App.db.updateUserFirstName(App.db.getActiveUserEmail(), email);
+                    App.db.updateActiveUserEmail(email);
                     System.out.println("Email changed");
-                } else {
-                    System.out.println("Invalid email format.");
                 }
+                else
+                    System.out.println("Invalid email format.");
             }
 
             if ((!username.equals(App.db.getActiveUserUsername())) & !(username.length() <3)) {
-                App.db.updateUserFirstName(App.db.getActiveUserUsername(), username);
+                App.db.updateActiveUserUsername(username);
                 System.out.println("Username changed");
             }
         }

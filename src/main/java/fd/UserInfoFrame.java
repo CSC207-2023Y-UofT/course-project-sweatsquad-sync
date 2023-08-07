@@ -5,7 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class UserInfoFrame extends JFrame implements ActionListener {
+public class UserInfoFrame extends JDialog implements ActionListener {
     private JButton detailsTab, passChangeTab;
     private JLabel signIndicator;
     private CardLayout cardLayout = new CardLayout();
@@ -16,12 +16,12 @@ public class UserInfoFrame extends JFrame implements ActionListener {
 
     public UserInfoFrame() {
         setTitle("Details");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 600);
         setResizable(false);
         setLocationRelativeTo(null);
         setLayout(null);
         setBackground(Color.decode("#DADADA"));
+        setModal(true);
 
         detailsTab = new JButton("Account Details");
         detailsTab.setBounds(180, 27, 225, 50);
@@ -92,6 +92,10 @@ public class UserInfoFrame extends JFrame implements ActionListener {
 
     public void refreshShow() {
         this.setVisible(true);
+        detailsPanel.firstNameInfoField.setText(App.db.getActiveUserFirstName());
+        detailsPanel.lastNameInfoField.setText(App.db.getActiveUserLastName());
+        detailsPanel.emailInfoField.setText(App.db.getActiveUserEmail());
+        detailsPanel.userInfoField.setText(App.db.getActiveUserUsername());
     }
 
     @Override
