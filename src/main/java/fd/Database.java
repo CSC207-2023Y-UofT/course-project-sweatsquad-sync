@@ -204,6 +204,28 @@ public class Database {
         }
     }
 
+    public void updateUserUsername(String username, String newUsername) {
+        // checks for duplicate username (if newUsername already belongs to a user)
+        for (User u : gym.getUsers()) {
+            if (u.getName().equals(newUsername)) {
+                System.out.println("Cannot change username to " + newUsername + ". This username is already taken.");
+                return;
+            }
+        }
+
+        // looks for existing user
+        for (User u : gym.getUsers()) {
+            if (u.getName().equals(username)) {
+                u.setName(newUsername); // assuming there's a setName method in User class; if not, directly assign with u.name = newUsername;
+                System.out.println("User " + username + "'s username has been changed to: " + newUsername);
+                return;
+            }
+        }
+
+        // otherwise
+        System.out.println("Invalid function call (USER " + username + " DNE); try again.");
+    }
+
     public List<String[]> getCurrentWorkouts() {
         return gym.getWorkouts().stream().map(w -> new String[]{
                 w.name,
