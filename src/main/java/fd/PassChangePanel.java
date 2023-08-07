@@ -94,7 +94,14 @@ class PassChangePanel extends JPanel implements ActionListener {
             // check new password + confirm password fields match
             if (!newPass.equals(confirmNewPass)) {
                 err3.setText("Passwords do not match");
-                JOptionPane.showMessageDialog(this, "<HTML>*New password and confirm password<BR> fields do not match</HTML>");
+                JOptionPane.showMessageDialog(this, "*Passwords do not match");
+                return;
+            }
+
+            // check if new password is the same as old password
+            if (newPass.equals(oldPass)) {
+                err2.setText("<HTML>*New password cannot<BR>be the same as the old password</HTML>");
+                JOptionPane.showMessageDialog(this, "<HTML>*New password cannot be<BR>the same as the old password</HTML>");
                 checksFailed = true;
             }
 
