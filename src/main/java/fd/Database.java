@@ -3,8 +3,8 @@ package fd;
 // import statements
 import ebr.*;
 
-import java.time.DayOfWeek;
-import java.time.LocalDate;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.io.*;
 import java.security.MessageDigest;
@@ -12,13 +12,10 @@ import java.security.NoSuchAlgorithmException;
 import java.util.stream.Collectors;
 
 public class Database {
-
-    // declares database vars - hashmap, txt file, and hash toggle
     private final String filename = "gym.bin";
     private Gym gym;
     private User activeUser;
 
-    // database constructor
     public Database() {
         try {
             gym = load();
@@ -311,12 +308,10 @@ public class Database {
                     return "You do not have the required certs to teach this class!";
             }
         else {
-            if (w.getUsers().contains(activeUser)) {
+            if (w.getUsers().contains(activeUser))
                 activeUser.removeWorkout(w);
-            }
-            else {
+            else
                 activeUser.addWorkout(w);
-            }
             return null;
         }
     }
