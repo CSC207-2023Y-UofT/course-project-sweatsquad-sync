@@ -12,6 +12,7 @@ public class UserInfoFrame extends JFrame implements ActionListener {
     private JPanel cards = new JPanel(cardLayout);
 
     public DetailsPanel detailsPanel = new DetailsPanel();
+    public PassChangePanel passChangePanel = new PassChangePanel();
 
     public UserInfoFrame() {
         setTitle("Details");
@@ -45,7 +46,7 @@ public class UserInfoFrame extends JFrame implements ActionListener {
         add(signIndicator);
 
         cards.add(detailsPanel, "Change Details");
-        //cards.add(passChangePanel, "Change Passcode");
+        cards.add(passChangePanel, "Change Passcode");
         cards.setBounds(0, 0, 800, 700);
         cards.setOpaque(false);
         cardLayout.show(cards, "Login");
@@ -55,7 +56,7 @@ public class UserInfoFrame extends JFrame implements ActionListener {
     }
 
     public void detailsCard() {
-        cardLayout.show(cards, "Details");
+        cardLayout.show(cards, "Change Details");
 
         detailsTab.setFocusable(false);
         detailsTab.setFont(UI.MB16);
@@ -72,9 +73,9 @@ public class UserInfoFrame extends JFrame implements ActionListener {
     }
 
     public void passChangeCard() {
-        //passChangePanel.reset();
+        //this.setVisible(true);
 
-        cardLayout.show(cards, "Signup");
+        cardLayout.show(cards, "Change Passcode");
 
         detailsTab.setFocusable(true);
         detailsTab.setFont(UI.MB14);
@@ -95,9 +96,10 @@ public class UserInfoFrame extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == detailsTab)
+        if (e.getSource() == detailsTab) {
             detailsCard();
-        else
+        } else if (e.getSource() == passChangeTab){
             passChangeCard();
+        }
     }
 }
