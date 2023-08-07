@@ -56,7 +56,7 @@ class DetailsPanel extends JPanel implements ActionListener {
         userInfoField.setFont(UI.CB18);
         this.add(userInfoField);
 
-        JLabel signupPasswordLabel = new JLabel("Password");
+        JLabel signupPasswordLabel = new JLabel("Enter password to save changes");
         signupPasswordLabel.setFont(UI.MB15);
         signupPasswordLabel.setBounds(189, 359, 422, 25);
         this.add(signupPasswordLabel);
@@ -110,40 +110,75 @@ class DetailsPanel extends JPanel implements ActionListener {
                     lastName.equals(App.db.getActiveUserLastName()) &&
                     email.equals(App.db.getActiveUserEmail()) &&
                     username.equals(App.db.getActiveUserUsername())) {
-                System.out.println("No changes were made");
+                JOptionPane.showMessageDialog(this, "No changes were made.");
                 return;
             }
 
+            boolean checksFailed = false;
+
+            if (firstName.isEmpty() || lastName.isEmpty()) {
+                err1.setText("Name fields cannot be left blank");
+                JOptionPane.showMessageDialog(this, "Name fields cannot be left blank");
+                checksFailed = true;
+            }
+
+            if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+                err2.setText("Invalid email format.");
+                JOptionPane.showMessageDialog(this, "Invalid email format.");
+                checksFailed = true;
+            }
+
+            if (username.length() < 2) {
+                userInfoField.setText(App.db.getActiveUserUsername());
+                err3.setText("Username must be at least 2 characters");
+                JOptionPane.showMessageDialog(this, "Username must be at least 2 characters");
+                checksFailed = true;
+            }
+
+            if (App.db.takenUsername(username) && !username.equals(App.db.getActiveUserUsername())) {
+                userInfoField.setText(App.db.getActiveUserUsername());
+                err3.setText("This username is already in use");
+                JOptionPane.showMessageDialog(this, "This username is already in use");
+                checksFailed = true;
+            }
+
+            if (checksFailed) {
+                passField.setText("");
+                return;
+            }
+
+            if ("".equals(new String(passField.getPassword()))) {
+                JOptionPane.showMessageDialog(this, "Enter your password to save changes");
+                return;
+            }
+
+            // all checks have passed (valid inputs)
+            if (!App.login(App.db.getActiveUserUsername(), new String(passField.getPassword()))) {
+                JOptionPane.showMessageDialog(this, "Invalid credentials, try again.");
+                return;
+            } else {
+                passField.setText("");
+            }
+
+            // login is successful -updates user details
             if (!firstName.equals(App.db.getActiveUserFirstName())) {
-                if (!firstName.isEmpty()) {
-                    App.db.updateActiveUserFirstName(firstName);
-                    System.out.println("First name changed");
-                }
-                else
-                    System.out.println("Name fields cannot be left blank");
+                App.db.updateActiveUserFirstName(firstName);
+                System.out.println("First name changed");
             }
 
             if (!lastName.equals(App.db.getActiveUserLastName())) {
-                if (!lastName.isEmpty()) {
-                    App.db.updateActiveUserLastName(lastName);
-                    System.out.println("Last name changed");
-                }
-                else
-                    System.out.println("Name fields cannot be left blank");
+                App.db.updateActiveUserLastName(lastName);
+                System.out.println("Last name changed");
             }
 
             if (!email.equals(App.db.getActiveUserEmail())) {
-                if (email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
-                    App.db.updateActiveUserEmail(email);
-                    System.out.println("Email changed");
-                }
-                else
-                    System.out.println("Invalid email format.");
+                App.db.updateActiveUserEmail(email);
+                System.out.println("Email changed");
             }
 
-            if ((!username.equals(App.db.getActiveUserUsername())) & !(username.length() <3)) {
+            if (!username.equals(App.db.getActiveUserUsername())) {
                 App.db.updateActiveUserUsername(username);
-                System.out.println("Username changed");
+                System.out.println("Username has been changed to: " + username);
             }
         }
     }

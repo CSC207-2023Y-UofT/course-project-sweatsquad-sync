@@ -49,7 +49,7 @@ public class UserInfoFrame extends JDialog implements ActionListener {
         cards.add(passChangePanel, "Change Passcode");
         cards.setBounds(0, 0, 800, 700);
         cards.setOpaque(false);
-        cardLayout.show(cards, "Login");
+        cardLayout.show(cards, "Change Details");
         add(cards);
 
         detailsCard();

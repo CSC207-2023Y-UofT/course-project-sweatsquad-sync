@@ -105,7 +105,6 @@ public class Database {
         for (User u : gym.getUsers())
             if (u.getName().equals(username))
                 if (u.passHash.equals(hashPassword(password))) {
-                    System.out.println("Logged in successfully");
                     activeUser = u;
                     return true;
                 } else {
@@ -113,6 +112,14 @@ public class Database {
                     return false;
                 }
         System.out.println("User does not exist");
+        return false;
+    }
+
+    // method to check if username is taken
+    public boolean takenUsername(String username) {
+        for (User u : gym.getUsers())
+            if (u.getName().equals(username))
+                    return true;
         return false;
     }
 
