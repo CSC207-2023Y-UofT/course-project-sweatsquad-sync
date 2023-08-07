@@ -68,7 +68,7 @@ public class DashboardFrame extends JFrame implements ActionListener {
         settings = UI.genRoundBtn("Account Settings ⚙", 30, "#001561", false);
         settings.setFont(UI.MB20);
         settings.setForeground(Color.decode("#FFFFFF"));
-        settings.setBounds(490, 410, 218, 75);
+        settings.setBounds(413, 300, 280, 140);
         settings.addActionListener(this);
         this.add(settings);
 
@@ -126,6 +126,10 @@ public class DashboardFrame extends JFrame implements ActionListener {
     }
 
     public void userRefresh() {
+        enrolBtn.setBounds(490, 180, 218, 75);
+        dailyWorkoutTips.setBounds(490, 280, 218, 75);
+        settings.setBounds(490, 380, 218, 75);
+
         List<String[]> next = App.db.getNextThreeOfferings();
         if (!next.isEmpty()) {
             this.add(upcomingC);
@@ -153,6 +157,9 @@ public class DashboardFrame extends JFrame implements ActionListener {
 
     public void instructorRefresh() {
         userRefresh();
+        enrolBtn.setBounds(490, 180, 218, 75);
+        dailyWorkoutTips.setBounds(490, 280, 218, 75);
+        settings.setBounds(490, 380, 218, 75);
         courseBrowser.instructorView();
     }
 
@@ -166,6 +173,9 @@ public class DashboardFrame extends JFrame implements ActionListener {
         this.add(enrolBtn);
         this.add(manageRooms);
         this.add(manageUsers);
+        dailyWorkoutTips.setBounds(490, 295, 218, 75);
+        enrolBtn.setBounds(413, 123, 280, 140);
+        settings.setBounds(413, 300, 280, 140);
         courseBrowser.adminView();
     }
 
