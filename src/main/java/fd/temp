@@ -1,0 +1,87 @@
+
+
+    @Override
+    public void displayErrorsInstrSignup(RegisterViewModel model) {
+
+    }
+
+    @Override
+    public void displayErrorsRegSignup(RegisterViewModel model) {
+
+    }
+
+    @Override
+    public void displayFieldError(Field inputField, String message) {
+
+        if (inputField instanceof LoginField lf) {
+            switch (lf) {
+
+                case USERNAME, PASSWORD -> {
+
+                    displayInfoMessage(message);
+
+                }
+            }
+        } else if (inputField instanceof RegistrationField rf) {
+            switch (rf) {
+
+                case USERNAME -> {
+                    err3.setText(formatFieldError(message));
+                }
+                case FIRST_NAME, LAST_NAME -> {
+                    err1.setText(formatFieldError(message));
+                }
+                case EMAIL -> {
+                    err2.setText(formatFieldError(message));
+                } case PASSWORD -> {
+                    err4.setText(formatFieldError(message));
+                }
+            }
+        } else if (inputField instanceof ActivationCodeField) {
+
+            displayInfoMessage(message);
+        }
+
+
+    }
+    private String formatFieldError(String s) {
+        return ("<html>*" + s + "<html>");
+    }
+
+
+    @Override
+    public void clearInputs() {
+        SwingUtil.clearPanel(authCodePanel);
+        SwingUtil.clearPanel(loginPanel);
+        SwingUtil.clearPanel(signupPanel);
+        SwingUtil.clearPanel(instrRegPanel);
+        err1.setText("");
+        err2.setText("");
+        err3.setText("");
+        err4.setText("");
+    }
+
+    @Override
+    public void displayInfoMessage(String message) {
+        JOptionPane.showMessageDialog(this, message);
+    }
+
+    @Override
+    public void displayErrorMessage(String message) {
+        JOptionPane.showMessageDialog(this, message, "", JOptionPane.ERROR_MESSAGE);
+    }
+
+    @Override
+    public void setController(SignInFrameController c) {
+        controller = c;
+    }
+
+    @Override
+    public void showView() {
+        setVisible(true);
+    }
+
+    @Override
+    public void hideView() {
+
+    }
