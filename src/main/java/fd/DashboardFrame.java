@@ -103,7 +103,7 @@ public class DashboardFrame extends JFrame implements ActionListener {
                 "#001561", false);
         viewEntireSchedule.setFont(UI.MB20);
         viewEntireSchedule.setForeground(Color.decode("#FFFFFF"));
-        viewEntireSchedule.setBounds(66, 445, 280, 140);
+        viewEntireSchedule.setBounds(66, 445, 315, 45);
         viewEntireSchedule.addActionListener(this);
 
         enrolBtn = UI.genRoundBtn("Manage Classes", 30, "#001561", false);
@@ -180,7 +180,7 @@ public class DashboardFrame extends JFrame implements ActionListener {
     }
 
     public void refreshShow() {
-        welcomeUser.setText("Welcome Back, " + App.db.getActiveUserFirstName() + "!");
+        welcomeUser.setText("Welcome back, " + App.db.getActiveUserFirstName() + "!");
         this.setVisible(true);
         App.db.dashRefresh(this);
     }

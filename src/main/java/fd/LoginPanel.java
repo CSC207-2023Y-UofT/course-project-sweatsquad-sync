@@ -42,6 +42,10 @@ public class LoginPanel extends JPanel implements ActionListener {
         this.add(loginButton);
     }
 
+    public void clearPass() {
+        passcodeField.setText("");
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == loginButton) {
@@ -49,8 +53,10 @@ public class LoginPanel extends JPanel implements ActionListener {
             usernameField.setText(username);
             String password = new String(passcodeField.getPassword());
 
-            if (!App.login(username, password))
+            if (!App.login(username, password)) {
                 JOptionPane.showMessageDialog(this, "Invalid credentials");
+                clearPass();
+            }
             else {
                 usernameField.setText("");
                 passcodeField.setText("");

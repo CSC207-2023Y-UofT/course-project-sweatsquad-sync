@@ -75,10 +75,15 @@ class SignupPanel extends JPanel implements ActionListener {
         passField.setFont(UI.CB18);
         this.add(passField);
 
-        JLabel confirmPasswordLabel = new JLabel("Password");
+        JLabel confirmPasswordLabel = new JLabel("Confirm Password");
         confirmPasswordLabel.setFont(UI.MB15);
-        confirmPasswordLabel.setBounds(189, 359, 422, 25);
+        confirmPasswordLabel.setBounds(413, 359, 422, 25);
         this.add(confirmPasswordLabel);
+
+        JLabel confirmPassLabel = new JLabel("Password");
+        confirmPassLabel.setFont(UI.MB15);
+        confirmPassLabel.setBounds(189, 359, 422, 25);
+        this.add(signupPasswordLabel);
 
         confirmPassField = UI.genRoundPasswordField("", 20, "#FFFFFF");
         confirmPassField.setBounds(413, 384, 198, 45);
