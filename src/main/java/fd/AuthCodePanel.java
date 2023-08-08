@@ -47,6 +47,8 @@ class AuthCodePanel extends JPanel implements ActionListener, View<EntryFramePre
         if (e.getSource() == authenticateBtn) {
             String inputCode = authField.getText(); // get the input from user
             presenter.codeActivationAttempted(inputCode);
+        } else {
+            presenter.switchToSignUp();
         }
     }
 

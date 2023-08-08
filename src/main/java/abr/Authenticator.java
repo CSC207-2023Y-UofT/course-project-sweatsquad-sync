@@ -11,11 +11,11 @@ public class Authenticator  {
         this.userManager = userManager;
     }
 
-    private static final String leftBlank = "cannot be left blank";
+    private static final String leftBlank = " cannot be left blank";
 
     private String isLeftBlankMessage(Field field) {
 
-        return field.getName().substring(0, 1) + field.getName().substring(1) + leftBlank;
+        return field.getName().substring(0, 1).toUpperCase() + field.getName().substring(1) + leftBlank;
     }
 
     public LoginResponse authenticateLogin(LoginDetails ld) {

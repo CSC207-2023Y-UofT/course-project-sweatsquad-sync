@@ -49,6 +49,12 @@ public class EntryFramePresenter implements Presenter {
         };
     }
 
+    public OutputBoundary<LoginEvent> getLoginHandler() {
+        return rm -> {
+            entryFrameView.hideView();
+        };
+    }
+
 
     public OutputBoundary<LogoutEvent> getLogoutHandler() {
         return rm -> {
@@ -80,15 +86,15 @@ public class EntryFramePresenter implements Presenter {
         authenticationModel.receiveRequest(new ActivationCodeDetails(code));
     }
 
-    public void switchToLoginAttempted() {
+    public void switchToLogin() {
         entryFrameView.showLogin();
     }
 
-    public void switchToSignUpAttempted() {
+    public void switchToSignUp() {
         entryFrameView.showSignUp();
     }
 
-    public void switchToActivationAttempted() {
+    public void switchToActivation() {
         entryFrameView.showActivationPortal();
     }
 

@@ -180,5 +180,6 @@ public class EntryPointFrame extends JFrame implements EntryFrameView {
     public void setPresenter(EntryFramePresenter presenter) {
         loginPanel.setPresenter(presenter);
         signupPanel.setPresenter(presenter);
+        authCodePanel.setPresenter(presenter);
     }
 }

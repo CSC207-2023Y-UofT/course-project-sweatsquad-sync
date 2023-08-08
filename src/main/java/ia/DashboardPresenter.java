@@ -1,5 +1,7 @@
 package ia;
 
+import abr.IODataModels.LogoutRequest;
+import abr.InputBoundary;
 import abr.OutputBoundary;
 import abr.IODataModels.LoginEvent;
 import fd.DashboardFrame;
@@ -14,8 +16,11 @@ public class DashboardPresenter implements Presenter, OutputBoundary<LoginEvent>
 
     private DashboardDispatch dashboardDispatch;
 
-    public DashboardPresenter(DashboardFrame dashboardFrame) {
+    private InputBoundary<LogoutRequest> logoutRequestInputBoundary;
+
+    public DashboardPresenter(DashboardFrame dashboardFrame, InputBoundary<LogoutRequest> logoutRequestHandler) {
         this.dashboardFrame = dashboardFrame;
+        this.logoutRequestInputBoundary = logoutRequestHandler;
     }
 
 
@@ -35,7 +40,9 @@ public class DashboardPresenter implements Presenter, OutputBoundary<LoginEvent>
             case ADMIN -> {
                 dashboardDispatch = dashboardFrame::adminRefresh;
             }
+
         }
+        dashboardFrame.showDashboard();
 
         dashBoardRequested();
     }
@@ -50,5 +57,6 @@ public class DashboardPresenter implements Presenter, OutputBoundary<LoginEvent>
     }
 
     public void logoutRequested() {
+        logoutRequestInputBoundary.receiveRequest(new LogoutRequest());
     }
 }

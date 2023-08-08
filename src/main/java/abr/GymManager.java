@@ -9,6 +9,8 @@ import ebr.Instructor;
 import ebr.User;
 import fd.GymDatabase;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 // Facade class
 public class GymManager {
@@ -21,25 +23,32 @@ public class GymManager {
     private final Gym gym;
 
     private OutputBoundary<AuthenticationResponseModel<? extends Field>> authenticationListener;
-    private OutputBoundary<LoginEvent> loginListener;
-    private OutputBoundary<ActiveUserIDResponse> activeUserListener;
+    private List<OutputBoundary<LoginEvent>> loginListeners;
     private OutputBoundary<LogoutEvent> logoutListener;
 
-    public GymManager(GymDatabase database) throws IOException, ClassNotFoundException {
+    public GymManager(GymDatabase database) {
+        Gym gym1;
         this.database = database;
-        this.gym = database.load();
-        this.userAccountManager = new UserManager(database.load(), new PasswordHashSHA256());
+        try {
+            gym1 = database.load();
+        } catch (Exception e) {
+            gym1 = new Gym("Sweatsquad Gym");
+        }
+
+        this.gym = gym1;
+        this.userAccountManager = new UserManager(gym, new PasswordHashSHA256());
         this.activeUserManager = new ActiveUserManager(userAccountManager);
         this.authenticator = new Authenticator(userAccountManager);
+        this.loginListeners = new ArrayList<>();
     }
 
     public void setAuthenticationListener(OutputBoundary<AuthenticationResponseModel<? extends Field>> al) {
         this.authenticationListener = al;
     }
 
-    public void setLoginListener(OutputBoundary<LoginEvent> le) {
+    public void addLoginListener(OutputBoundary<LoginEvent> le) {
 
-        this.loginListener = le;
+        this.loginListeners.add(le);
     }
 
     public void setLogoutListener(OutputBoundary<LogoutEvent> le) {
@@ -67,15 +76,17 @@ public class GymManager {
 
                         activeUserManager.loginUser(ld);
                         User activeUser = activeUserManager.getActiveUser();
-                        if (activeUser instanceof Instructor) {
+                        for (OutputBoundary<LoginEvent> loginListener: loginListeners) {
+                            if (activeUser instanceof Instructor) {
 
-                            loginListener.receiveResponse(createLoginEvent(AccountType.REGULAR, activeUser));
-                        } else if (activeUser instanceof GymAdmin) {
+                                loginListener.receiveResponse(createLoginEvent(AccountType.REGULAR, activeUser));
+                            } else if (activeUser instanceof GymAdmin) {
 
-                            loginListener.receiveResponse(createLoginEvent(AccountType.ADMIN, activeUser));
-                        } else {
+                                loginListener.receiveResponse(createLoginEvent(AccountType.ADMIN, activeUser));
+                            } else {
 
-                            loginListener.receiveResponse(createLoginEvent(AccountType.INSTRUCTOR, activeUser));
+                                loginListener.receiveResponse(createLoginEvent(AccountType.INSTRUCTOR, activeUser));
+                            }
                         }
 
                     }
@@ -90,13 +101,6 @@ public class GymManager {
                 return new LoginEvent(at, user.firstName, user.lastName, user.getUsername(), user.email);
 
             }
-        };
-    }
-
-    public InputBoundary<ActiveUserIDRequest> getActiveUserRequestHandler() {
-        return rm -> {
-            User activeUser = activeUserManager.getActiveUser();
-            activeUserListener.receiveResponse(new ActiveUserIDResponse(activeUser.getUsername(), activeUser.firstName, activeUser.lastName, activeUser.email));
         };
     }
 

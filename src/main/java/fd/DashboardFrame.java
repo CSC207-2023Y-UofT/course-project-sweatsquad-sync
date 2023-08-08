@@ -15,7 +15,7 @@ public class DashboardFrame extends JFrame implements ActionListener, View<Dashb
             manageRooms, manageUsers;
     private JLabel welcomeUser, upcomingC, upcomingC1, upcomingC2, upcomingC3;
 
-    private CourseEnrollmentFrame courseBrowser = new CourseEnrollmentFrame();
+    private CourseEnrollmentFrame courseBrowser;
     private ScheduleFrame scheduleView;
     private UserInfoFrame userInfoEdit;
     private ManageUserFrame userManager;
@@ -23,9 +23,10 @@ public class DashboardFrame extends JFrame implements ActionListener, View<Dashb
 
     private DashboardPresenter dashboardPresenter;
 
-    public DashboardFrame(ScheduleFrame scheduleView, UserInfoFrame userInfoEdit, ManageUserFrame userManager, ManageRoomFrame roomManager) {
+    public DashboardFrame(ScheduleFrame scheduleView, CourseEnrollmentFrame courseBrowser, UserInfoFrame userInfoEdit, ManageUserFrame userManager, ManageRoomFrame roomManager) {
 
         this.scheduleView = scheduleView;
+        this.courseBrowser = courseBrowser;
         this.userInfoEdit = userInfoEdit;
         this.userManager = userManager;
         this.roomManager = roomManager;

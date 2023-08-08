@@ -102,7 +102,7 @@ class SignupPanel extends JPanel implements ActionListener, View<EntryFramePrese
         haveCodeLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                presenter.switchToActivationAttempted();
+                presenter.switchToActivation();
             }
         });
         this.add(haveCodeLabel);
@@ -191,9 +191,9 @@ class SignupPanel extends JPanel implements ActionListener, View<EntryFramePrese
     }
     public void displayErrors(RegisterErrorViewModel rvm) {
 
-        err2.setText(rvm.namesError());
-        err1.setText(rvm.usernameError());
-        err3.setText(rvm.emailError());
+        err1.setText(rvm.namesError());
+        err3.setText(rvm.usernameError());
+        err2.setText(rvm.emailError());
         err4.setText(rvm.passwordsError());
     }
 
