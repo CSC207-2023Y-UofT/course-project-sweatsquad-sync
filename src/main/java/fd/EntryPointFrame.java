@@ -84,7 +84,7 @@ public class EntryPointFrame extends JFrame implements ActionListener {
 
         signupTab.setFocusable(true);
         signupTab.setFont(UI.MB14);
-        signupTab.setForeground(Color.decode("#000000"));
+        signupTab.setForeground(Color.decode("#FFFFFF"));
         signupTab.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -110,7 +110,7 @@ public class EntryPointFrame extends JFrame implements ActionListener {
 
         loginTab.setFocusable(true);
         loginTab.setFont(UI.MB14);
-        loginTab.setForeground(Color.decode("#000000"));
+        loginTab.setForeground(Color.decode("#FFFFFF"));
         loginTab.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
