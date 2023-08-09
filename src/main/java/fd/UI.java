@@ -96,6 +96,8 @@ public class UI {
             }
         };
 
+        roundedButton.setBorderPainted(false);
+
         roundedButton.addMouseListener(new MouseAdapter() {
 
             // repaints to match colour when mouse is on the button
