@@ -440,4 +440,13 @@ public class Database {
                 .filter(r -> r.day == day_jump[day] && r.t.getHour() <= hr && hr < r.t.plus(r.d).getHour())
                 .map(r -> "<B>" + r.name + "</B>" + "<BR>" + r.room).collect(Collectors.joining("<BR>")) + "</HTML>";
     }
+
+    public boolean changeWorkoutName(int workout, String name) {
+        for (Workout w : gym.getWorkouts())
+            if (w.name.equals(name))
+                return false;
+
+        gym.getWorkouts().stream().collect(Collectors.toList()).get(workout).name = name;
+        return true;
+    }
 }
