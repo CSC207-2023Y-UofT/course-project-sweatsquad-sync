@@ -97,6 +97,8 @@ public class UI {
         };
 
         roundedButton.setBorderPainted(false);
+        roundedButton.setContentAreaFilled(false);
+        roundedButton.setOpaque(false);
 
         roundedButton.addMouseListener(new MouseAdapter() {
 
