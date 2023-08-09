@@ -20,7 +20,7 @@ public class UserInfoFrame extends JDialog implements ActionListener {
         setResizable(false);
         setLocationRelativeTo(null);
         setLayout(null);
-        setBackground(Color.decode("#DADADA"));
+        setBackground(Color.decode("#8F98FF"));
         setModal(true);
 
         detailsTab = new JButton("Account Details");
@@ -61,7 +61,7 @@ public class UserInfoFrame extends JDialog implements ActionListener {
 
         detailsTab.setFocusable(false);
         detailsTab.setFont(UI.MB16);
-        detailsTab.setForeground(Color.decode("#001561"));
+        detailsTab.setForeground(Color.decode("#172A87"));
         this.add(detailsTab);
 
         passChangeTab.setFocusable(true);
@@ -86,7 +86,7 @@ public class UserInfoFrame extends JDialog implements ActionListener {
 
         passChangeTab.setFocusable(false);
         passChangeTab.setFont(UI.MB16);
-        passChangeTab.setForeground(Color.decode("#001561"));
+        passChangeTab.setForeground(Color.decode("#172A87"));
         this.add(passChangeTab);
 
         signIndicator.setIcon(new ImageIcon("images/00201-reg-indicator.png"));

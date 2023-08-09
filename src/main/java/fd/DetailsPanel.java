@@ -66,7 +66,7 @@ class DetailsPanel extends JPanel implements ActionListener {
         passField.setFont(UI.CB18);
         this.add(passField);
 
-        saveChangesBtn = UI.genRoundBtn("Save Changes", 50, "#001561", false);
+        saveChangesBtn = UI.genRoundBtn("Save Changes", 50, "#172A87", false);
         saveChangesBtn.setFont(UI.MB13);
         saveChangesBtn.setForeground(Color.decode("#FFFFFF"));
         saveChangesBtn.setBounds(189, 450, 422, 50);

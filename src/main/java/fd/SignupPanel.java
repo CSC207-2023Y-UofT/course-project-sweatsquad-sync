@@ -90,7 +90,7 @@ class SignupPanel extends JPanel implements ActionListener {
         confirmPassField.setFont(UI.CB18);
         this.add(confirmPassField);
 
-        registerButton = UI.genRoundBtn("Register", 50, "#001561", false);
+        registerButton = UI.genRoundBtn("Register", 50, "#172A87", false);
         registerButton.setFont(UI.MB13);
         registerButton.setForeground(Color.decode("#FFFFFF"));
         registerButton.setBounds(189, 450, 422, 50);

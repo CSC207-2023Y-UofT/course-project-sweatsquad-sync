@@ -34,7 +34,7 @@ public class LoginPanel extends JPanel implements ActionListener {
         passcodeField.setBounds(189, 210, 422, 45);
         this.add(passcodeField);
 
-        loginButton = UI.genRoundBtn("Login", 50, "#001561", false);
+        loginButton = UI.genRoundBtn("Login", 50, "#172A87", false);
         loginButton.setFont(UI.MB13);
         loginButton.setForeground(Color.decode("#FFFFFF"));
         loginButton.setBounds(189, 292, 422, 50);

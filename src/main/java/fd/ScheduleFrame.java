@@ -1,13 +1,10 @@
 package fd;
 
-import ebr.Workout;
-
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.DayOfWeek;
-import java.util.List;
 
 public class ScheduleFrame extends JDialog implements ActionListener {
     private AbstractTableModel scheduleTable = new AbstractTableModel() {

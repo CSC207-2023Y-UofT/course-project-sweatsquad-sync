@@ -23,7 +23,7 @@ public class EntryPointFrame extends JFrame implements ActionListener {
         setResizable(false); // disables resizing
         setLocationRelativeTo(null); // centers frame
         setLayout(null);
-        setBackground(Color.decode("#DADADA"));
+        getContentPane().setBackground(Color.decode("#8F98FF"));
 
         loginTab = new JButton("Sign In");
         loginTab.setBounds(180, 27, 225, 50);
@@ -49,7 +49,7 @@ public class EntryPointFrame extends JFrame implements ActionListener {
 
         authCodeLabel = new JLabel("Instructor Authentication", SwingConstants.CENTER);
         authCodeLabel.setFont(UI.MB16);
-        authCodeLabel.setForeground(Color.decode("#001561"));
+        authCodeLabel.setForeground(Color.decode("#172A87"));
         authCodeLabel.setBounds(189, 25, 422, 47);
         authCodePanel.add(authCodeLabel);
 
@@ -70,7 +70,7 @@ public class EntryPointFrame extends JFrame implements ActionListener {
 
         loginTab.setFocusable(false);
         loginTab.setFont(UI.MB16);
-        loginTab.setForeground(Color.decode("#001561"));
+        loginTab.setForeground(Color.decode("#172A87"));
         // mouse event to revert mouse to default cursor
         dispatchEvent(new MouseEvent(signupTab, MouseEvent.MOUSE_MOVED, System.currentTimeMillis(), 0, 0, 0, 0, false));
         loginTab.addMouseListener(new MouseAdapter() {
@@ -126,7 +126,7 @@ public class EntryPointFrame extends JFrame implements ActionListener {
 
         signupTab.setFocusable(false);
         signupTab.setFont(UI.MB16);
-        signupTab.setForeground(Color.decode("#001561"));
+        signupTab.setForeground(Color.decode("#172A87"));
         // mouse event to revert mouse to default cursor
         dispatchEvent(new MouseEvent(loginTab, MouseEvent.MOUSE_MOVED, System.currentTimeMillis(), 0, 0, 0, 0, false));
         signupTab.addMouseListener(new MouseAdapter() {
