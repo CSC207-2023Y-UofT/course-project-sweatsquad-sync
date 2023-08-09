@@ -11,7 +11,7 @@ class SignupPanel extends JPanel implements ActionListener {
     private JTextField firstNameField, lastNameField, emailField, userField;
     private JPasswordField passField, confirmPassField;
     private JButton registerButton;
-    private JLabel err1, err2, err3, err4, haveCodeLabel;
+    private JLabel err1, err2, err3, err4, haveCodeLabel, coverBG;
 
     @FunctionalInterface
     public interface RegisterMethod {
@@ -126,6 +126,11 @@ class SignupPanel extends JPanel implements ActionListener {
         err4.setFont(UI.MB12);
         err4.setBounds(620, 385, 150, 40);
         this.add(err4);
+
+        coverBG = UI.genRoundLabel("", 20, "#FAFAF2");
+        coverBG.setBounds(0, 88, 800, 522);
+        this.add(coverBG);
+
     }
 
     private void clearFields() {

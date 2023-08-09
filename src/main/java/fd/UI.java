@@ -79,6 +79,9 @@ public class UI {
                 g2.setColor(defaultColor);
                 g2.fill(new RoundRectangle2D.Float(0, 0, getWidth(), getHeight(), roundness, roundness));
 
+                g2.setColor(Color.BLACK); // set the color to black for the outline
+                g2.draw(new RoundRectangle2D.Float(0, 0, getWidth() - 1, getHeight() - 1, roundness, roundness));
+
                 super.paintComponent(g);
                 g2.dispose();
             }
@@ -103,6 +106,9 @@ public class UI {
                 g2.setColor(defaultColor);
                 g2.fill(new RoundRectangle2D.Float(0, 0, getWidth(), getHeight(), roundness, roundness));
 
+                g2.setColor(Color.BLACK); // set the color to black for the outline
+                g2.draw(new RoundRectangle2D.Float(0, 0, getWidth() - 1, getHeight() - 1, roundness, roundness));
+
                 super.paintComponent(g);
                 g2.dispose();
             }
@@ -114,6 +120,32 @@ public class UI {
         configureRoundField(roundedField, colorHex, Cursor.TEXT_CURSOR);
 
         return roundedField;
+    }
+
+    public static JLabel genRoundLabel(String text, int roundness, String colorHex) {
+        Color defaultColor = Color.decode(colorHex);
+
+        JLabel roundedLabel = new JLabel(text) {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2 = setupGraphics(g);
+
+                g2.setColor(defaultColor);
+                g2.fill(new RoundRectangle2D.Float(0, 0, getWidth(), getHeight(), roundness, roundness));
+
+                g2.setColor(getForeground());
+                FontMetrics metrics = g2.getFontMetrics();
+                int x = (getWidth() - metrics.stringWidth(getText())) / 2;
+                int y = (getHeight() - metrics.getHeight()) / 2 + metrics.getAscent();
+
+                g2.drawString(getText(), x, y);
+                g2.dispose();
+            }
+        };
+
+        roundedLabel.setOpaque(false);
+
+        return roundedLabel;
     }
 
     // helper method for hover effects (creates MouseListener) for buttons

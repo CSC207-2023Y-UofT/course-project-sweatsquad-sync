@@ -9,12 +9,13 @@ public class LoginPanel extends JPanel implements ActionListener {
     private JButton loginButton;
     private JTextField usernameField;
     private JPasswordField passcodeField;
+    private JLabel coverBG;
 
     LoginPanel() {
         this.setLayout(null); // layout form, switches between cards
         this.setOpaque(false);
 
-        JLabel usernameLabel = new JLabel("Username:");
+        JLabel usernameLabel = new JLabel("Username");
         usernameLabel.setFont(UI.MB15);
         usernameLabel.setBounds(189, 98, 422, 25);
         this.add(usernameLabel);
@@ -24,7 +25,7 @@ public class LoginPanel extends JPanel implements ActionListener {
         usernameField.setFont(UI.CB18);
         this.add(usernameField);
 
-        JLabel passwordLabel = new JLabel("Password:");
+        JLabel passwordLabel = new JLabel("Password");
         passwordLabel.setFont(UI.MB15);
         passwordLabel.setBounds(189, 185, 422, 25);
         this.add(passwordLabel);
@@ -40,6 +41,11 @@ public class LoginPanel extends JPanel implements ActionListener {
         loginButton.setBounds(189, 292, 422, 50);
         loginButton.addActionListener(this);
         this.add(loginButton);
+
+        coverBG = UI.genRoundLabel("", 20, "#FAFAF2");
+        coverBG.setBounds(0, 88, 800, 522);
+        this.add(coverBG);
+
     }
 
     public void clearPass() {
