@@ -9,8 +9,8 @@ import javax.swing.*;
 public class UI {
     public static Font
             A16  = new Font("Arial", Font.PLAIN, 16),
-            // MP12 = new Font("Monsterrat", Font.PLAIN, 12), unused
-            MP16 = new Font("Monsterrat", Font.PLAIN, 16),
+    // MP12 = new Font("Monsterrat", Font.PLAIN, 12), unused
+    MP16 = new Font("Monsterrat", Font.PLAIN, 16),
             MB12 = new Font("Monsterrat", Font.BOLD, 12),
             MB13 = new Font("Monsterrat", Font.BOLD, 13),
             MB14 = new Font("Monsterrat", Font.BOLD, 14),
@@ -129,6 +129,8 @@ public class UI {
             @Override
             // custom painting for the rounded background
             protected void paintComponent(Graphics g) {
+                super.paintComponent(g); // needs to be called to prevent obscuration later
+
                 Graphics2D g2 = (Graphics2D) g.create();
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
@@ -160,6 +162,8 @@ public class UI {
             }
         };
 
+        roundedField.setOpaque(false); // for Windows
+
         // add mouse listener to handle hover effects
         roundedField.addMouseListener(new MouseAdapter() {
             @Override
@@ -188,6 +192,7 @@ public class UI {
             @Override
             // custom painting for the rounded background
             protected void paintComponent(Graphics g) {
+                super.paintComponent(g); // for Windows
                 Graphics2D g2 = (Graphics2D) g.create();
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
@@ -209,6 +214,8 @@ public class UI {
             @Override
             protected void paintBorder(Graphics g) {}
         };
+
+        roundedField.setOpaque(false);
 
         // add mouse listener to handle hover effects -just in case
         roundedField.addMouseListener(new MouseAdapter() {
