@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 
 class AuthCodePanel extends JPanel implements ActionListener, View<EntryFramePresenter> {
     private JTextField authField;
-    private JButton authenticateBtn;
+    private JButton authenticateBtn, backButton;
     private EntryFramePresenter presenter;
     AuthCodePanel() {
         this.setLayout(null);
@@ -27,14 +27,14 @@ class AuthCodePanel extends JPanel implements ActionListener, View<EntryFramePre
         authField.setHorizontalAlignment(SwingConstants.CENTER); // c-align
         this.add(authField);
 
-        JButton backButton = ComponentFactory.genRoundBtn("Back", 50, "#001561", false);
+        backButton = ComponentFactory.genRoundBtn("Back", 50, "#172A87", false);
         backButton.setFont(ComponentFactory.MB13);
         backButton.setForeground(Color.decode("#FFFFFF"));
         backButton.setBounds(189, 292, 196, 50);
         backButton.addActionListener(this);
         this.add(backButton);
 
-        authenticateBtn = ComponentFactory.genRoundBtn("Authenticate", 50, "#001561", false);
+        authenticateBtn = ComponentFactory.genRoundBtn("Authenticate", 50, "#172A87", false);
         authenticateBtn.setFont(ComponentFactory.MB13);
         authenticateBtn.setForeground(Color.decode("#FFFFFF"));
         authenticateBtn.setBounds(413, 292, 196, 50);
@@ -47,8 +47,9 @@ class AuthCodePanel extends JPanel implements ActionListener, View<EntryFramePre
         if (e.getSource() == authenticateBtn) {
             String inputCode = authField.getText(); // get the input from user
             presenter.codeActivationAttempted(inputCode);
-        } else {
-            presenter.switchToSignUp();
+        } else if (e.getSource() == backButton) {
+            App.entry.signupCard();
+            authField.setText("");
         }
     }
 

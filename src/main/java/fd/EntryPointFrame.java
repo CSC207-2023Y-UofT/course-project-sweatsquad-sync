@@ -24,7 +24,7 @@ public class EntryPointFrame extends JFrame implements EntryFrameView {
         setResizable(false); // disables resizing
         setLocationRelativeTo(null); // centers frame
         setLayout(null);
-        setBackground(Color.decode("#DADADA"));
+        getContentPane().setBackground(Color.decode("#8F98FF"));
 
         loginTab = new JButton("Sign In");
         loginTab.setBounds(180, 27, 225, 50);
@@ -50,7 +50,7 @@ public class EntryPointFrame extends JFrame implements EntryFrameView {
 
         authCodeLabel = new JLabel("Instructor Authentication", SwingConstants.CENTER);
         authCodeLabel.setFont(ComponentFactory.MB16);
-        authCodeLabel.setForeground(Color.decode("#001561"));
+        authCodeLabel.setForeground(Color.decode("#172A87"));
         authCodeLabel.setBounds(189, 25, 422, 47);
         authCodePanel.add(authCodeLabel);
 
@@ -76,12 +76,32 @@ public class EntryPointFrame extends JFrame implements EntryFrameView {
 
         loginTab.setFocusable(false);
         loginTab.setFont(ComponentFactory.MB16);
-        loginTab.setForeground(Color.decode("#001561"));
+        loginTab.setForeground(Color.decode("#172A87"));
+        // mouse event to revert mouse to default cursor
+        dispatchEvent(new MouseEvent(signupTab, MouseEvent.MOUSE_MOVED, System.currentTimeMillis(), 0, 0, 0, 0, false));
+        loginTab.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                // no longer shows that the button area's clickable
+                setCursor(Cursor.getDefaultCursor());
+            }
+        });
         this.add(loginTab);
 
         signupTab.setFocusable(true);
         signupTab.setFont(ComponentFactory.MB14);
-        signupTab.setForeground(Color.decode("#000000"));
+        signupTab.setForeground(Color.decode("#FFFFFF"));
+        signupTab.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                setCursor(Cursor.getDefaultCursor());
+            }
+        });
         this.add(signupTab);
 
         this.remove(authCodeLabel);
@@ -97,12 +117,32 @@ public class EntryPointFrame extends JFrame implements EntryFrameView {
 
         loginTab.setFocusable(true);
         loginTab.setFont(ComponentFactory.MB14);
-        loginTab.setForeground(Color.decode("#000000"));
+        loginTab.setForeground(Color.decode("#FFFFFF"));
+        loginTab.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                setCursor(Cursor.getDefaultCursor());
+            }
+        });
         this.add(loginTab);
 
         signupTab.setFocusable(false);
         signupTab.setFont(ComponentFactory.MB16);
-        signupTab.setForeground(Color.decode("#001561"));
+        signupTab.setForeground(Color.decode("#172A87"));
+        // mouse event to revert mouse to default cursor
+        dispatchEvent(new MouseEvent(loginTab, MouseEvent.MOUSE_MOVED, System.currentTimeMillis(), 0, 0, 0, 0, false));
+        signupTab.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                // no longer shows that the button area's clickable
+                setCursor(Cursor.getDefaultCursor());
+            }
+        });
         this.add(signupTab);
 
         this.remove(authCodeLabel);

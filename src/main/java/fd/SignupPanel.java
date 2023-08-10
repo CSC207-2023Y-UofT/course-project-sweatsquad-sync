@@ -18,7 +18,7 @@ class SignupPanel extends JPanel implements ActionListener, View<EntryFramePrese
     private JTextField firstNameField, lastNameField, emailField, userField;
     private JPasswordField passField, confirmPassField;
     private JButton registerButton;
-    private JLabel err1, err2, err3, err4, haveCodeLabel;
+    private JLabel err1, err2, err3, err4, haveCodeLabel, coverBG;
 
     private RegistrationDispatch registrationDispatch;
 
@@ -72,22 +72,27 @@ class SignupPanel extends JPanel implements ActionListener, View<EntryFramePrese
         signupPasswordLabel.setBounds(189, 359, 422, 25);
         this.add(signupPasswordLabel);
 
-        passField = ComponentFactory.genRoundPasswordField("", 20, "#FFFFFF", false);
+        passField = ComponentFactory.genRoundPasswordField("", 20, "#FFFFFF");
         passField.setBounds(189, 384, 198, 45);
         passField.setFont(ComponentFactory.CB18);
         this.add(passField);
 
-        JLabel confirmPasswordLabel = new JLabel("Password");
+        JLabel confirmPasswordLabel = new JLabel("Confirm Password");
         confirmPasswordLabel.setFont(ComponentFactory.MB15);
-        confirmPasswordLabel.setBounds(189, 359, 422, 25);
+        confirmPasswordLabel.setBounds(413, 359, 422, 25);
         this.add(confirmPasswordLabel);
 
-        confirmPassField = ComponentFactory.genRoundPasswordField("", 20, "#FFFFFF", false);
+        JLabel confirmPassLabel = new JLabel("Password");
+        confirmPassLabel.setFont(UI.MB15);
+        confirmPassLabel.setBounds(189, 359, 422, 25);
+        this.add(signupPasswordLabel);
+
+        confirmPassField = ComponentFactory.genRoundPasswordField("", 20, "#FFFFFF");
         confirmPassField.setBounds(413, 384, 198, 45);
         confirmPassField.setFont(ComponentFactory.CB18);
         this.add(confirmPassField);
 
-        registerButton = ComponentFactory.genRoundBtn("Register", 50, "#001561", false);
+        registerButton = ComponentFactory.genRoundBtn("Register", 50, "#172A87", false);
         registerButton.setFont(ComponentFactory.MB13);
         registerButton.setForeground(Color.decode("#FFFFFF"));
         registerButton.setBounds(189, 450, 422, 50);
@@ -123,6 +128,11 @@ class SignupPanel extends JPanel implements ActionListener, View<EntryFramePrese
         err4.setFont(ComponentFactory.MB12);
         err4.setBounds(620, 385, 150, 40);
         this.add(err4);
+
+        coverBG = UI.genRoundLabel("", 20, "#FAFAF2");
+        coverBG.setBounds(0, 88, 800, 522);
+        this.add(coverBG);
+
     }
 
     private EntryFramePresenter presenter;

@@ -7,12 +7,22 @@ import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.DayOfWeek;
 
 public class ScheduleFrame extends JDialog implements ActionListener, View<SchedulePresenter> {
 
     SchedulePresenter presenter;
     private AbstractTableModel scheduleTable = new AbstractTableModel() {
-        private final String[] cols = {"", "M", "T", "W", "Tu", "F", "S", "Su"};
+        private final String[] cols = {
+                "",
+                DayOfWeek.SUNDAY.toString(),
+                DayOfWeek.MONDAY.toString(),
+                DayOfWeek.TUESDAY.toString(),
+                DayOfWeek.WEDNESDAY.toString(),
+                DayOfWeek.THURSDAY.toString(),
+                DayOfWeek.FRIDAY.toString(),
+                DayOfWeek.SATURDAY.toString()
+        };
         public int getColumnCount() { return cols.length; }
         public int getRowCount() { return 10; }
         public String getColumnName(int col) {
@@ -22,7 +32,7 @@ public class ScheduleFrame extends JDialog implements ActionListener, View<Sched
             if (col == 0)
                 return (8 + row) + ":00";
 
-            return "TODO";
+            return App.db.getScheduleBlockAt(row - 1 + 8, col - 1);
         }
     };
 

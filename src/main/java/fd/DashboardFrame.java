@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 
 public class DashboardFrame extends JFrame implements ActionListener, View<DashboardPresenter> {
     private JButton viewEntireSchedule, enrolBtn, logout, logout_icon, settings, dailyWorkoutTips,
@@ -40,7 +41,7 @@ public class DashboardFrame extends JFrame implements ActionListener, View<Dashb
 
         welcomeUser = new JLabel("");
         welcomeUser.setFont(ComponentFactory.MB23);
-        welcomeUser.setForeground(Color.decode("#001561"));
+        welcomeUser.setForeground(Color.decode("#172A87"));
         welcomeUser.setBounds(66, 24, 422, 47);
         this.add(welcomeUser);
 
@@ -64,22 +65,22 @@ public class DashboardFrame extends JFrame implements ActionListener, View<Dashb
         logout_icon.addActionListener(this);
         this.add(logout_icon);
 
-        logout = ComponentFactory.genRoundBtn("", 23, "#001561", false);
+        logout = ComponentFactory.genRoundBtn("", 23, "#172A87", false);
         logout.setFont(ComponentFactory.MB19);
         logout.setForeground(Color.decode("#FFFFFF"));
         logout.setBounds(640, 15, 40, 30);
         this.add(logout);
 
-        dailyWorkoutTips = ComponentFactory.genRoundBtn("Daily Workout Tips", 30, "#001561", false);
+        dailyWorkoutTips = ComponentFactory.genRoundBtn("Daily Workout Tips", 30, "#172A87", false);
         dailyWorkoutTips.setFont(ComponentFactory.MB20);
         dailyWorkoutTips.setForeground(Color.decode("#FFFFFF"));
         dailyWorkoutTips.setBounds(490, 295, 218, 75);
         dailyWorkoutTips.addActionListener(this);
 
-        settings = ComponentFactory.genRoundBtn("Account Settings ⚙", 30, "#001561", false);
+        settings = ComponentFactory.genRoundBtn("Account Settings ⚙", 30, "#172A87", false);
         settings.setFont(ComponentFactory.MB20);
         settings.setForeground(Color.decode("#FFFFFF"));
-        settings.setBounds(490, 410, 218, 75);
+        settings.setBounds(413, 300, 280, 140);
         settings.addActionListener(this);
         this.add(settings);
 
@@ -88,8 +89,8 @@ public class DashboardFrame extends JFrame implements ActionListener, View<Dashb
         upcomingC.setForeground(Color.decode("#000000"));
         upcomingC.setBounds(66, 130, 422, 47);
 
-        upcomingC1 = new JLabel("<html><b>14:00</b><BR><BR>16:00</html>");
-        upcomingC1.setFont(ComponentFactory.MP12);
+        upcomingC1 = new JLabel("Class 1 Info");
+        upcomingC1.setFont(ComponentFactory.MP16);
         upcomingC1.setForeground(Color.decode("#FFFFFF"));
         upcomingC1.setBackground(Color.decode("#40508a"));
         upcomingC1.setOpaque(true);
@@ -111,39 +112,46 @@ public class DashboardFrame extends JFrame implements ActionListener, View<Dashb
         upcomingC3.setBounds(66, 370, 320, 60);
 
         viewEntireSchedule = ComponentFactory.genRoundBtn("View Entire Schedule", 30,
-                "#001561", false);
+                "#172A87", false);
         viewEntireSchedule.setFont(ComponentFactory.MB20);
         viewEntireSchedule.setForeground(Color.decode("#FFFFFF"));
-        viewEntireSchedule.setBounds(66, 445, 320, 40);
+        viewEntireSchedule.setBounds(66, 445, 315, 45);
         viewEntireSchedule.addActionListener(this);
 
-        enrolBtn = ComponentFactory.genRoundBtn("Manage Classes", 30, "#001561", false);
+        enrolBtn = ComponentFactory.genRoundBtn("Manage Classes", 30, "#172A87", false);
         enrolBtn.setFont(ComponentFactory.MB23);
         enrolBtn.setForeground(Color.decode("#FFFFFF"));
-        enrolBtn.setBounds(490, 180, 218, 75);
+        enrolBtn.setBounds(413, 123, 280, 140);
         enrolBtn.addActionListener(this);
 
-        manageRooms = ComponentFactory.genRoundBtn("Manage Rooms", 30, "#001561", false);
+        manageRooms = ComponentFactory.genRoundBtn("Manage Rooms", 30, "#172A87", false);
         manageRooms.setFont(ComponentFactory.MB23);
         manageRooms.setForeground(Color.decode("#FFFFFF"));
-        manageRooms.setBounds(66, 180, 218, 75);
+        manageRooms.setBounds(107, 123, 280, 140);
         manageRooms.addActionListener(this);
 
-        manageUsers = ComponentFactory.genRoundBtn("Manage Users", 30, "#001561", false);
+        manageUsers = ComponentFactory.genRoundBtn("Manage Users", 30, "#172A87", false);
         manageUsers.setFont(ComponentFactory.MB23);
         manageUsers.setForeground(Color.decode("#FFFFFF"));
-        manageUsers.setBounds(66, 380, 218, 75);
+        manageUsers.setBounds(107, 300, 280, 140);
         manageUsers.addActionListener(this);
     }
 
     public void userRefresh() {
-        String[] next = dashboardPresenter.nextClasses();
-        if (next.length != 0) {
+        enrolBtn.setBounds(490, 180, 218, 75);
+        dailyWorkoutTips.setBounds(490, 280, 218, 75);
+        settings.setBounds(490, 380, 218, 75);
+
+        List<String[]> next = dashboardPresenter.getNextThreeOfferings();
+        if (!next.isEmpty()) {
             this.add(upcomingC);
             this.add(upcomingC1);
             this.add(upcomingC2);
             this.add(upcomingC3);
             this.add(viewEntireSchedule);
+            upcomingC1.setText("<html><b>" + next.get(0)[0] + "</b><BR>" + next.get(0)[1] +"<BR>" + next.get(0)[2] + "</html>");
+            upcomingC2.setText("<html><b>" + next.get(1)[0] + "</b><BR>" + next.get(1)[1] +"<BR>" + next.get(1)[2] + "</html>");
+            upcomingC3.setText("<html><b>" + next.get(2)[0] + "</b><BR>" + next.get(2)[1] +"<BR>" + next.get(2)[2] + "</html>");
         }
         else {
             this.remove(upcomingC);
@@ -161,6 +169,9 @@ public class DashboardFrame extends JFrame implements ActionListener, View<Dashb
 
     public void instructorRefresh() {
         userRefresh();
+        enrolBtn.setBounds(490, 180, 218, 75);
+        dailyWorkoutTips.setBounds(490, 280, 218, 75);
+        settings.setBounds(490, 380, 218, 75);
         courseBrowser.instructorView();
     }
 
@@ -174,6 +185,9 @@ public class DashboardFrame extends JFrame implements ActionListener, View<Dashb
         this.add(enrolBtn);
         this.add(manageRooms);
         this.add(manageUsers);
+        dailyWorkoutTips.setBounds(490, 295, 218, 75);
+        enrolBtn.setBounds(413, 123, 280, 140);
+        settings.setBounds(413, 300, 280, 140);
         courseBrowser.adminView();
     }
 

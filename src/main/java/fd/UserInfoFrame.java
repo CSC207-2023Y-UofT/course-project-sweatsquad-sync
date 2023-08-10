@@ -1,96 +1,115 @@
 package fd;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class UserInfoFrame extends JDialog implements ActionListener  {
+public class UserInfoFrame extends JDialog implements ActionListener {
+    private JButton detailsTab, passChangeTab;
+    private JLabel signIndicator;
+    private CardLayout cardLayout = new CardLayout();
+    private JPanel cards = new JPanel(cardLayout);
 
+    public DetailsPanel detailsPanel = new DetailsPanel();
+    public PassChangePanel passChangePanel = new PassChangePanel();
 
     public UserInfoFrame() {
-        setTitle("Edit User Information"); // window title
-        setSize(800, 600); // window dimensions
-        setResizable(false); // disables resizing
-        setLocationRelativeTo(null); // centers ui if left 'null'
+        setTitle("Details");
+        setSize(800, 600);
+        setResizable(false);
+        setLocationRelativeTo(null);
         setLayout(null);
+        setBackground(Color.decode("#8F98FF"));
         setModal(true);
-        // TODO actually i think you may be able to just spawn a SignupPanel and add it to this frame
-        //  (may need to change some stuff from there though (but still better than redoing this))
-//        firstNameField.setText(database.activeUser.firstName); // set FN
-//        settingsPanel.add(lastNameLabel);
-//        settingsPanel.add(lastNameField);
-//        lastNameField.setText(database.activeUser.lastName); // set LN
-//        settingsPanel.add(emailLabel);
-//        settingsPanel.add(emailField);
-//        emailField.setText(database.activeUser.email); // set email
-//        settingsPanel.add(signupUsernameLabel);
-//        settingsPanel.add(userField);
-//        userField.setText(database.activeUser.getName());
-//        settingsPanel.add(err1);
-//        settingsPanel.add(err2);
-//        settingsPanel.add(err3);
-//        settingsPanel.add(err4);
-//        settingsPanel.add(back2dash);
-//        back2dash.setBounds(12, 12, 138, 68);
-//        cardLayout.show(getContentPane(), "Account Settings");
-        //        saveAccountChanges = UI.genRoundBtn("Save Changes", 50, "#001561", false);
-//        saveAccountChanges.setFont(UI.MB13);
-//        saveAccountChanges.setForeground(Color.decode("#FFFFFF"));
-//        saveAccountChanges.setBounds(189, 450, 422, 50);
-//        saveAccountChanges.addActionListener(this);
-//        this.add(saveAccountChanges);
+
+        detailsTab = new JButton("Account Details");
+        detailsTab.setBounds(180, 27, 225, 50);
+        detailsTab.addActionListener(this);
+        detailsTab.setOpaque(false);
+        detailsTab.setContentAreaFilled(false);
+        detailsTab.setBorderPainted(false);
+        detailsTab.setFocusPainted(false);
+        add(detailsTab);
+
+        passChangeTab = new JButton("Change Password");
+        passChangeTab.setBounds(395, 27, 225, 50);
+        passChangeTab.addActionListener(this);
+        passChangeTab.setOpaque(false);
+        passChangeTab.setContentAreaFilled(false);
+        passChangeTab.setBorderPainted(false);
+        passChangeTab.setFocusPainted(false);
+        add(passChangeTab);
+
+        signIndicator = new JLabel("");
+        signIndicator.setBounds(189, 65, 422, 9);
+        add(signIndicator);
+
+        cards.add(detailsPanel, "Change Details");
+        cards.add(passChangePanel, "Change Passcode");
+        cards.setBounds(0, 0, 800, 700);
+        cards.setOpaque(false);
+        cardLayout.show(cards, "Change Details");
+        add(cards);
+
+        detailsCard();
     }
 
+    public void detailsCard() {
+        textSetup();
+        cardLayout.show(cards, "Change Details");
 
-//    // button action listener response function
-//    public void actionPerformed(ActionEvent e) {
-//        if (e.getSource() == saveAccountChanges) {
-//            String firstName = capitalizeRemoveTrailingSpaces(firstNameField.getText());
-//            firstNameField.setText(firstName);
-//            String lastName = capitalizeRemoveTrailingSpaces(lastNameField.getText());
-//            lastNameField.setText(lastName);
-//            String username = userField.getText().trim();
-//            String email = emailField.getText().trim();
-//            emailField.setText(email);
-//            err1.setText("");
-//            err2.setText("");
-//            err3.setText("");
-//            err4.setText("");
-//
-//            if (!firstName.equals(database.activeUser.firstName)) {
-//                if (!firstName.isEmpty()) {
-//                    database.activeUser.firstName = firstName;
-//                } else {
-//                    System.out.println("Name fields cannot be left blank");
-//                }
-//            }
-//
-//            if (!lastName.equals(database.activeUser.lastName)) {
-//                if (!lastName.isEmpty()) {
-//                    database.activeUser.lastName = lastName;
-//                } else {
-//                    System.out.println("Name fields cannot be left blank");
-//                }
-//            }
-//
-//            if (!email.equals(database.activeUser.email)) {
-//                if (email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
-//                    database.activeUser.email = email;
-//                } else {
-//                    System.out.println("Invalid email format.");
-//                }
-//            }
-//
-//            if (!username.equals(database.activeUser.firstName)) {
-//                // TODO
-//            }
-//        }
-//    }
+        detailsTab.setFocusable(false);
+        detailsTab.setFont(UI.MB16);
+        detailsTab.setForeground(Color.decode("#172A87"));
+        this.add(detailsTab);
+
+        passChangeTab.setFocusable(true);
+        passChangeTab.setFont(UI.MB14);
+        passChangeTab.setForeground(Color.decode("#000000"));
+        this.add(passChangeTab);
+
+        // Assuming some indicator for the DetailsPanel
+        signIndicator.setIcon(new ImageIcon("images/00101-sign-indicator.png"));
+    }
+
+    public void passChangeCard() {
+        //refreshShow();
+        //this.setVisible(true);
+
+        cardLayout.show(cards, "Change Passcode");
+
+        detailsTab.setFocusable(true);
+        detailsTab.setFont(UI.MB14);
+        detailsTab.setForeground(Color.decode("#000000"));
+        this.add(detailsTab);
+
+        passChangeTab.setFocusable(false);
+        passChangeTab.setFont(UI.MB16);
+        passChangeTab.setForeground(Color.decode("#172A87"));
+        this.add(passChangeTab);
+
+        signIndicator.setIcon(new ImageIcon("images/00201-reg-indicator.png"));
+    }
+
+    public void textSetup() {
+        detailsPanel.firstNameInfoField.setText(App.db.getActiveUserFirstName());
+        detailsPanel.lastNameInfoField.setText(App.db.getActiveUserLastName());
+        detailsPanel.emailInfoField.setText(App.db.getActiveUserEmail());
+        detailsPanel.userInfoField.setText(App.db.getActiveUserUsername());
+    }
+
     public void refreshShow() {
+        textSetup();
         this.setVisible(true);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == detailsTab) {
+            detailsCard();
+        } else if (e.getSource() == passChangeTab){
+            passChangeCard();
+        }
     }
 }
