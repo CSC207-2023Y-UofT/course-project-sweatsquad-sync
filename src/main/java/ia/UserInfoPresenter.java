@@ -2,9 +2,11 @@ package ia;
 
 import abr.GymManager;
 import abr.IODataModels.LoginDetails;
-import abr.InputBoundary;
 import abr.PasswordHashStrategy;
 import ebr.User;
+import fd.UserInfoFrame;
+
+import java.awt.event.WindowEvent;
 
 
 public class UserInfoPresenter implements Presenter {
@@ -12,6 +14,8 @@ public class UserInfoPresenter implements Presenter {
 
     private PasswordHashStrategy passwordHashStrategy;
     private GymManager gymManager;
+
+    private UserInfoFrame userInfoFrame;
 
     public UserInfoPresenter(GymManager gymManager, PasswordHashStrategy passwordHashStrategy) {
         this.passwordHashStrategy = passwordHashStrategy;
@@ -75,5 +79,14 @@ public class UserInfoPresenter implements Presenter {
 
     public boolean verifyUserDetails(String user, String password) {
         return gymManager.verifyLoginDetails(new LoginDetails(user, password));
+    }
+
+    public void requestCloseFrame() {
+        userInfoFrame.dispatchEvent(new WindowEvent(
+                userInfoFrame, WindowEvent.WINDOW_CLOSING));
+    }
+
+    public void setView(UserInfoFrame uif) {
+        this.userInfoFrame = uif;
     }
 }

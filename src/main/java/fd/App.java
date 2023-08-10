@@ -51,7 +51,10 @@ public class App {
         ScheduleFrame scheduleFrame = new ScheduleFrame();
         scheduleFrame.setPresenter(schedulePresenter);
 
-        UserInfoFrame userInfoFrame = new UserInfoFrame(new UserInfoPresenter(gymManager, new PasswordHashSHA256()));
+        UserInfoPresenter userInfoPresenter = new UserInfoPresenter(gymManager, new PasswordHashSHA256());
+
+        UserInfoFrame userInfoFrame = new UserInfoFrame(userInfoPresenter);
+        userInfoPresenter.setView(userInfoFrame);
 
         DashboardFrame dashboardFrame = new DashboardFrame(scheduleFrame, courseEnrollmentFrame, userInfoFrame, manageUserFrame, manageRoomFrame);
         DashboardPresenter dashboardPresenter = new DashboardPresenter(dashboardFrame, gymManager.getLogoutRequestHandler(), gymManager);

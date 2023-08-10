@@ -83,7 +83,7 @@ class PassChangePanel extends JPanel implements ActionListener, View<UserInfoPre
             boolean checksFailed = false;
 
             // checks if old password is correct
-            if (presenter.verifyUserDetails(presenter.getActiveUserUsername(), oldPass)) {
+            if (!presenter.verifyUserDetails(presenter.getActiveUserUsername(), oldPass)) {
                 err1.setText("Incorrect password");
                 JOptionPane.showMessageDialog(this, "*Incorrect password, try again");
                 checksFailed = true;

@@ -166,6 +166,8 @@ class DetailsPanel extends JPanel implements ActionListener, View<UserInfoPresen
                 passField.setText("");
             }
 
+            JOptionPane.showMessageDialog(this, "Changes were successful");
+            presenter.requestCloseFrame();
 
             // login is successful -updates user details
             if (!firstName.equals(presenter.getActiveUserFirstName())) {
