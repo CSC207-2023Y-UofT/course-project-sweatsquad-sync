@@ -32,12 +32,12 @@ public class EBRTest {
         Assertions.assertEquals(w.offerings.size(), 1);
     }
 
-    // tests Adding/Removing rooms, users
     @Test
     public void gymTest() {
         Gym g = new Gym("a");
         Room r1 = new Room("d");
         User u1 = new User("d", "", "", "", "");
+        Workout w = new Workout("d",  1);
         g.removeRooms(r1);
         Assertions.assertEquals(g.getRooms().size(), 0);
         g.addRoom(r1);
@@ -54,6 +54,14 @@ public class EBRTest {
         Assertions.assertEquals(g.getUsers().size(), 1);
         g.removeUser(u1);
         Assertions.assertEquals(g.getUsers().size(), 0);
+        g.removeWorkout(w);
+        Assertions.assertEquals(g.getWorkouts().size(), 0);
+        g.addWorkout(w);
+        Assertions.assertEquals(g.getWorkouts().size(), 1);
+        g.addWorkout(w);
+        Assertions.assertEquals(g.getWorkouts().size(), 1);
+        g.removeWorkout(w);
+        Assertions.assertEquals(g.getWorkouts().size(), 0);
     }
 
     @Test
@@ -130,7 +138,6 @@ public class EBRTest {
         Assertions.assertEquals(w.getUsers().size(), 1);
     }
 
-    // also tests Adding/Removing workouts
     @Test
     public void unenrollTest() {
         Workout w = new Workout("w", 1);
