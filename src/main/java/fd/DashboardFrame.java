@@ -9,9 +9,10 @@ import java.awt.event.MouseEvent;
 import java.util.List;
 
 public class DashboardFrame extends JFrame implements ActionListener {
-    private JButton viewEntireSchedule, enrolBtn, logout, logout_icon, settings, dailyWorkoutTips,
+    private JButton viewEntireSchedule, enrolBtn, logout, logout_icon, settings,
             manageRooms, manageUsers;
     private JLabel welcomeUser, upcomingC, upcomingC1, upcomingC2, upcomingC3;
+    private JLabel coverBG;
 
     private CourseFrame courseBrowser = new CourseFrame();
     private ScheduleFrame scheduleView = new ScheduleFrame();
@@ -25,12 +26,13 @@ public class DashboardFrame extends JFrame implements ActionListener {
         setSize(800, 600); // window dimensions
         setResizable(false); // disables resizing
         setLocationRelativeTo(null); // centers ui if left 'null'
-        setLayout(null);
+        setLayout(null); // absolute layout
+        getContentPane().setBackground(Color.decode("#8F98FF")); // bg colour
 
         welcomeUser = new JLabel("");
         welcomeUser.setFont(UI.MB23);
-        welcomeUser.setForeground(Color.decode("#172A87"));
-        welcomeUser.setBounds(66, 24, 422, 47);
+        welcomeUser.setForeground(Color.decode("#FFFFFF"));
+        welcomeUser.setBounds(34, 41, 422, 47);
         this.add(welcomeUser);
 
         logout_icon = new JButton();
@@ -57,13 +59,8 @@ public class DashboardFrame extends JFrame implements ActionListener {
         logout.setFont(UI.MB19);
         logout.setForeground(Color.decode("#FFFFFF"));
         logout.setBounds(640, 15, 40, 30);
+        logout.setOpaque(false);
         this.add(logout);
-
-        dailyWorkoutTips = UI.genRoundBtn("Daily Workout Tips", 30, "#172A87", false);
-        dailyWorkoutTips.setFont(UI.MB20);
-        dailyWorkoutTips.setForeground(Color.decode("#FFFFFF"));
-        dailyWorkoutTips.setBounds(490, 295, 218, 75);
-        dailyWorkoutTips.addActionListener(this);
 
         settings = UI.genRoundBtn("Account Settings ⚙", 30, "#172A87", false);
         settings.setFont(UI.MB20);
@@ -123,11 +120,15 @@ public class DashboardFrame extends JFrame implements ActionListener {
         manageUsers.setForeground(Color.decode("#FFFFFF"));
         manageUsers.setBounds(107, 300, 280, 140);
         manageUsers.addActionListener(this);
+
+        coverBG = UI.genRoundLabel("", 20, "#FAFAF2");
+        coverBG.setBounds(0, 88, 800, 522);
+        this.add(coverBG);
+
     }
 
     public void userRefresh() {
         enrolBtn.setBounds(490, 180, 218, 75);
-        dailyWorkoutTips.setBounds(490, 280, 218, 75);
         settings.setBounds(490, 380, 218, 75);
 
         List<String[]> next = App.db.getNextThreeOfferings();
@@ -137,11 +138,13 @@ public class DashboardFrame extends JFrame implements ActionListener {
             this.add(upcomingC2);
             this.add(upcomingC3);
             this.add(viewEntireSchedule);
+            this.add(coverBG);
             upcomingC1.setText("<html><b>" + next.get(0)[0] + "</b><BR>" + next.get(0)[1] +"<BR>" + next.get(0)[2] + "</html>");
             upcomingC2.setText("<html><b>" + next.get(1)[0] + "</b><BR>" + next.get(1)[1] +"<BR>" + next.get(1)[2] + "</html>");
             upcomingC3.setText("<html><b>" + next.get(2)[0] + "</b><BR>" + next.get(2)[1] +"<BR>" + next.get(2)[2] + "</html>");
         }
         else {
+            this.add(coverBG);
             this.remove(upcomingC);
             this.remove(upcomingC1);
             this.remove(upcomingC2);
@@ -149,7 +152,7 @@ public class DashboardFrame extends JFrame implements ActionListener {
             this.remove(viewEntireSchedule);
         }
         this.add(enrolBtn);
-        this.add(dailyWorkoutTips);
+        this.add(coverBG);
         this.remove(manageRooms);
         this.remove(manageUsers);
         courseBrowser.userView();
@@ -158,13 +161,11 @@ public class DashboardFrame extends JFrame implements ActionListener {
     public void instructorRefresh() {
         userRefresh();
         enrolBtn.setBounds(490, 180, 218, 75);
-        dailyWorkoutTips.setBounds(490, 280, 218, 75);
         settings.setBounds(490, 380, 218, 75);
         courseBrowser.instructorView();
     }
 
     public void adminRefresh() {
-        this.remove(dailyWorkoutTips);
         this.remove(upcomingC);
         this.remove(upcomingC1);
         this.remove(upcomingC2);
@@ -173,7 +174,7 @@ public class DashboardFrame extends JFrame implements ActionListener {
         this.add(enrolBtn);
         this.add(manageRooms);
         this.add(manageUsers);
-        dailyWorkoutTips.setBounds(490, 295, 218, 75);
+        this.add(coverBG);
         enrolBtn.setBounds(413, 123, 280, 140);
         settings.setBounds(413, 300, 280, 140);
         courseBrowser.adminView();
@@ -189,8 +190,6 @@ public class DashboardFrame extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == enrolBtn)
             courseBrowser.refreshShow();
-        else if (e.getSource() == dailyWorkoutTips)
-            JOptionPane.showMessageDialog(this, "todo: huh????");
         else if (e.getSource() == settings)
             userInfoEdit.refreshShow();
         else if (e.getSource() == viewEntireSchedule)
@@ -202,5 +201,4 @@ public class DashboardFrame extends JFrame implements ActionListener {
         else if (e.getSource() == manageUsers)
             userManager.refreshShow();
     }
-
 }

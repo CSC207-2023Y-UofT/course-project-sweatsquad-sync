@@ -8,11 +8,13 @@ import java.awt.event.ActionListener;
 class AuthCodePanel extends JPanel implements ActionListener {
     private JTextField authField;
     private JButton authenticateBtn, backButton;
+    private JLabel coverBG;
     AuthCodePanel() {
         this.setLayout(null);
         this.setOpaque(false);
 
-        JLabel authCodeLabel = new JLabel("Enter Authentication Code                   (16 Characters)");
+        JLabel authCodeLabel = new JLabel("Enter Authentication Code" +
+                "                   (16 Characters)");
         authCodeLabel.setBounds(189, 140, 422, 25);
         authCodeLabel.setFont(UI.MB15);
         this.add(authCodeLabel);
@@ -36,6 +38,11 @@ class AuthCodePanel extends JPanel implements ActionListener {
         authenticateBtn.setBounds(413, 292, 196, 50);
         authenticateBtn.addActionListener(this);
         this.add(authenticateBtn);
+
+        coverBG = UI.genRoundLabel("", 20, "#FAFAF2");
+        coverBG.setBounds(0, 88, 800, 522);
+        this.add(coverBG);
+
     }
 
     @Override

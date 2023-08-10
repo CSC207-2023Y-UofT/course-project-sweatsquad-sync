@@ -148,6 +148,7 @@ class SignupPanel extends JPanel implements ActionListener {
         clearFields();
         registerDispatch = App.db::registerBasicUser;
         this.add(haveCodeLabel);
+        this.add(coverBG);
     }
 
     public void setInstructorView(String auth) {
