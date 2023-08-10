@@ -38,10 +38,9 @@ public class Instructor extends User implements Serializable {
         return this.username == null ? "UNCLAIMED INSTRUCTOR" : this.username;
     }
 
-    @Override
     public void setName(String name) {
-        if (this.name != null)
-            this.name = name;
+        if (this.username != null)
+            this.username = name;
     }
 
     @Override

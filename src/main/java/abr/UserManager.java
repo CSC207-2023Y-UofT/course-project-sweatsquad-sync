@@ -96,12 +96,7 @@ public class UserManager {
 
 
     private @NotNull String hashPassword(@NotNull String password) {
-        try {
-            return hashStrategy.hashPassword(password);
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Password hash unccessful"); // Don't fail silently
-        }
+        return hashStrategy.hashPassword(password);
     }
 
 }

@@ -50,9 +50,7 @@ public class ManageUserFrame extends JDialog implements ActionListener, View<Man
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         table.setRowSelectionAllowed(true);
         table.setColumnSelectionAllowed(false);
-        table.getSelectionModel().addListSelectionListener(() -> {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
+        table.getSelectionModel().addListSelectionListener((e) -> {
                 boolean sel = table.getSelectedRow() != -1;
                 delete.setEnabled(sel);
                 if (sel) {
@@ -64,7 +62,7 @@ public class ManageUserFrame extends JDialog implements ActionListener, View<Man
                     addCerts.setVisible(false);
                     copyCode.setVisible(false);
                 }
-            }
+
         });
         JScrollPane p = new JScrollPane(table);
         p.setBounds(0, 40, 800, 500);
@@ -112,7 +110,7 @@ public class ManageUserFrame extends JDialog implements ActionListener, View<Man
             if (table.getValueAt(table.getSelectedRow(), 2).toString().equals("GymAdmin"))
                 JOptionPane.showMessageDialog(this, "Cannot delete admin!");
             else
-                App.db.removeUser(table.getSelectedRow());
+                presenter.removeUser(table.getSelectedRow());
         }
         else if (e.getSource() == addCerts) {
             String cert = JOptionPane.showInputDialog(this, "Cert name?", null);
@@ -124,7 +122,7 @@ public class ManageUserFrame extends JDialog implements ActionListener, View<Man
         else if (e.getSource() == copyCode) {
             Toolkit.getDefaultToolkit()
                     .getSystemClipboard()
-                    .setContents(new StringSelection(App.db.adminReqInstructorAuthCode(table.getSelectedRow())),null);
+                    .setContents(new StringSelection(presenter.adminReqInstructorAuthCode(table.getSelectedRow())),null);
             JOptionPane.showMessageDialog(this, "Registration code has been copied to clipboard!");
         }
 

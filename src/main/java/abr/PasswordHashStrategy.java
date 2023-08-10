@@ -4,5 +4,5 @@ import java.security.NoSuchAlgorithmException;
 
 @FunctionalInterface
 public interface PasswordHashStrategy {
-    String hashPassword(String visualPassword) throws NoSuchAlgorithmException;
+    String hashPassword(String visualPassword);
 }

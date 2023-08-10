@@ -47,4 +47,8 @@ public class ManagerUserPresenter implements Presenter {
         ((Instructor)gymManager.getGym().getUsers().stream().collect(Collectors.toList()).get(i)).certs.add(cert);
     }
 
+    public String adminReqInstructorAuthCode(int i) {
+        return ((Instructor)gymManager.getGym().getUsers().stream().collect(Collectors.toList()).get(i)).getAuthCode();
+    }
+
 }

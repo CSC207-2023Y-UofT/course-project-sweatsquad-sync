@@ -1,66 +1,71 @@
 package fd;
 
+import ia.UserInfoPresenter;
+import ia.View;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-class PassChangePanel extends JPanel implements ActionListener {
+class PassChangePanel extends JPanel implements ActionListener, View<UserInfoPresenter> {
     private JPasswordField oldPasscode,newPasscode, confirmNewPasscode;
     private JButton savePasscodeBtn;
     private JLabel err1, err2, err3;
+
+    private UserInfoPresenter presenter;
 
     public PassChangePanel() {
         this.setLayout(null);
         this.setOpaque(false);
 
         JLabel oldPassLabel = new JLabel("Old Password");
-        oldPassLabel.setFont(UI.MB15);
+        oldPassLabel.setFont(ComponentFactory.MB15);
         oldPassLabel.setBounds(189, 98, 422, 25);
         this.add(oldPassLabel);
 
-        oldPasscode = UI.genRoundPasswordField("", 20, "#FFFFFF");
+        oldPasscode = ComponentFactory.genRoundPasswordField("", 20, "#FFFFFF");
         oldPasscode.setBounds(189, 123, 422, 45);
-        oldPasscode.setFont(UI.CB18);
+        oldPasscode.setFont(ComponentFactory.CB18);
         this.add(oldPasscode);
 
         JLabel newPassLabel = new JLabel("New Password");
-        newPassLabel.setFont(UI.MB15);
+        newPassLabel.setFont(ComponentFactory.MB15);
         newPassLabel.setBounds(189, 185, 422, 25);
         this.add(newPassLabel);
 
-        newPasscode = UI.genRoundPasswordField("", 20, "#FFFFFF");
+        newPasscode = ComponentFactory.genRoundPasswordField("", 20, "#FFFFFF");
         newPasscode.setBounds(189, 210, 422, 45);
-        newPasscode.setFont(UI.CB18);
+        newPasscode.setFont(ComponentFactory.CB18);
         this.add(newPasscode);
 
         JLabel confirmNewPassLabel = new JLabel("Confirm New Password");
-        confirmNewPassLabel.setFont(UI.MB15);
+        confirmNewPassLabel.setFont(ComponentFactory.MB15);
         confirmNewPassLabel.setBounds(189, 272, 422, 25);
         this.add(confirmNewPassLabel);
 
-        confirmNewPasscode = UI.genRoundPasswordField("", 20, "#FFFFFF");
+        confirmNewPasscode = ComponentFactory.genRoundPasswordField("", 20, "#FFFFFF");
         confirmNewPasscode.setBounds(189, 297, 422, 45);
-        confirmNewPasscode.setFont(UI.CB18);
+        confirmNewPasscode.setFont(ComponentFactory.CB18);
         this.add(confirmNewPasscode);
 
-        savePasscodeBtn = UI.genRoundBtn("Update Password", 50, "#172A87", false);
-        savePasscodeBtn.setFont(UI.MB13);
+        savePasscodeBtn = ComponentFactory.genRoundBtn("Update Password", 50, "#172A87", false);
+        savePasscodeBtn.setFont(ComponentFactory.MB13);
         savePasscodeBtn.setForeground(Color.decode("#FFFFFF"));
         savePasscodeBtn.setBounds(189, 450, 422, 50);
         savePasscodeBtn.addActionListener(this);
         this.add(savePasscodeBtn);
 
         err1 = new JLabel("");
-        err1.setFont(UI.MB12);
+        err1.setFont(ComponentFactory.MB12);
         err1.setBounds(620, 124, 130, 40);
         this.add(err1);
         err2 = new JLabel("");
-        err2.setFont(UI.MB12);
+        err2.setFont(ComponentFactory.MB12);
         err2.setBounds(620, 211, 150, 40);
         this.add(err2);
         err3 = new JLabel("");
-        err3.setFont(UI.MB12);
+        err3.setFont(ComponentFactory.MB12);
         err3.setBounds(620, 298, 150, 40);
         this.add(err3);
     }
@@ -78,7 +83,7 @@ class PassChangePanel extends JPanel implements ActionListener {
             boolean checksFailed = false;
 
             // checks if old password is correct
-            if (!App.login(App.db.getActiveUserUsername(), oldPass)) {
+            if (presenter.verifyUserDetails(presenter.getActiveUserUsername(), oldPass)) {
                 err1.setText("Incorrect password");
                 JOptionPane.showMessageDialog(this, "*Incorrect password, try again");
                 checksFailed = true;
@@ -113,11 +118,26 @@ class PassChangePanel extends JPanel implements ActionListener {
             }
 
             // all checks have passed - update user password
-            App.db.updateActiveUserPasscode(App.db.getActiveUserUsername(), newPass);
+            presenter.updateActiveUserPasscode(presenter.getActiveUserUsername(), newPass);
             JOptionPane.showMessageDialog(this, "Password successfully updated!");
             oldPasscode.setText("");
             newPasscode.setText("");
             confirmNewPasscode.setText("");
         }
+    }
+
+    @Override
+    public void displayInfoMessage(String message) {
+
+    }
+
+    @Override
+    public void displayErrorMessage(String message) {
+
+    }
+
+    @Override
+    public void setPresenter(UserInfoPresenter presenter) {
+        this.presenter = presenter;
     }
 }

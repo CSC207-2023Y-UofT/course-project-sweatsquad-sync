@@ -83,7 +83,7 @@ class SignupPanel extends JPanel implements ActionListener, View<EntryFramePrese
         this.add(confirmPasswordLabel);
 
         JLabel confirmPassLabel = new JLabel("Password");
-        confirmPassLabel.setFont(UI.MB15);
+        confirmPassLabel.setFont(ComponentFactory.MB15);
         confirmPassLabel.setBounds(189, 359, 422, 25);
         this.add(signupPasswordLabel);
 
@@ -129,7 +129,7 @@ class SignupPanel extends JPanel implements ActionListener, View<EntryFramePrese
         err4.setBounds(620, 385, 150, 40);
         this.add(err4);
 
-        coverBG = UI.genRoundLabel("", 20, "#FAFAF2");
+        coverBG = ComponentFactory.genRoundLabel("", 20, "#FAFAF2");
         coverBG.setBounds(0, 88, 800, 522);
         this.add(coverBG);
 

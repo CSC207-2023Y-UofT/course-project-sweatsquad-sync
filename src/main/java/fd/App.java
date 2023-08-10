@@ -2,15 +2,17 @@ package fd;
 
 import abr.DefaultActivationCodeGenerationStrategy;
 import abr.GymManager;
+import abr.PasswordHashSHA256;
 import ia.*;
 
 import java.io.IOException;
 
 public class App {
+
     public static void main(String[] args) {
 
         GymDatabase db = new FileDatabase();
-        GymManager gymManager = new GymManager(db);
+        GymManager gymManager = new GymManager(db, new PasswordHashSHA256());
 
         //Setup entry frame
         EntryFrameView entryFrameView = new EntryPointFrame();
@@ -19,9 +21,21 @@ public class App {
         gymManager.addLoginListener(entryFramePresenter.getLoginHandler());
 
         //Setup dashboard
-        CourseEnrollmentFrame courseEnrollmentFrame = new CourseEnrollmentFrame();
+
+        WorkoutCertsFrame workoutCertsFrame = new WorkoutCertsFrame();
+        WorkoutCertsPresenter workoutCertsPresenter = new WorkoutCertsPresenter(gymManager);
+        workoutCertsFrame.setPresenter(workoutCertsPresenter);
+        WorkoutOfferingFrame workoutOfferingFrame = new WorkoutOfferingFrame();
+        WorkoutOfferingPresenter workoutOfferingPresenter = new WorkoutOfferingPresenter(gymManager);
+        workoutOfferingFrame.setPresenter(workoutOfferingPresenter);
+        WorkoutUsersFrame workoutUsersFrame = new WorkoutUsersFrame();
+        WorkoutUsersPresenter workoutUsersPresenter = new WorkoutUsersPresenter(gymManager);
+        workoutUsersFrame.setPresenter(workoutUsersPresenter);
+        CourseEnrollmentFrame courseEnrollmentFrame = new CourseEnrollmentFrame(workoutOfferingFrame, workoutCertsFrame, workoutUsersFrame);
         CourseEnrolmentPresenter courseEnrolmentPresenter = new CourseEnrolmentPresenter(gymManager);
         courseEnrollmentFrame.setPresenter(courseEnrolmentPresenter);
+
+
 
 
         ManageRoomFrame manageRoomFrame = new ManageRoomFrame();
@@ -33,13 +47,19 @@ public class App {
         ManageUserFrame manageUserFrame = new ManageUserFrame();
         manageUserFrame.setPresenter(managerUserPresenter);
 
-        SchedulePresenter schedulePresenter = new SchedulePresenter();
+        SchedulePresenter schedulePresenter = new SchedulePresenter(gymManager);
         ScheduleFrame scheduleFrame = new ScheduleFrame();
         scheduleFrame.setPresenter(schedulePresenter);
 
-        DashboardFrame dashboardFrame = new DashboardFrame(scheduleFrame, courseEnrollmentFrame, new UserInfoFrame(), manageUserFrame, manageRoomFrame);
-        DashboardPresenter dashboardPresenter = new DashboardPresenter(dashboardFrame, gymManager.getLogoutRequestHandler());
+        UserInfoFrame userInfoFrame = new UserInfoFrame(new UserInfoPresenter(gymManager, new PasswordHashSHA256()));
+
+        DashboardFrame dashboardFrame = new DashboardFrame(scheduleFrame, courseEnrollmentFrame, userInfoFrame, manageUserFrame, manageRoomFrame);
+        DashboardPresenter dashboardPresenter = new DashboardPresenter(dashboardFrame, gymManager.getLogoutRequestHandler(), gymManager);
         dashboardFrame.setPresenter(dashboardPresenter);
+
+        courseEnrollmentFrame.addRefreshRequestListener(dashboardPresenter);
+        workoutOfferingFrame.addRefreshRequestListener(dashboardPresenter);
+        workoutUsersFrame.addRefreshRequestListener(dashboardPresenter);
 
 
         //Tying ABR and presenters together

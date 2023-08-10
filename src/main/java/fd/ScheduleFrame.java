@@ -32,7 +32,7 @@ public class ScheduleFrame extends JDialog implements ActionListener, View<Sched
             if (col == 0)
                 return (8 + row) + ":00";
 
-            return App.db.getScheduleBlockAt(row - 1 + 8, col - 1);
+            return presenter.getScheduleBlockAt(row - 1 + 8, col - 1);
         }
     };
 

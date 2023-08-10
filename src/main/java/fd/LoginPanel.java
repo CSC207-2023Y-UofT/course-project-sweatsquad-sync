@@ -46,7 +46,7 @@ public class LoginPanel extends JPanel implements ActionListener, View<EntryFram
         loginButton.addActionListener(this);
         this.add(loginButton);
 
-        coverBG = UI.genRoundLabel("", 20, "#FAFAF2");
+        coverBG = ComponentFactory.genRoundLabel("", 20, "#FAFAF2");
         coverBG.setBounds(0, 88, 800, 522);
         this.add(coverBG);
 

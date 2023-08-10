@@ -1,6 +1,8 @@
 package fd;
 
 import ia.CourseEnrolmentPresenter;
+import ia.RefreshRequestListener;
+import ia.RefreshRequester;
 import ia.View;
 
 import javax.swing.*;
@@ -16,9 +18,11 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.List;
 
-public class CourseEnrollmentFrame extends JDialog implements ActionListener, View<CourseEnrolmentPresenter> {
+public class CourseEnrollmentFrame extends JDialog implements ActionListener, View<CourseEnrolmentPresenter>, RefreshRequester {
 
     private CourseEnrolmentPresenter presenter;
+
+    private RefreshRequestListener dashboard;
 
     private JButton addCourse, editCourse, removeCourse, enrolCourse, editCerts, editUsers, editName;
     private JTextField search;
@@ -35,10 +39,10 @@ public class CourseEnrollmentFrame extends JDialog implements ActionListener, Vi
         }
     };
     private JTable enrolTable;
-    private WorkoutOfferingFrame workoutOfferingFrame = new WorkoutOfferingFrame();
-    private WorkoutCertsFrame workoutCertsFrame = new WorkoutCertsFrame();
-    private WorkoutUsersFrame workoutUsersFrame = new WorkoutUsersFrame();
-    public CourseEnrollmentFrame() {
+    private WorkoutOfferingFrame workoutOfferingFrame;
+    private WorkoutCertsFrame workoutCertsFrame;
+    private WorkoutUsersFrame workoutUsersFrame;
+    public CourseEnrollmentFrame(WorkoutOfferingFrame workoutOfferingFrame, WorkoutCertsFrame workoutCertsFrame, WorkoutUsersFrame workoutUsersFrame) {
         setTitle("Courses"); // window title
         setSize(800, 600); // window dimensions
         setResizable(false); // disables resizing
@@ -130,8 +134,7 @@ public class CourseEnrollmentFrame extends JDialog implements ActionListener, Vi
 
         this.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
-                App.dashboard.refreshShow();
-                App.dashboard.repaint();
+                dashboard.refresh();
             }
         });
     }
@@ -186,7 +189,7 @@ public class CourseEnrollmentFrame extends JDialog implements ActionListener, Vi
             if ((name.getText() != null) && (!name.getText().isEmpty())) {
                 if ((cap.getText() != null) && (!cap.getText().isEmpty()))
                     try {
-                        if (!App.db.addWorkout(name.getText(), Integer.parseInt(cap.getText())))
+                        if (!presenter.addWorkout(name.getText(), Integer.parseInt(cap.getText())))
                             JOptionPane.showMessageDialog(this, "Workout already exists!");
                     }
                     catch (NumberFormatException exp) {
@@ -214,15 +217,15 @@ public class CourseEnrollmentFrame extends JDialog implements ActionListener, Vi
                 }
             }
         } else if (e.getSource() == removeCourse)
-            App.db.removeWorkout(enrolTable.getSelectedRow());
+            presenter.removeWorkout(enrolTable.getSelectedRow());
         else if (e.getSource() == editCourse) {
-            if (App.db.canEditCourse(enrolTable.getSelectedRow()))
+            if (presenter.canEditCourse(enrolTable.getSelectedRow()))
                 workoutOfferingFrame.refreshShow(enrolTable.getSelectedRow());
             else
                 JOptionPane.showMessageDialog(this, "You don't teach this class!");
         }
         else if (e.getSource() == enrolCourse) {
-            String msg = App.db.toggleEnrol(enrolTable.getSelectedRow());
+            String msg = presenter.toggleEnrol(enrolTable.getSelectedRow());
             if (msg != null)
                 JOptionPane.showMessageDialog(this, msg);
         }
@@ -231,11 +234,11 @@ public class CourseEnrollmentFrame extends JDialog implements ActionListener, Vi
         else if (e.getSource() == editUsers)
             workoutUsersFrame.refreshShow(enrolTable.getSelectedRow());
         else if (e.getSource() == editName) {
-            if (App.db.canEditCourse(enrolTable.getSelectedRow())) {
+            if (presenter.canEditCourse(enrolTable.getSelectedRow())) {
                 String name = JOptionPane.showInputDialog(this, "New name?", null);
                 if (name != null) {
                     if (!name.isEmpty()) {
-                        if (!App.db.changeWorkoutName(enrolTable.getSelectedRow(), name))
+                        if (presenter.changeWorkoutName(enrolTable.getSelectedRow(), name))
                             JOptionPane.showMessageDialog(this, "There is already a workout with that name!");
                     } else
                         JOptionPane.showMessageDialog(this, "Invalid cert name!");
@@ -259,5 +262,10 @@ public class CourseEnrollmentFrame extends JDialog implements ActionListener, Vi
     @Override
     public void setPresenter(CourseEnrolmentPresenter presenter) {
         this.presenter = presenter;
+    }
+
+    @Override
+    public void addRefreshRequestListener(RefreshRequestListener rrl) {
+        this.dashboard = rrl;
     }
 }

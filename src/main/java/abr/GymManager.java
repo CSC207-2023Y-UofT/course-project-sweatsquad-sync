@@ -2,13 +2,12 @@ package abr;
 
 
 import abr.IODataModels.*;
-import abr.IODataModels.authenticationFields.Field;
+import abr.IODataModels.authenticationFields.*;
 import ebr.Gym;
 import ebr.GymAdmin;
 import ebr.Instructor;
 import ebr.User;
 import fd.GymDatabase;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,10 +22,12 @@ public class GymManager {
     private final Gym gym;
 
     private OutputBoundary<AuthenticationResponseModel<? extends Field>> authenticationListener;
-    private List<OutputBoundary<LoginEvent>> loginListeners;
+    private List<OutputBoundary<LoginEvent>> loginEventListeners;
+
     private OutputBoundary<LogoutEvent> logoutListener;
 
-    public GymManager(GymDatabase database) {
+
+    public GymManager(GymDatabase database, PasswordHashStrategy passwordHashStrategy) {
         Gym gym1;
         this.database = database;
         try {
@@ -36,10 +37,10 @@ public class GymManager {
         }
 
         this.gym = gym1;
-        this.userAccountManager = new UserManager(gym, new PasswordHashSHA256());
-        this.activeUserManager = new ActiveUserManager(userAccountManager);
+        this.userAccountManager = new UserManager(gym, passwordHashStrategy);
+        this.activeUserManager = new ActiveUserManager(userAccountManager, passwordHashStrategy);
         this.authenticator = new Authenticator(userAccountManager);
-        this.loginListeners = new ArrayList<>();
+        this.loginEventListeners = new ArrayList<>();
     }
 
     public void setAuthenticationListener(OutputBoundary<AuthenticationResponseModel<? extends Field>> al) {
@@ -48,11 +49,21 @@ public class GymManager {
 
     public void addLoginListener(OutputBoundary<LoginEvent> le) {
 
-        this.loginListeners.add(le);
+        this.loginEventListeners.add(le);
     }
 
     public void setLogoutListener(OutputBoundary<LogoutEvent> le) {
         this.logoutListener = le;
+    }
+
+    public boolean verifyLoginDetails(LoginDetails ld) {
+
+        LoginResponse response = authenticator.authenticateLogin(ld);
+        if (response.isSuccessful()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public InputBoundary<AuthenticationRequestModel> getAuthenticationRequestHandler() {
@@ -76,7 +87,7 @@ public class GymManager {
 
                         activeUserManager.loginUser(ld);
                         User activeUser = activeUserManager.getActiveUser();
-                        for (OutputBoundary<LoginEvent> loginListener: loginListeners) {
+                        for (OutputBoundary<LoginEvent> loginListener: loginEventListeners) {
                             if (activeUser instanceof Instructor) {
 
                                 loginListener.receiveResponse(createLoginEvent(AccountType.REGULAR, activeUser));
@@ -109,6 +120,11 @@ public class GymManager {
             activeUserManager.logoutUser();
             logoutListener.receiveResponse(new LogoutEvent());
         };
+    }
+
+    public User getActiveUser() {
+
+        return activeUserManager.getActiveUser();
     }
 
     public Gym getGym() {
