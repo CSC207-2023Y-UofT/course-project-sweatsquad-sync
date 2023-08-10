@@ -159,7 +159,7 @@ class DetailsPanel extends JPanel implements ActionListener, View<UserInfoPresen
 
 
             // all checks have passed (valid inputs)
-            if (presenter.verifyUserDetails(presenter.getActiveUserUsername(), new String(passField.getPassword()))) {
+            if (!presenter.verifyUserDetails(presenter.getActiveUserUsername(), new String(passField.getPassword()))) {
                 JOptionPane.showMessageDialog(this, "Invalid credentials, try again.");
                 return;
             } else {

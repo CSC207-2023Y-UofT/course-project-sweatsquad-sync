@@ -101,6 +101,7 @@ public class GymManager {
                         }
 
                     }
+                    authenticationListener.receiveResponse(response);
 
                 } else if (rm instanceof ActivationCodeDetails acd) {
 

@@ -101,18 +101,8 @@ public class EntryFramePresenter implements Presenter {
 
     private void reactLoginResponse(LoginResponse lr) {
         if (!lr.isSuccessful()) {
-            if (lr.getIssues().size() == 1) {
-                entryFrameView.displayInfoMessage(lr.getIssues().get(0).issue());
-            } else {
-                StringBuilder builder = new StringBuilder();
-                builder.append("<ul>");
-                for (FieldIssue<LoginField> issue : lr.getIssues()) {
-                    builder.append("<li>" + issue.issue() + "</li>");
-                }
-                builder.append("</ul>");
-                entryFrameView.displayInfoMessage(builder.toString());
-            }
 
+            entryFrameView.displayInfoMessage(lr.getIssues().get(0).issue());
         } else {
 
             entryFrameView.clearInputs();

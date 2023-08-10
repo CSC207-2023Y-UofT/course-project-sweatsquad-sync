@@ -42,7 +42,7 @@ public class DashboardPresenter implements Presenter, OutputBoundary<LoginEvent>
     @Override
     public void receiveResponse(LoginEvent rm) {
 
-        dashboardFrame.setGreetingMessage(rm.firstName());
+        dashboardFrame.setGreetingMessage("Welcome back, " + rm.firstName() + "!");
         switch (rm.accountType()) {
 
             case INSTRUCTOR -> {

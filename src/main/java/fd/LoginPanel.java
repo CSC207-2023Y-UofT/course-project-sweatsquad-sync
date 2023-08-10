@@ -68,6 +68,7 @@ public class LoginPanel extends JPanel implements ActionListener, View<EntryFram
 
     @Override
     public void displayInfoMessage(String message) {
+        JOptionPane.showMessageDialog(this, message);
 
     }
 
