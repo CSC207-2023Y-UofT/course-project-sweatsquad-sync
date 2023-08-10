@@ -19,7 +19,8 @@ public class Gym implements Serializable  {
     }
 
     public void addUser(User u) {
-        members.add(u);
+        if (!members.contains(u))
+            members.add(u);
     }
 
     public void removeUser(User u) {
@@ -33,7 +34,8 @@ public class Gym implements Serializable  {
     }
 
     public void addWorkout(Workout u) {
-        workouts.add(u);
+        if (!workouts.contains(u))
+            workouts.add(u);
     }
 
     public void removeWorkout(Workout w) {
@@ -47,7 +49,8 @@ public class Gym implements Serializable  {
     }
 
     public void addRoom(Room r) {
-        rooms.add(r);
+        if (!rooms.contains(r))
+            rooms.add(r);
     }
 
     public void removeRooms(Room r) {

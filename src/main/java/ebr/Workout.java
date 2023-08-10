@@ -44,7 +44,8 @@ public class Workout implements Serializable {
     }
 
     public void requireCert(String cert) {
-        requiredCerts.add(cert);
+        if (!requiredCerts.contains(cert))
+            requiredCerts.add(cert);
     }
 
     public void deleteCert(String cert) {
@@ -57,14 +58,14 @@ public class Workout implements Serializable {
 
     protected boolean addUser(User u) {
         if (u instanceof Instructor) {
-            if (validateCerts(((Instructor)u).certs)) {
+            if (validateCerts(((Instructor)u).certs) && !this.users.contains(u)) {
                 this.users.add(u);
                 return true;
             }
             else return false;
         }
         else {
-            if (this.getNonStaffUserCount() < capacity) {
+            if (this.getNonStaffUserCount() < capacity && !this.users.contains(u)) {
                 this.users.add(u);
                 return true;
             }

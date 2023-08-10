@@ -31,7 +31,7 @@ public class User implements Serializable {
 
     // Enrol (RegisteredUser) or Teach (Instructor) cert check is done in Workout.addUser
     public boolean addWorkout(Workout w) {
-        if (w.addUser(this))
+        if (w.addUser(this) && !this.workouts.contains(w))
             return this.workouts.add(w);
         else return false;
     }
