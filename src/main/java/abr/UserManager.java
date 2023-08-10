@@ -73,7 +73,7 @@ public class UserManager {
         for (User u : gym.getUsers()) {
             if (u.getUsername().equals(username)) {
                 System.out.println("Username already exists");
-                return false;
+                return true;
             }
         }
 
