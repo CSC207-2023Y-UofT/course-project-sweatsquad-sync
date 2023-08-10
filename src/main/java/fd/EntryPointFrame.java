@@ -67,6 +67,7 @@ public class EntryPointFrame extends JFrame implements ActionListener {
 
     public void loginCard() {
         cardLayout.show(cards, "Login");
+        loginPanel.clearPass();
 
         loginTab.setFocusable(false);
         loginTab.setFont(UI.MB16);
