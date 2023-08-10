@@ -189,13 +189,9 @@ public class Database {
         activeUser.firstName = newEmail;
     }
 
-    public boolean updateActiveUserUsername(String newUsername) {
-        for (User u : gym.getUsers())
-            if (u.getName().equals(newUsername))
-                return false;
-
+    public void updateActiveUserUsername(String newUsername) {
+        // Assume name collision has been taken care of
         activeUser.setName(newUsername);
-        return true;
     }
 
     public void updateActiveUserPasscode(String user, String newPasscode) {
