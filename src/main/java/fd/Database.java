@@ -311,7 +311,8 @@ public class Database {
             if (w.getUsers().contains(activeUser))
                 activeUser.removeWorkout(w);
             else
-                activeUser.addWorkout(w);
+                if (!activeUser.addWorkout(w))
+                    return "This class is full!";
             return null;
         }
     }

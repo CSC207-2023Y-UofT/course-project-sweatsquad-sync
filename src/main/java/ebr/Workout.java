@@ -64,9 +64,12 @@ public class Workout implements Serializable {
             else return false;
         }
         else {
-            if (this.getNonStaffUserCount() < capacity)
+            if (this.getNonStaffUserCount() < capacity) {
                 this.users.add(u);
-            return true;
+                return true;
+            }
+            else
+                return false;
         }
     }
 
