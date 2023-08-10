@@ -12,6 +12,7 @@ class SignupPanel extends JPanel implements ActionListener {
     private JPasswordField passField, confirmPassField;
     private JButton registerButton;
     private JLabel err1, err2, err3, err4, haveCodeLabel;
+    private JLabel coverBG;
 
     @FunctionalInterface
     public interface RegisterMethod {
@@ -70,22 +71,27 @@ class SignupPanel extends JPanel implements ActionListener {
         signupPasswordLabel.setBounds(189, 359, 422, 25);
         this.add(signupPasswordLabel);
 
-        passField = UI.genRoundPasswordField("", 20, "#FFFFFF", false);
+        passField = UI.genRoundPasswordField("", 20, "#FFFFFF");
         passField.setBounds(189, 384, 198, 45);
         passField.setFont(UI.CB18);
         this.add(passField);
 
-        JLabel confirmPasswordLabel = new JLabel("Password");
+        JLabel confirmPasswordLabel = new JLabel("Confirm Password");
         confirmPasswordLabel.setFont(UI.MB15);
-        confirmPasswordLabel.setBounds(189, 359, 422, 25);
+        confirmPasswordLabel.setBounds(413, 359, 422, 25);
         this.add(confirmPasswordLabel);
 
-        confirmPassField = UI.genRoundPasswordField("", 20, "#FFFFFF", false);
+        JLabel confirmPassLabel = new JLabel("Password");
+        confirmPassLabel.setFont(UI.MB15);
+        confirmPassLabel.setBounds(189, 359, 422, 25);
+        this.add(signupPasswordLabel);
+
+        confirmPassField = UI.genRoundPasswordField("", 20, "#FFFFFF");
         confirmPassField.setBounds(413, 384, 198, 45);
         confirmPassField.setFont(UI.CB18);
         this.add(confirmPassField);
 
-        registerButton = UI.genRoundBtn("Register", 50, "#001561", false);
+        registerButton = UI.genRoundBtn("Register", 50, "#172A87", false);
         registerButton.setFont(UI.MB13);
         registerButton.setForeground(Color.decode("#FFFFFF"));
         registerButton.setBounds(189, 450, 422, 50);
@@ -121,6 +127,11 @@ class SignupPanel extends JPanel implements ActionListener {
         err4.setFont(UI.MB12);
         err4.setBounds(620, 385, 150, 40);
         this.add(err4);
+
+        coverBG = UI.genRoundLabel("", 20, "#FAFAF2");
+        coverBG.setBounds(0, 88, 800, 522);
+        this.add(coverBG);
+
     }
 
     private void clearFields() {
@@ -138,6 +149,7 @@ class SignupPanel extends JPanel implements ActionListener {
         clearFields();
         registerDispatch = App.db::registerBasicUser;
         this.add(haveCodeLabel);
+        this.add(coverBG);
     }
 
     public void setInstructorView(String auth) {

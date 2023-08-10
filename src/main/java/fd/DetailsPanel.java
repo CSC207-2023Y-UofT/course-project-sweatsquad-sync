@@ -10,7 +10,7 @@ class DetailsPanel extends JPanel implements ActionListener {
     public JTextField firstNameInfoField, lastNameInfoField, emailInfoField, userInfoField;
     private JPasswordField passField;
     private JButton saveChangesBtn;
-    private JLabel err1, err2, err3, err4;
+    private JLabel err1, err2, err3, err4, coverBG;
 
     public DetailsPanel() {
         this.setLayout(null);
@@ -61,12 +61,12 @@ class DetailsPanel extends JPanel implements ActionListener {
         signupPasswordLabel.setBounds(189, 359, 422, 25);
         this.add(signupPasswordLabel);
 
-        passField = UI.genRoundPasswordField("", 20, "#FFFFFF", false);
+        passField = UI.genRoundPasswordField("", 20, "#FFFFFF");
         passField.setBounds(189, 384, 422, 45);
         passField.setFont(UI.CB18);
         this.add(passField);
 
-        saveChangesBtn = UI.genRoundBtn("Save Changes", 50, "#001561", false);
+        saveChangesBtn = UI.genRoundBtn("Save Changes", 50, "#172A87", false);
         saveChangesBtn.setFont(UI.MB13);
         saveChangesBtn.setForeground(Color.decode("#FFFFFF"));
         saveChangesBtn.setBounds(189, 450, 422, 50);
@@ -89,6 +89,14 @@ class DetailsPanel extends JPanel implements ActionListener {
         err4.setFont(UI.MB12);
         err4.setBounds(620, 385, 150, 40);
         this.add(err4);
+
+        coverBG = UI.genRoundLabel("", 20, "#FAFAF2");
+        coverBG.setBounds(0, 88, 800, 522);
+        this.add(coverBG);
+    }
+
+    public void clearPass () {
+        passField.setText("");
     }
 
     @Override

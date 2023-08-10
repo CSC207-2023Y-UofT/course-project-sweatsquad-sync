@@ -14,7 +14,7 @@ import java.awt.event.WindowEvent;
 import java.util.List;
 
 public class CourseFrame extends JDialog implements ActionListener {
-    private JButton addCourse, editCourse, removeCourse, enrolCourse, editCerts, editUsers;
+    private JButton addCourse, editCourse, removeCourse, enrolCourse, editCerts, editUsers, editName;
     private JTextField search;
     private AbstractTableModel courseTable = new AbstractTableModel() {
         private final String[] enrolTableCols = {"Workout", "Room", "Time", "Instructor", "Status", "ButtonText"};
@@ -64,6 +64,11 @@ public class CourseFrame extends JDialog implements ActionListener {
         editUsers.addActionListener(this);
         editUsers.setEnabled(false);
 
+        editName = new JButton("Edit Name");
+        editName.setBounds(525, 0, 100, 40);
+        editName.addActionListener(this);
+        editName.setEnabled(false);
+
         enrolCourse = new JButton("Enrol");
         enrolCourse.setBounds(690, 0, 100, 40);
         enrolCourse.addActionListener(this);
@@ -107,6 +112,7 @@ public class CourseFrame extends JDialog implements ActionListener {
                 editCourse.setEnabled(enrolTable.getSelectedRow() != -1);
                 editCerts.setEnabled(enrolTable.getSelectedRow() != -1);
                 editUsers.setEnabled(enrolTable.getSelectedRow() != -1);
+                editName.setEnabled(enrolTable.getSelectedRow() != -1);
                 enrolCourse.setVisible(enrolTable.getSelectedRow() != -1);
                 if (enrolTable.getSelectedRow() != -1)
                     enrolCourse.setText(courseTable.getValueAt(enrolTable.getSelectedRow(), 5).toString());
@@ -136,6 +142,7 @@ public class CourseFrame extends JDialog implements ActionListener {
         this.remove(removeCourse);
         this.remove(editCerts);
         this.remove(editUsers);
+        this.remove(editName);
     }
 
     public void instructorView() {
@@ -146,6 +153,7 @@ public class CourseFrame extends JDialog implements ActionListener {
         this.remove(removeCourse);
         this.remove(editCerts);
         this.remove(editUsers);
+        this.remove(editName);
     }
 
     public void adminView() {
@@ -155,6 +163,7 @@ public class CourseFrame extends JDialog implements ActionListener {
         this.add(removeCourse);
         this.add(editCerts);
         this.add(editUsers);
+        this.add(editName);
     }
 
     private void addCoursePrompt() {
@@ -192,7 +201,7 @@ public class CourseFrame extends JDialog implements ActionListener {
             if (App.db.canEditCourse(enrolTable.getSelectedRow()))
                 workoutOfferingFrame.refreshShow(enrolTable.getSelectedRow());
             else
-                JOptionPane.showMessageDialog(this, "You don't teach this class!!");
+                JOptionPane.showMessageDialog(this, "You don't teach this class!");
         }
         else if (e.getSource() == enrolCourse) {
             String msg = App.db.toggleEnrol(enrolTable.getSelectedRow());
@@ -203,6 +212,21 @@ public class CourseFrame extends JDialog implements ActionListener {
             workoutCertsFrame.refreshShow(enrolTable.getSelectedRow());
         else if (e.getSource() == editUsers)
             workoutUsersFrame.refreshShow(enrolTable.getSelectedRow());
+        else if (e.getSource() == editName) {
+            if (App.db.canEditCourse(enrolTable.getSelectedRow())) {
+                String name = JOptionPane.showInputDialog(this, "New name?", null);
+                if (name != null) {
+                    if (!name.isEmpty()) {
+                        if (!App.db.changeWorkoutName(enrolTable.getSelectedRow(), name))
+                            JOptionPane.showMessageDialog(this, "There is already a workout with that name!");
+                    }
+                    else
+                        JOptionPane.showMessageDialog(this, "Invalid cert name!");
+                }
+            }
+            else
+                JOptionPane.showMessageDialog(this, "You don't teach this class!");
+        }
 
         courseTable.fireTableDataChanged();
     }

@@ -5,6 +5,13 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.RoundRectangle2D;
 import javax.swing.*;
+import javax.swing.text.JTextComponent;
+
+// image icon imports for the genImageBtn
+import java.awt.image.*;
+import javax.swing.ImageIcon;
+import javax.imageio.ImageIO;
+import java.io.File;
 
 public class UI {
     public static Font
@@ -16,205 +23,254 @@ public class UI {
             MB14 = new Font("Monsterrat", Font.BOLD, 14),
             MB15 = new Font("Monsterrat", Font.BOLD, 15),
             MB16 = new Font("Monsterrat", Font.BOLD, 16),
-            MB19 = new Font("Monsterrat", Font.BOLD, 19),
+            MB18 = new Font("Monsterrat", Font.BOLD, 18),
             MB20 = new Font("Monsterrat", Font.BOLD, 20),
             MB23 = new Font("Monsterrat", Font.BOLD, 23),
+            MP23 = new Font("Monsterrat", Font.PLAIN, 23),
             CB13 = new Font("Comfortaa", Font.BOLD, 13),
             CB18 = new Font("Comfortaa", Font.BOLD, 18);
 
     static public String capitalizeRemoveTrailingSpaces(String input) {
         String trimmedInput = input.trim();
 
-        if (!trimmedInput.isEmpty())
-            return Character.toUpperCase(trimmedInput.charAt(0)) + trimmedInput.substring(1);
+        if (!trimmedInput.isEmpty()) {
+            return Character.toUpperCase(trimmedInput.charAt(0))
+                    + trimmedInput.substring(1);
+        }
         else
             return "";
     }
-    public static JButton genRoundBtn(String text, int roundness,
-                                      String colorHex, boolean light) {
 
-        // decodes colour to be used later
+    // refactored genRoundBtn method - removing code smells
+    public static JButton genRoundBtn(String text, int roundness, String colorHex, boolean light) {
         Color defaultColor = Color.decode(colorHex);
 
-        // determines whether to make the hovered button darker w/ given input
-        Color hoverColor;
-        if (light) {
-            hoverColor = defaultColor.brighter(); // true = brighter
-        } else {
-            hoverColor = defaultColor.darker(); // false = darker
-        }
-
-        // an actual button is created
         JButton roundedButton = new JButton(text) {
             @Override
-            // custom button painting is done in this method (needs overriding)
             protected void paintComponent(Graphics g) {
-                // a Graphics2D object is created to paint on
-                Graphics2D g2 = (Graphics2D) g.create();
-                // antialiasing for smoother graphics (blends colours)
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                        RenderingHints.VALUE_ANTIALIAS_ON);
+                Graphics2D g2 = setupGraphics(g);
 
-                //checks if the mouse is hovering the button
                 boolean isHovering = Boolean.TRUE.equals(getClientProperty("isHovering"));
+                Color bgColor = getHoverColor(defaultColor, isHovering, light);
 
-                // choosing button background color based on the hover state
-                Color bgColor;
-                if (isHovering) {
-                    bgColor = hoverColor; // hovering -> choose set hover colour
-                } else {
-                    bgColor = defaultColor;  // not hovering -> default colour
-                }
-
-                // actually setting the colour for the button
                 g2.setColor(bgColor);
-
-                // filling a round rectangle w/ RoundRectangle2D from geom lib.
                 g2.fill(new RoundRectangle2D.Float(0, 0, getWidth(), getHeight(), roundness, roundness));
 
-                // draw button text centered both vert. and horiz. in the btn
                 g2.setColor(getForeground());
-                // creates variable that stores font data
                 FontMetrics metrics = g2.getFontMetrics();
-                // x = the dif between button's width + text's width over 2
                 int x = (getWidth() - metrics.stringWidth(getText())) / 2;
-                // y = the dif between button's height + text's height over 2
-                int y = (getHeight() - metrics.getHeight()) / 2
-                        + metrics.getAscent();
+                int y = (getHeight() - metrics.getHeight()) / 2 + metrics.getAscent();
 
-                // draws button text at the correct position
                 g2.drawString(getText(), x, y);
-                // equiv. of closing scanner, but for Graphic2D obj
                 g2.dispose();
             }
         };
 
-        roundedButton.addMouseListener(new MouseAdapter() {
+        roundedButton.setBorderPainted(false);
+        roundedButton.setContentAreaFilled(false);
+        roundedButton.setOpaque(false);
 
-            // repaints to match colour when mouse is on the button
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                // changes cursor to clickable state
-                roundedButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-                roundedButton.putClientProperty("isHovering", true);
-                roundedButton.repaint();
-            }
-
-            // repaints to match colour when mouse has left the button
-            @Override
-            public void mouseExited(MouseEvent e) {
-                // reverts cursor to normal state
-                roundedButton.setCursor(Cursor.getDefaultCursor());
-                roundedButton.putClientProperty("isHovering", false);
-                roundedButton.repaint();
-            }
-        });
+        roundedButton.addMouseListener(createHoverEffectMouseListener(roundedButton, getHoverColor(defaultColor, true, light)));
 
         return roundedButton;
     }
 
+    // refactored genRoundTextField method -removed code smells
     public static JTextField genRoundTextField(String text, int roundness, String colorHex, boolean light) {
-        JTextField roundedField = new JTextField("") {
+        JTextField roundedField = new JTextField(text) {
             @Override
-            // custom painting for the rounded background
             protected void paintComponent(Graphics g) {
-                Graphics2D g2 = (Graphics2D) g.create();
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                Graphics2D g2 = setupGraphics(g);
 
-                // check if the mouse is hovering over the field
-                boolean isHovering = Boolean.TRUE.equals(getClientProperty("isHovering"));
-                // decode the colorHex to a Color object
                 Color defaultColor = Color.decode(colorHex);
-
-                // fill a round rectangle to create the rounded effect
                 g2.setColor(defaultColor);
                 g2.fill(new RoundRectangle2D.Float(0, 0, getWidth(), getHeight(), roundness, roundness));
 
-                // call paintComponent (from super) to render the text
-                super.paintComponent(g);
-
-                g2.dispose();
-            }
-
-            @Override
-            public Dimension getPreferredSize() {
-                // set the preferred size for the custom field
-                return new Dimension(330, 30);
-            }
-
-            @Override
-            protected void paintBorder(Graphics g) {
-                // Do nothing to remove the border
-            }
-        };
-
-        // add mouse listener to handle hover effects
-        roundedField.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                // Change cursor to text cursor on hover
-                roundedField.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
-                roundedField.putClientProperty("isHovering", true);
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                // Revert cursor to default on exit
-                roundedField.setCursor(Cursor.getDefaultCursor());
-                roundedField.putClientProperty("isHovering", false);
-            }
-        });
-
-        return roundedField;
-    }
-
-    // creates custom rounded JPasswordField
-    public static JPasswordField genRoundPasswordField(String text, int roundness, String colorHex, boolean light) {
-        JPasswordField roundedField = new JPasswordField(text) {
-            @Override
-            // custom painting for the rounded background
-            protected void paintComponent(Graphics g) {
-                Graphics2D g2 = (Graphics2D) g.create();
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-                Color defaultColor = Color.decode(colorHex);
-
-                g2.setColor(defaultColor);
-                g2.fill(new RoundRectangle2D.Float(0, 0, getWidth(), getHeight(), roundness, roundness));
+                g2.setColor(Color.BLACK); // set the color to black for the outline
+                g2.draw(new RoundRectangle2D.Float(0, 0, getWidth() - 1, getHeight() - 1, roundness, roundness));
 
                 super.paintComponent(g);
-
                 g2.dispose();
-            }
-
-            @Override
-            public Dimension getPreferredSize() {
-                return new Dimension(330, 30);
             }
 
             @Override
             protected void paintBorder(Graphics g) {}
         };
 
-        // add mouse listener to handle hover effects -just in case
-        roundedField.addMouseListener(new MouseAdapter() {
+        configureRoundField(roundedField, colorHex, Cursor.TEXT_CURSOR);
+
+        return roundedField;
+    }
+
+    // refactored genRoundPasswordField method -removed code smells
+    public static JPasswordField genRoundPasswordField(String text, int roundness, String colorHex) {
+        JPasswordField roundedField = new JPasswordField(text) {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2 = setupGraphics(g);
+
+                Color defaultColor = Color.decode(colorHex);
+                g2.setColor(defaultColor);
+                g2.fill(new RoundRectangle2D.Float(0, 0, getWidth(), getHeight(), roundness, roundness));
+
+                g2.setColor(Color.BLACK); // set the color to black for the outline
+                g2.draw(new RoundRectangle2D.Float(0, 0, getWidth() - 1, getHeight() - 1, roundness, roundness));
+
+                super.paintComponent(g);
+                g2.dispose();
+            }
+
+            @Override
+            protected void paintBorder(Graphics g) {}
+        };
+
+        configureRoundField(roundedField, colorHex, Cursor.TEXT_CURSOR);
+
+        return roundedField;
+    }
+
+    public static JLabel genRoundLabel(String text, int roundness, String colorHex) {
+        Color defaultColor = Color.decode(colorHex);
+
+        JLabel roundedLabel = new JLabel(text) {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2 = setupGraphics(g);
+
+                g2.setColor(defaultColor);
+                g2.fill(new RoundRectangle2D.Float(0, 0, getWidth(), getHeight(), roundness, roundness));
+
+                g2.setColor(getForeground());
+                FontMetrics metrics = g2.getFontMetrics();
+                int x = (getWidth() - metrics.stringWidth(getText())) / 2;
+                int y = (getHeight() - metrics.getHeight()) / 2 + metrics.getAscent();
+
+                g2.drawString(getText(), x, y);
+                g2.dispose();
+            }
+        };
+
+        roundedLabel.setOpaque(false);
+
+        return roundedLabel;
+    }
+
+    // creates a hover-able icon button
+    public static JButton genImageButton(String pngFileName, int x, int y) {
+        JButton imageButton = new JButton();
+        imageButton.setPreferredSize(new Dimension(x, y));
+        imageButton.setContentAreaFilled(false);
+        imageButton.setBorderPainted(false);
+
+        try {
+            // Load and resize image
+            BufferedImage originalImage = ImageIO.read(new File(pngFileName));
+            Image resizedImage = originalImage.getScaledInstance(x, y, Image.SCALE_SMOOTH);
+            ImageIcon defaultIcon = new ImageIcon(resizedImage);
+
+            // Create a darker version for hover effect
+            BufferedImage darkenedImage = new BufferedImage(x, y, BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g2d = darkenedImage.createGraphics();
+            g2d.drawImage(resizedImage, 0, 0, null);
+
+            // Darken non-transparent parts
+            for (int i = 0; i < darkenedImage.getWidth(); i++) {
+                for (int j = 0; j < darkenedImage.getHeight(); j++) {
+                    int rgba = darkenedImage.getRGB(i, j);
+                    int alpha = (rgba >> 24) & 0xFF;
+                    if (alpha != 0) {  // if pixel is not transparent
+                        int darkColor = new Color(
+                                (rgba >> 16) & 0xFF,
+                                (rgba >> 8) & 0xFF,
+                                rgba & 0xFF).darker().getRGB();
+                        darkenedImage.setRGB(i, j, (alpha << 24) | (darkColor & 0x00FFFFFF));
+                    }
+                }
+            }
+
+            g2d.dispose();
+
+            ImageIcon darkIcon = new ImageIcon(darkenedImage);
+
+            imageButton.setIcon(defaultIcon);
+
+            imageButton.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    imageButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                    imageButton.setIcon(darkIcon);
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    imageButton.setCursor(Cursor.getDefaultCursor());
+                    imageButton.setIcon(defaultIcon);
+                }
+            });
+
+        } catch (Exception e) {
+            System.out.println("Image File \"" + pngFileName + "\" is missing.");
+        }
+
+        return imageButton;
+    }
+
+    // helper method for hover effects (creates MouseListener) for buttons
+    private static MouseAdapter createHoverEffectMouseListener(JComponent component, Color hoverColor) {
+        return createHoverEffectMouseListener(component, hoverColor, Cursor.HAND_CURSOR);
+    }
+
+    // helper method for hover effects, MouseListener for text/pass fields
+    private static MouseAdapter createHoverEffectMouseListener(JComponent component, Color hoverColor, int cursorType) {
+        return new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                // changes cursor to text cursor on hover
-                roundedField.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
-                roundedField.putClientProperty("isHovering", true);
-                //roundedField.repaint();
+                component.setCursor(Cursor.getPredefinedCursor(cursorType));
+                component.putClientProperty("isHovering", true);
+                component.repaint();
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                // revert cursor to default on exit
-                roundedField.setCursor(Cursor.getDefaultCursor());
-                roundedField.putClientProperty("isHovering", false);
-                roundedField.repaint();
+                component.setCursor(Cursor.getDefaultCursor());
+                component.putClientProperty("isHovering", false);
+                component.repaint();
+            }
+        };
+    }
+
+
+    // helper method to set up button's / field's common graphics settings
+    private static Graphics2D setupGraphics(Graphics g) {
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        return g2;
+    }
+
+    // helper method for hover color logic
+    private static Color getHoverColor(Color defaultColor, boolean isHovering, boolean light) {
+        if (isHovering) {
+            return light ? defaultColor.brighter() : defaultColor.darker();
+        }
+        return defaultColor;
+    }
+
+    // common functionality; genRoundTextField + genRoundPasswordField
+    private static void configureRoundField(JTextComponent field, String colorHex, int cursorType) {
+        Color defaultColor = Color.decode(colorHex);
+
+        field.setOpaque(false);
+        field.addMouseListener(createHoverEffectMouseListener(field, defaultColor, cursorType));
+        field.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                field.repaint();
             }
         });
 
-        return roundedField;
+        field.setOpaque(false);
+
+        field.addMouseListener(createHoverEffectMouseListener(field, defaultColor, cursorType));
     }
+
 }
