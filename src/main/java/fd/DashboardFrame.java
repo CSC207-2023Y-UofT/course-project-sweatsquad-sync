@@ -174,7 +174,6 @@ public class DashboardFrame extends JFrame implements ActionListener {
             c3time.setText(timeConversion(next.get(2)[2]));
             this.add(upcomingC);
         } else {
-            System.out.println("no classes");
             this.remove(c1name);
             this.remove(c1time);
             this.remove(c1room);
