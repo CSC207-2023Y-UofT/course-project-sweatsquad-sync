@@ -11,7 +11,8 @@ class SignupPanel extends JPanel implements ActionListener {
     private JTextField firstNameField, lastNameField, emailField, userField;
     private JPasswordField passField, confirmPassField;
     private JButton registerButton;
-    private JLabel err1, err2, err3, err4, haveCodeLabel, coverBG;
+    private JLabel err1, err2, err3, err4, haveCodeLabel;
+    private JLabel coverBG;
 
     @FunctionalInterface
     public interface RegisterMethod {

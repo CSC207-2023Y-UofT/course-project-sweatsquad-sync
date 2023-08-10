@@ -10,7 +10,7 @@ class DetailsPanel extends JPanel implements ActionListener {
     public JTextField firstNameInfoField, lastNameInfoField, emailInfoField, userInfoField;
     private JPasswordField passField;
     private JButton saveChangesBtn;
-    private JLabel err1, err2, err3, err4;
+    private JLabel err1, err2, err3, err4, coverBG;
 
     public DetailsPanel() {
         this.setLayout(null);
@@ -89,6 +89,14 @@ class DetailsPanel extends JPanel implements ActionListener {
         err4.setFont(UI.MB12);
         err4.setBounds(620, 385, 150, 40);
         this.add(err4);
+
+        coverBG = UI.genRoundLabel("", 20, "#FAFAF2");
+        coverBG.setBounds(0, 88, 800, 522);
+        this.add(coverBG);
+    }
+
+    public void clearPass () {
+        passField.setText("");
     }
 
     @Override

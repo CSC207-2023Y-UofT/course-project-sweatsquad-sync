@@ -16,16 +16,17 @@ import java.io.File;
 public class UI {
     public static Font
             A16  = new Font("Arial", Font.PLAIN, 16),
-    // MP12 = new Font("Monsterrat", Font.PLAIN, 12), unused
-    MP16 = new Font("Monsterrat", Font.PLAIN, 16),
+            MP12 = new Font("Monsterrat", Font.PLAIN, 12),
+            MP16 = new Font("Monsterrat", Font.PLAIN, 16),
             MB12 = new Font("Monsterrat", Font.BOLD, 12),
             MB13 = new Font("Monsterrat", Font.BOLD, 13),
             MB14 = new Font("Monsterrat", Font.BOLD, 14),
             MB15 = new Font("Monsterrat", Font.BOLD, 15),
             MB16 = new Font("Monsterrat", Font.BOLD, 16),
-            MB19 = new Font("Monsterrat", Font.BOLD, 19),
+            MB18 = new Font("Monsterrat", Font.BOLD, 18),
             MB20 = new Font("Monsterrat", Font.BOLD, 20),
             MB23 = new Font("Monsterrat", Font.BOLD, 23),
+            MP23 = new Font("Monsterrat", Font.PLAIN, 23),
             CB13 = new Font("Comfortaa", Font.BOLD, 13),
             CB18 = new Font("Comfortaa", Font.BOLD, 18);
 

@@ -4,13 +4,18 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class DashboardFrame extends JFrame implements ActionListener {
     private JButton viewEntireSchedule, enrolBtn, logout, settings,
             manageRooms, manageUsers;
-    private JLabel welcomeUser, upcomingC, upcomingC1, upcomingC2, upcomingC3;
-    private JLabel coverBG;
+    private JLabel welcomeUser; // basically title label (Welcome back, [User Name]!)
+    private JLabel c1box, c2box, c3box; // used to contain info for upcoming 3 classes
+    private JLabel c1name, c1time, c1room, c2name, c2time, c2room, c3name, c3time, c3room;
+    private JLabel upcomingC, no_classes;
+    private JLabel coverBG, userEnrolBtnCover, instructorEnrolCover, viewFullScheduleCover;
 
     private CourseFrame courseBrowser = new CourseFrame();
     private ScheduleFrame scheduleView = new ScheduleFrame();
@@ -43,41 +48,90 @@ public class DashboardFrame extends JFrame implements ActionListener {
         settings.addActionListener(this);
         this.add(settings);
 
-        upcomingC1 = UI.genRoundLabel("Class 1 Info", 25, "#FFC278");
-        upcomingC1.setFont(UI.MP16);
-        upcomingC1.setForeground(Color.decode("#FFFFFF"));
-        upcomingC1.setBackground(Color.decode("#40508a"));
-        upcomingC1.setOpaque(true);
-        upcomingC1.setBounds(83, 316, 197, 104);
+        // class 1 info
+        c1name = new JLabel("Class 1 Name");
+        c1name.setFont(UI.MB18);
+        c1name.setForeground(Color.decode("#FFFFFF"));
+        c1name.setBounds(100, 331, 171, 22);
+        c1time = new JLabel("Class 1 Time");
+        c1time.setFont(UI.MB12);
+        c1time.setForeground(Color.decode("#000000"));
+        c1time.setBounds(100, 358, 171, 22);
+        c1room = new JLabel("Class 1 Room");
+        c1room.setFont(UI.MB12);
+        c1room.setForeground(Color.decode("#000000"));
+        c1room.setBounds(100, 384, 171, 22);
+        c1box = UI.genRoundLabel("", 25, "#FFC278");
+        c1box.setBackground(Color.decode("#40508a"));
+        c1box.setOpaque(true);
+        c1box.setBounds(83, 316, 197, 104);
 
-        upcomingC2 = UI.genRoundLabel("Class 2 Info", 25, "#FFC278");
-        upcomingC2.setFont(UI.MP16);
-        upcomingC2.setForeground(Color.decode("#FFFFFF"));
-        upcomingC2.setBackground(Color.decode("#40508a"));
-        upcomingC2.setOpaque(true);
-        upcomingC2.setBounds(301, 316, 197, 104);
+        // class 1 info
+        c2name = new JLabel("Class 2 Name");
+        c2name.setFont(UI.MB18);
+        c2name.setForeground(Color.decode("#FFFFFF"));
+        c2name.setBounds(318, 331, 171, 22);
+        c2time = new JLabel("Class 2 Time");
+        c2time.setFont(UI.MB12);
+        c2time.setForeground(Color.decode("#000000"));
+        c2time.setBounds(318, 358, 171, 22);
+        c2room = new JLabel("Class 2 Room");
+        c2room.setFont(UI.MB12);
+        c2room.setForeground(Color.decode("#000000"));
+        c2room.setBounds(318, 384, 171, 22);
+        c2box = UI.genRoundLabel("", 25, "#FFC278");
+        c2box.setBackground(Color.decode("#40508a"));
+        c2box.setOpaque(true);
+        c2box.setBounds(301, 316, 197, 104);
 
-        upcomingC3 = UI.genRoundLabel("Class 3 Info", 25, "#FFC278");
-        upcomingC3.setFont(UI.MP16);
-        upcomingC3.setForeground(Color.decode("#FFFFFF"));
-        upcomingC3.setBackground(Color.decode("#40508a"));
-        upcomingC3.setOpaque(true);
-        upcomingC3.setBounds(519, 316, 197, 104);
+        // class 1 info
+        c3name = new JLabel("Class 2 Name");
+        c3name.setFont(UI.MB18);
+        c3name.setForeground(Color.decode("#FFFFFF"));
+        c3name.setBounds(536, 331, 171, 22);
+        c3time = new JLabel("Class 2 Time");
+        c3time.setFont(UI.MB12);
+        c3time.setForeground(Color.decode("#000000"));
+        c3time.setBounds(536, 358, 171, 22);
+        c3room = new JLabel("Class 2 Room");
+        c3room.setFont(UI.MB12);
+        c3room.setForeground(Color.decode("#000000"));
+        c3room.setBounds(536, 384, 171, 22);
+        c3box = UI.genRoundLabel("", 25, "#FFC278");
+        c3box.setBackground(Color.decode("#40508a"));
+        c3box.setOpaque(true);
+        c3box.setBounds(519, 316, 197, 104);
+
+        no_classes = new JLabel("");
+        no_classes.setIcon(new ImageIcon("images/no_classes.png"));
+        no_classes.setBounds(64, 316, 672, 122);
 
         upcomingC = new JLabel("Upcoming Classes");
         upcomingC.setIcon(new ImageIcon("images/upcoming_classes.png"));
         upcomingC.setBounds(64, 263, 672, 175);
 
-        viewEntireSchedule = UI.genRoundBtn("View Entire Schedule", 30,
-                "#172A87", false);
-        viewEntireSchedule.setFont(UI.MB20);
-        viewEntireSchedule.setForeground(Color.decode("#FFFFFF"));
-        viewEntireSchedule.setBounds(66, 445, 315, 45);
+        viewFullScheduleCover = new JLabel("");
+        viewFullScheduleCover.setBounds(64, 463, 569, 79);
+        viewFullScheduleCover.setIcon(new ImageIcon("images/viewFullScheduleCover.png"));
+        viewFullScheduleCover.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        viewEntireSchedule = UI.genImageButton("images/viewEntireSchedule.png", 672, 79);
+        viewEntireSchedule.setBounds(64, 463, 672, 79);
         viewEntireSchedule.addActionListener(this);
 
-        enrolBtn = UI.genImageButton("images/manage_classes.png", 672, 100);
+        enrolBtn = UI.genImageButton("images/admin_manage_class.png", 672, 100);
         enrolBtn.setBounds(64, 138, 672, 100);
         enrolBtn.addActionListener(this);
+
+        userEnrolBtnCover = new JLabel("");
+        userEnrolBtnCover.setIcon(new ImageIcon("images/user_manage_class.png"));
+        userEnrolBtnCover.setBounds(64, 138, 672, 100);
+        userEnrolBtnCover.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        userEnrolBtnCover = new JLabel("");
+        userEnrolBtnCover.setIcon(new ImageIcon("images/user_manage_class.png"));
+        userEnrolBtnCover.setBounds(64, 138, 672, 100);
+        userEnrolBtnCover.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         manageRooms = UI.genImageButton("images/manage_rooms.png", 672, 100);
         manageRooms.setBounds(64, 278, 672, 100);
@@ -94,26 +148,54 @@ public class DashboardFrame extends JFrame implements ActionListener {
     }
 
     public void userRefresh() {
-        enrolBtn.setBounds(64, 138, 672, 100);
+        this.add(userEnrolBtnCover);
+        this.add(enrolBtn);
 
         List<String[]> next = App.db.getNextThreeOfferings();
-        System.out.println(next);
         if (!next.isEmpty()) {
-            this.add(upcomingC1);
-            this.add(upcomingC2);
-            this.add(upcomingC3);
-            this.add(upcomingC);
+            this.add(c1name);
+            this.add(c1time);
+            this.add(c1room);
+            this.add(c1box);
+            this.add(c2name);
+            this.add(c2time);
+            this.add(c2room);
+            this.add(c2box);
+            this.add(c3name);
+            this.add(c3time);
+            this.add(c3room);
+            this.add(c3box);
+            this.add(viewFullScheduleCover);
             this.add(viewEntireSchedule);
-            upcomingC1.setText("<html><b>" + next.get(0)[0] + "</b><BR>" + next.get(0)[1] +"<BR>" + next.get(0)[2] + "</html>");
-            upcomingC2.setText("<html><b>" + next.get(1)[0] + "</b><BR>" + next.get(1)[1] +"<BR>" + next.get(1)[2] + "</html>");
-            upcomingC3.setText("<html><b>" + next.get(2)[0] + "</b><BR>" + next.get(2)[1] +"<BR>" + next.get(2)[2] + "</html>");
-        }
-        else {
-            this.remove(upcomingC1);
-            this.remove(upcomingC2);
-            this.remove(upcomingC3);
-            this.remove(upcomingC);
+            this.remove(no_classes);
+            c1name.setText(next.get(0)[0]);
+            c1room.setText(next.get(0)[1]);
+            c1time.setText(timeConversion(next.get(0)[2]));
+            c2name.setText(next.get(1)[0]);
+            c2room.setText(next.get(1)[1]);
+            c2time.setText(timeConversion(next.get(1)[2]));
+            c3name.setText(next.get(2)[0]);
+            c3room.setText(next.get(2)[1]);
+            c3time.setText(timeConversion(next.get(2)[2]));
+            this.add(upcomingC);
+        } else {
+            System.out.println("no classes");
+            this.remove(c1name);
+            this.remove(c1time);
+            this.remove(c1room);
+            this.remove(c1box);
+            this.remove(c2name);
+            this.remove(c2time);
+            this.remove(c2room);
+            this.remove(c2box);
+            this.remove(c3name);
+            this.remove(c3time);
+            this.remove(c3room);
+            this.remove(c3box);
+            this.remove(viewFullScheduleCover);
             this.remove(viewEntireSchedule);
+            this.add(no_classes);
+            this.add(upcomingC);
         }
         this.add(enrolBtn);
         this.remove(manageRooms);
@@ -124,17 +206,29 @@ public class DashboardFrame extends JFrame implements ActionListener {
 
     public void instructorRefresh() {
         userRefresh();
-        enrolBtn.setBounds(64, 138, 672, 100);
+        this.remove(userEnrolBtnCover);
         courseBrowser.instructorView();
         this.add(coverBG);
     }
 
     public void adminRefresh() {
         this.remove(upcomingC);
-        this.remove(upcomingC1);
-        this.remove(upcomingC2);
-        this.remove(upcomingC3);
+        this.remove(c1name);
+        this.remove(c1time);
+        this.remove(c1room);
+        this.remove(c1box);
+        this.remove(c2name);
+        this.remove(c2time);
+        this.remove(c2room);
+        this.remove(c2box);
+        this.remove(c3name);
+        this.remove(c3time);
+        this.remove(c3room);
+        this.remove(c3box);
         this.remove(viewEntireSchedule);
+        this.remove(no_classes);
+        this.remove(userEnrolBtnCover);
+        this.remove(viewFullScheduleCover);
         this.add(enrolBtn);
         this.add(manageRooms);
         this.add(manageUsers);
@@ -163,5 +257,12 @@ public class DashboardFrame extends JFrame implements ActionListener {
             roomManager.refreshShow();
         else if (e.getSource() == manageUsers)
             userManager.refreshShow();
+    }
+
+    public static String timeConversion(String input) {
+        return LocalDateTime.parse(input, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+                .format(DateTimeFormatter.ofPattern("MM/dd/yy @ ha"))
+                .replace("a.m.", "AM")
+                .replace("p.m.", "PM");
     }
 }
