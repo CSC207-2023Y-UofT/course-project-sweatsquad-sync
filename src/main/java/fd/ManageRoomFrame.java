@@ -1,18 +1,16 @@
 package fd;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
 public class ManageRoomFrame extends JDialog implements ActionListener {
-    private AbstractTableModel roomTable = new AbstractTableModel() {
+    private final AbstractTableModel roomTable = new AbstractTableModel() {
         private final String[] cols = {"Room"};
         public int getColumnCount() { return cols.length; }
-        public int getRowCount() { return (int)App.db.getCurrentRooms().size(); }
+        public int getRowCount() { return App.db.getCurrentRooms().size(); }
         public String getColumnName(int col) {
             return cols[col];
         }
@@ -22,8 +20,8 @@ public class ManageRoomFrame extends JDialog implements ActionListener {
         }
     };
 
-    private JButton addRoom, removeRoom;
-    private JTable table;
+    private final JButton addRoom, removeRoom;
+    private final JTable table;
     public ManageRoomFrame() {
         setTitle("Manage Rooms"); // window title
         setSize(800, 600); // window dimensions
@@ -48,12 +46,7 @@ public class ManageRoomFrame extends JDialog implements ActionListener {
         table.getTableHeader().setReorderingAllowed(false);
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-        table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                removeRoom.setEnabled(table.getSelectedRow() != -1);
-            }
-        });
+        table.getSelectionModel().addListSelectionListener(e -> removeRoom.setEnabled(table.getSelectedRow() != -1));
 
         JScrollPane p = new JScrollPane(table);
         p.setBounds(0, 40, 800, 500);

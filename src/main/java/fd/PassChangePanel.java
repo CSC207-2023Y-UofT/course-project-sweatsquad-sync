@@ -6,9 +6,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 class PassChangePanel extends JPanel implements ActionListener {
-    private JPasswordField oldPasscode,newPasscode, confirmNewPasscode;
-    private JButton savePasscodeBtn;
-    private JLabel err1, err2, err3, coverBG;
+    private final JPasswordField oldPasscode,newPasscode, confirmNewPasscode;
+    private final JButton savePasscodeBtn;
+    private final JLabel err1;
+    private final JLabel err2;
+    private final JLabel err3;
 
     public PassChangePanel() {
         this.setLayout(null);
@@ -64,7 +66,7 @@ class PassChangePanel extends JPanel implements ActionListener {
         err3.setBounds(620, 298, 150, 40);
         this.add(err3);
 
-        coverBG = UI.genRoundLabel("", 20, "#FAFAF2");
+        JLabel coverBG = UI.genRoundLabel("", 20, "#FAFAF2");
         coverBG.setBounds(0, 88, 800, 522);
         this.add(coverBG);
 

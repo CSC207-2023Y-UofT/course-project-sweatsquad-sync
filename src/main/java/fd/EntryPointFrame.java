@@ -8,10 +8,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class EntryPointFrame extends JFrame implements ActionListener {
-    private JButton loginTab, signupTab;
-    private JLabel signIndicator, authCodeLabel;
-    private CardLayout cardLayout = new CardLayout();
-    private JPanel cards = new JPanel(cardLayout);
+    private final JButton loginTab, signupTab;
+    private final JLabel signIndicator, authCodeLabel;
+    private final CardLayout cardLayout = new CardLayout();
+    private final JPanel cards = new JPanel(cardLayout);
 
     public LoginPanel loginPanel = new LoginPanel();
     public SignupPanel signupPanel = new SignupPanel();

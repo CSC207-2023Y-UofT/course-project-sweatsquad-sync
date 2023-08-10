@@ -11,10 +11,10 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 public class ManageUserFrame extends JDialog implements ActionListener {
-    private AbstractTableModel userTable = new AbstractTableModel() {
+    private final AbstractTableModel userTable = new AbstractTableModel() {
         private final String[] cols = {"Name", "Username", "Type", "Certs"};
         public int getColumnCount() { return cols.length; }
-        public int getRowCount() { return (int)App.db.getCurrentUsers().size(); }
+        public int getRowCount() { return App.db.getCurrentUsers().size(); }
         public String getColumnName(int col) {
             return cols[col];
         }
@@ -24,7 +24,7 @@ public class ManageUserFrame extends JDialog implements ActionListener {
         }
     };
 
-    private JButton delete, addInstructor, addCerts, copyCode;
+    private final JButton delete, addInstructor, addCerts, copyCode;
     JTable table;
     public ManageUserFrame() {
         setTitle("Manage Users"); // window title

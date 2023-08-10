@@ -8,10 +8,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class UserInfoFrame extends JDialog implements ActionListener {
-    private JButton detailsTab, passChangeTab;
-    private JLabel signIndicator;
-    private CardLayout cardLayout = new CardLayout();
-    private JPanel cards = new JPanel(cardLayout);
+    private final JButton detailsTab, passChangeTab;
+    private final JLabel signIndicator;
+    private final CardLayout cardLayout = new CardLayout();
+    private final JPanel cards = new JPanel(cardLayout);
 
     public DetailsPanel detailsPanel = new DetailsPanel();
     public PassChangePanel passChangePanel = new PassChangePanel();

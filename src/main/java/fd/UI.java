@@ -16,17 +16,13 @@ import java.io.File;
 public class UI {
     public static Font
             A16  = new Font("Arial", Font.PLAIN, 16),
-            MP12 = new Font("Monsterrat", Font.PLAIN, 12),
-            MP16 = new Font("Monsterrat", Font.PLAIN, 16),
-            MB12 = new Font("Monsterrat", Font.BOLD, 12),
-            MB13 = new Font("Monsterrat", Font.BOLD, 13),
-            MB14 = new Font("Monsterrat", Font.BOLD, 14),
-            MB15 = new Font("Monsterrat", Font.BOLD, 15),
-            MB16 = new Font("Monsterrat", Font.BOLD, 16),
-            MB18 = new Font("Monsterrat", Font.BOLD, 18),
-            MB20 = new Font("Monsterrat", Font.BOLD, 20),
-            MB23 = new Font("Monsterrat", Font.BOLD, 23),
-            MP23 = new Font("Monsterrat", Font.PLAIN, 23),
+            MB12 = new Font("Montserrat", Font.BOLD, 12),
+            MB13 = new Font("Montserrat", Font.BOLD, 13),
+            MB14 = new Font("Montserrat", Font.BOLD, 14),
+            MB15 = new Font("Montserrat", Font.BOLD, 15),
+            MB16 = new Font("Montserrat", Font.BOLD, 16),
+            MB18 = new Font("Montserrat", Font.BOLD, 18),
+            MB23 = new Font("Montserrat", Font.BOLD, 23),
             CB13 = new Font("Comfortaa", Font.BOLD, 13),
             CB18 = new Font("Comfortaa", Font.BOLD, 18);
 
@@ -70,13 +66,13 @@ public class UI {
         roundedButton.setContentAreaFilled(false);
         roundedButton.setOpaque(false);
 
-        roundedButton.addMouseListener(createHoverEffectMouseListener(roundedButton, getHoverColor(defaultColor, true, light)));
+        roundedButton.addMouseListener(createHoverEffectMouseListener(roundedButton));
 
         return roundedButton;
     }
 
     // refactored genRoundTextField method -removed code smells
-    public static JTextField genRoundTextField(String text, int roundness, String colorHex, boolean light) {
+    public static JTextField genRoundTextField(String text, int roundness, String colorHex) {
         JTextField roundedField = new JTextField(text) {
             @Override
             protected void paintComponent(Graphics g) {
@@ -97,7 +93,7 @@ public class UI {
             protected void paintBorder(Graphics g) {}
         };
 
-        configureRoundField(roundedField, colorHex, Cursor.TEXT_CURSOR);
+        configureRoundField(roundedField);
 
         return roundedField;
     }
@@ -124,7 +120,7 @@ public class UI {
             protected void paintBorder(Graphics g) {}
         };
 
-        configureRoundField(roundedField, colorHex, Cursor.TEXT_CURSOR);
+        configureRoundField(roundedField);
 
         return roundedField;
     }
@@ -216,12 +212,12 @@ public class UI {
     }
 
     // helper method for hover effects (creates MouseListener) for buttons
-    private static MouseAdapter createHoverEffectMouseListener(JComponent component, Color hoverColor) {
-        return createHoverEffectMouseListener(component, hoverColor, Cursor.HAND_CURSOR);
+    private static MouseAdapter createHoverEffectMouseListener(JComponent component) {
+        return createHoverEffectMouseListener(component, Cursor.HAND_CURSOR);
     }
 
     // helper method for hover effects, MouseListener for text/pass fields
-    private static MouseAdapter createHoverEffectMouseListener(JComponent component, Color hoverColor, int cursorType) {
+    private static MouseAdapter createHoverEffectMouseListener(JComponent component, int cursorType) {
         return new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -256,11 +252,9 @@ public class UI {
     }
 
     // common functionality; genRoundTextField + genRoundPasswordField
-    private static void configureRoundField(JTextComponent field, String colorHex, int cursorType) {
-        Color defaultColor = Color.decode(colorHex);
-
+    private static void configureRoundField(JTextComponent field) {
         field.setOpaque(false);
-        field.addMouseListener(createHoverEffectMouseListener(field, defaultColor, cursorType));
+        field.addMouseListener(createHoverEffectMouseListener(field, Cursor.TEXT_CURSOR));
         field.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
@@ -270,7 +264,7 @@ public class UI {
 
         field.setOpaque(false);
 
-        field.addMouseListener(createHoverEffectMouseListener(field, defaultColor, cursorType));
+        field.addMouseListener(createHoverEffectMouseListener(field, Cursor.TEXT_CURSOR));
     }
 
 }

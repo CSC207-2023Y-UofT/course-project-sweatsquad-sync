@@ -3,8 +3,6 @@ package fd;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.event.ActionEvent;
@@ -14,12 +12,12 @@ import java.awt.event.WindowEvent;
 import java.util.List;
 
 public class CourseFrame extends JDialog implements ActionListener {
-    private JButton addCourse, editCourse, removeCourse, enrolCourse, editCerts, editUsers, editName;
-    private JTextField search;
-    private AbstractTableModel courseTable = new AbstractTableModel() {
+    private final JButton addCourse, editCourse, removeCourse, enrolCourse, editCerts, editUsers, editName;
+    private final JTextField search;
+    private final AbstractTableModel courseTable = new AbstractTableModel() {
         private final String[] enrolTableCols = {"Workout", "Room", "Time", "Instructor", "Status", "ButtonText"};
         public int getColumnCount() { return enrolTableCols.length - 1; }
-        public int getRowCount() { return (int)App.db.getCurrentWorkouts().size(); }
+        public int getRowCount() { return App.db.getCurrentWorkouts().size(); }
         public String getColumnName(int col) {
             return enrolTableCols[col];
         }
@@ -28,10 +26,10 @@ public class CourseFrame extends JDialog implements ActionListener {
             return workouts.get(row)[col].isEmpty() ? "TBD" : workouts.get(row)[col];
         }
     };
-    private JTable enrolTable;
-    private WorkoutOfferingFrame workoutOfferingFrame = new WorkoutOfferingFrame();
-    private WorkoutCertsFrame workoutCertsFrame = new WorkoutCertsFrame();
-    private WorkoutUsersFrame workoutUsersFrame = new WorkoutUsersFrame();
+    private final JTable enrolTable;
+    private final WorkoutOfferingFrame workoutOfferingFrame = new WorkoutOfferingFrame();
+    private final WorkoutCertsFrame workoutCertsFrame = new WorkoutCertsFrame();
+    private final WorkoutUsersFrame workoutUsersFrame = new WorkoutUsersFrame();
     public CourseFrame() {
         setTitle("Courses"); // window title
         setSize(800, 600); // window dimensions
@@ -105,18 +103,15 @@ public class CourseFrame extends JDialog implements ActionListener {
         enrolTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         enrolTable.setRowSelectionAllowed(true);
         enrolTable.setColumnSelectionAllowed(false);
-        enrolTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                removeCourse.setEnabled(enrolTable.getSelectedRow() != -1);
-                editCourse.setEnabled(enrolTable.getSelectedRow() != -1);
-                editCerts.setEnabled(enrolTable.getSelectedRow() != -1);
-                editUsers.setEnabled(enrolTable.getSelectedRow() != -1);
-                editName.setEnabled(enrolTable.getSelectedRow() != -1);
-                enrolCourse.setVisible(enrolTable.getSelectedRow() != -1);
-                if (enrolTable.getSelectedRow() != -1)
-                    enrolCourse.setText(courseTable.getValueAt(enrolTable.getSelectedRow(), 5).toString());
-            }
+        enrolTable.getSelectionModel().addListSelectionListener(e -> {
+            removeCourse.setEnabled(enrolTable.getSelectedRow() != -1);
+            editCourse.setEnabled(enrolTable.getSelectedRow() != -1);
+            editCerts.setEnabled(enrolTable.getSelectedRow() != -1);
+            editUsers.setEnabled(enrolTable.getSelectedRow() != -1);
+            editName.setEnabled(enrolTable.getSelectedRow() != -1);
+            enrolCourse.setVisible(enrolTable.getSelectedRow() != -1);
+            if (enrolTable.getSelectedRow() != -1)
+                enrolCourse.setText(courseTable.getValueAt(enrolTable.getSelectedRow(), 5).toString());
         });
         JScrollPane p = new JScrollPane(enrolTable);
         p.setBounds(0, 65, 800, 500);

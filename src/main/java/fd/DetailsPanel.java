@@ -24,7 +24,7 @@ class DetailsPanel extends JPanel implements ActionListener {
         firstNameLabel.setBounds(189, 98, 422, 25);
         this.add(firstNameLabel);
 
-        firstNameInfoField = UI.genRoundTextField("", 20, "#FFFFFF", false);
+        firstNameInfoField = UI.genRoundTextField("", 20, "#FFFFFF");
         firstNameInfoField.setBounds(189, 123, 198, 45);
         firstNameInfoField.setFont(UI.CB18);
         this.add(firstNameInfoField);
@@ -34,7 +34,7 @@ class DetailsPanel extends JPanel implements ActionListener {
         lastNameLabel.setBounds(413, 98, 422, 25);
         this.add(lastNameLabel);
 
-        lastNameInfoField = UI.genRoundTextField("", 20, "#FFFFFF", false);
+        lastNameInfoField = UI.genRoundTextField("", 20, "#FFFFFF");
         lastNameInfoField.setBounds(413, 123, 198, 45);
         lastNameInfoField.setFont(UI.CB18);
         this.add(lastNameInfoField);
@@ -44,7 +44,7 @@ class DetailsPanel extends JPanel implements ActionListener {
         emailLabel.setBounds(189, 185, 422, 25);
         this.add(emailLabel);
 
-        emailInfoField = UI.genRoundTextField("", 20, "#FFFFFF", false);
+        emailInfoField = UI.genRoundTextField("", 20, "#FFFFFF");
         emailInfoField.setBounds(189, 210, 422, 45);
         emailInfoField.setFont(UI.CB18);
         this.add(emailInfoField);
@@ -54,7 +54,7 @@ class DetailsPanel extends JPanel implements ActionListener {
         signupUsernameLabel.setBounds(189, 272, 422, 25);
         this.add(signupUsernameLabel);
 
-        userInfoField = UI.genRoundTextField("", 20, "#FFFFFF", false);
+        userInfoField = UI.genRoundTextField("", 20, "#FFFFFF");
         userInfoField.setBounds(189, 297, 422, 45);
         userInfoField.setFont(UI.CB18);
         this.add(userInfoField);

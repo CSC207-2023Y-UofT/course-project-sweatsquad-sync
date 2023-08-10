@@ -6,9 +6,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 class AuthCodePanel extends JPanel implements ActionListener {
-    private JTextField authField;
-    private JButton authenticateBtn, backButton;
-    private JLabel coverBG;
+    private final JTextField authField;
+    private final JButton authenticateBtn, backButton;
+
     AuthCodePanel() {
         this.setLayout(null);
         this.setOpaque(false);
@@ -19,7 +19,7 @@ class AuthCodePanel extends JPanel implements ActionListener {
         authCodeLabel.setFont(UI.MB15);
         this.add(authCodeLabel);
 
-        authField = UI.genRoundTextField("", 20, "#FFFFFF", false);
+        authField = UI.genRoundTextField("", 20, "#FFFFFF");
         authField.setBounds(189, 165, 422, 45);
         authField.setFont(UI.CB18);
         authField.setHorizontalAlignment(SwingConstants.CENTER); // c-align
@@ -39,7 +39,7 @@ class AuthCodePanel extends JPanel implements ActionListener {
         authenticateBtn.addActionListener(this);
         this.add(authenticateBtn);
 
-        coverBG = UI.genRoundLabel("", 20, "#FAFAF2");
+        JLabel coverBG = UI.genRoundLabel("", 20, "#FAFAF2");
         coverBG.setBounds(0, 88, 800, 522);
         this.add(coverBG);
 

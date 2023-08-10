@@ -9,19 +9,19 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class DashboardFrame extends JFrame implements ActionListener {
-    private JButton viewEntireSchedule, enrolBtn, logout, settings,
+    private final JButton viewEntireSchedule, enrolBtn, logout, settings,
             manageRooms, manageUsers;
-    private JLabel welcomeUser; // basically title label (Welcome back, [User Name]!)
-    private JLabel c1box, c2box, c3box; // used to contain info for upcoming 3 classes
-    private JLabel c1name, c1time, c1room, c2name, c2time, c2room, c3name, c3time, c3room;
-    private JLabel upcomingC, no_classes;
-    private JLabel coverBG, userEnrolBtnCover, instructorEnrolCover, viewFullScheduleCover;
+    private final JLabel welcomeUser; // basically title label (Welcome back, [User Name]!)
+    private final JLabel c1box, c2box, c3box; // used to contain info for upcoming 3 classes
+    private final JLabel c1name, c1time, c1room, c2name, c2time, c2room, c3name, c3time, c3room;
+    private final JLabel upcomingC, no_classes;
+    private final JLabel coverBG, userEnrolBtnCover, viewFullScheduleCover;
 
-    private CourseFrame courseBrowser = new CourseFrame();
-    private ScheduleFrame scheduleView = new ScheduleFrame();
-    private UserInfoFrame userInfoEdit = new UserInfoFrame();
-    private ManageUserFrame userManager = new ManageUserFrame();
-    private ManageRoomFrame roomManager = new ManageRoomFrame();
+    private final CourseFrame courseBrowser = new CourseFrame();
+    private final ScheduleFrame scheduleView = new ScheduleFrame();
+    private final UserInfoFrame userInfoEdit = new UserInfoFrame();
+    private final ManageUserFrame userManager = new ManageUserFrame();
+    private final ManageRoomFrame roomManager = new ManageRoomFrame();
 
     public DashboardFrame() {
         setTitle("Dashboard"); // window title
@@ -122,11 +122,6 @@ public class DashboardFrame extends JFrame implements ActionListener {
         enrolBtn = UI.genImageButton("images/admin_manage_class.png", 672, 100);
         enrolBtn.setBounds(64, 138, 672, 100);
         enrolBtn.addActionListener(this);
-
-        userEnrolBtnCover = new JLabel("");
-        userEnrolBtnCover.setIcon(new ImageIcon("images/user_manage_class.png"));
-        userEnrolBtnCover.setBounds(64, 138, 672, 100);
-        userEnrolBtnCover.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         userEnrolBtnCover = new JLabel("");
         userEnrolBtnCover.setIcon(new ImageIcon("images/user_manage_class.png"));

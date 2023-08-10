@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 import java.time.DayOfWeek;
 
 public class ScheduleFrame extends JDialog implements ActionListener {
-    private AbstractTableModel scheduleTable = new AbstractTableModel() {
+    private final AbstractTableModel scheduleTable = new AbstractTableModel() {
         private final String[] cols = {
                 "",
                 DayOfWeek.SUNDAY.toString(),
