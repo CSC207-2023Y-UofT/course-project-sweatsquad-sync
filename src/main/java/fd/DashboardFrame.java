@@ -4,12 +4,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.List;
 
 public class DashboardFrame extends JFrame implements ActionListener {
-    private JButton viewEntireSchedule, enrolBtn, logout, logout_icon, settings,
+    private JButton viewEntireSchedule, enrolBtn, logout, settings,
             manageRooms, manageUsers;
     private JLabel welcomeUser, upcomingC, upcomingC1, upcomingC2, upcomingC3;
     private JLabel coverBG;
@@ -35,66 +33,40 @@ public class DashboardFrame extends JFrame implements ActionListener {
         welcomeUser.setBounds(34, 41, 422, 47);
         this.add(welcomeUser);
 
-        logout_icon = new JButton();
-        logout_icon.setBounds(640, 15, 40, 30);
-        logout_icon.setBorderPainted(false); // Hide the button border
-        logout_icon.setFocusPainted(false); // Remove the focus indication
-        logout_icon.setContentAreaFilled(false);
-        logout_icon.setIcon(new ImageIcon("images/logout_icon.png"));
-        logout_icon.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                setCursor(Cursor.getDefaultCursor());
-            }
-        });
-        logout_icon.addActionListener(this);
-        this.add(logout_icon);
-
-        logout = UI.genRoundBtn("", 23, "#172A87", false);
-        logout.setFont(UI.MB19);
-        logout.setForeground(Color.decode("#FFFFFF"));
-        logout.setBounds(640, 15, 40, 30);
-        logout.setOpaque(false);
+        logout = UI.genImageButton("images/logout.png", 25, 25);
+        logout.setBounds(729, 44, 25, 25);
+        logout.addActionListener(this);
         this.add(logout);
 
-        settings = UI.genRoundBtn("Account Settings ⚙", 30, "#172A87", false);
-        settings.setFont(UI.MB20);
-        settings.setForeground(Color.decode("#FFFFFF"));
-        settings.setBounds(413, 300, 280, 140);
+        settings = UI.genImageButton("images/gear.png", 27, 26);
+        settings.setBounds(681, 44, 27, 27);
         settings.addActionListener(this);
         this.add(settings);
 
-        upcomingC = new JLabel("Upcoming Classes");
-        upcomingC.setFont(UI.MB20);
-        upcomingC.setForeground(Color.decode("#000000"));
-        upcomingC.setBounds(66, 130, 422, 47);
-
-        upcomingC1 = new JLabel("Class 1 Info");
+        upcomingC1 = UI.genRoundLabel("Class 1 Info", 25, "#FFC278");
         upcomingC1.setFont(UI.MP16);
         upcomingC1.setForeground(Color.decode("#FFFFFF"));
         upcomingC1.setBackground(Color.decode("#40508a"));
         upcomingC1.setOpaque(true);
-        upcomingC1.setBounds(66, 180, 320, 60);
+        upcomingC1.setBounds(83, 316, 197, 104);
 
-        upcomingC2 = new JLabel("Class 2 Info");
+        upcomingC2 = UI.genRoundLabel("Class 2 Info", 25, "#FFC278");
         upcomingC2.setFont(UI.MP16);
         upcomingC2.setForeground(Color.decode("#FFFFFF"));
         upcomingC2.setBackground(Color.decode("#40508a"));
         upcomingC2.setOpaque(true);
-        upcomingC2.setBounds(66, 275, 320, 60);
-        upcomingC2.setOpaque(true);
+        upcomingC2.setBounds(301, 316, 197, 104);
 
-        upcomingC3 = new JLabel("Class 3 Info");
+        upcomingC3 = UI.genRoundLabel("Class 3 Info", 25, "#FFC278");
         upcomingC3.setFont(UI.MP16);
         upcomingC3.setForeground(Color.decode("#FFFFFF"));
         upcomingC3.setBackground(Color.decode("#40508a"));
         upcomingC3.setOpaque(true);
-        upcomingC3.setBounds(66, 370, 320, 60);
+        upcomingC3.setBounds(519, 316, 197, 104);
+
+        upcomingC = new JLabel("Upcoming Classes");
+        upcomingC.setIcon(new ImageIcon("images/upcoming_classes.png"));
+        upcomingC.setBounds(64, 263, 672, 175);
 
         viewEntireSchedule = UI.genRoundBtn("View Entire Schedule", 30,
                 "#172A87", false);
@@ -103,22 +75,16 @@ public class DashboardFrame extends JFrame implements ActionListener {
         viewEntireSchedule.setBounds(66, 445, 315, 45);
         viewEntireSchedule.addActionListener(this);
 
-        enrolBtn = UI.genRoundBtn("Manage Classes", 30, "#172A87", false);
-        enrolBtn.setFont(UI.MB23);
-        enrolBtn.setForeground(Color.decode("#FFFFFF"));
-        enrolBtn.setBounds(413, 123, 280, 140);
+        enrolBtn = UI.genImageButton("images/manage_classes.png", 672, 100);
+        enrolBtn.setBounds(64, 138, 672, 100);
         enrolBtn.addActionListener(this);
 
-        manageRooms = UI.genRoundBtn("Manage Rooms", 30, "#172A87", false);
-        manageRooms.setFont(UI.MB23);
-        manageRooms.setForeground(Color.decode("#FFFFFF"));
-        manageRooms.setBounds(107, 123, 280, 140);
+        manageRooms = UI.genImageButton("images/manage_rooms.png", 672, 100);
+        manageRooms.setBounds(64, 278, 672, 100);
         manageRooms.addActionListener(this);
 
-        manageUsers = UI.genRoundBtn("Manage Users", 30, "#172A87", false);
-        manageUsers.setFont(UI.MB23);
-        manageUsers.setForeground(Color.decode("#FFFFFF"));
-        manageUsers.setBounds(107, 300, 280, 140);
+        manageUsers = UI.genImageButton("images/manage_users.png", 672, 100);
+        manageUsers.setBounds(64, 418, 672, 100);
         manageUsers.addActionListener(this);
 
         coverBG = UI.genRoundLabel("", 20, "#FAFAF2");
@@ -128,41 +94,39 @@ public class DashboardFrame extends JFrame implements ActionListener {
     }
 
     public void userRefresh() {
-        enrolBtn.setBounds(490, 180, 218, 75);
-        settings.setBounds(490, 380, 218, 75);
+        enrolBtn.setBounds(64, 138, 672, 100);
 
         List<String[]> next = App.db.getNextThreeOfferings();
+        System.out.println(next);
         if (!next.isEmpty()) {
-            this.add(upcomingC);
             this.add(upcomingC1);
             this.add(upcomingC2);
             this.add(upcomingC3);
+            this.add(upcomingC);
             this.add(viewEntireSchedule);
-            this.add(coverBG);
             upcomingC1.setText("<html><b>" + next.get(0)[0] + "</b><BR>" + next.get(0)[1] +"<BR>" + next.get(0)[2] + "</html>");
             upcomingC2.setText("<html><b>" + next.get(1)[0] + "</b><BR>" + next.get(1)[1] +"<BR>" + next.get(1)[2] + "</html>");
             upcomingC3.setText("<html><b>" + next.get(2)[0] + "</b><BR>" + next.get(2)[1] +"<BR>" + next.get(2)[2] + "</html>");
         }
         else {
-            this.add(coverBG);
-            this.remove(upcomingC);
             this.remove(upcomingC1);
             this.remove(upcomingC2);
             this.remove(upcomingC3);
+            this.remove(upcomingC);
             this.remove(viewEntireSchedule);
         }
         this.add(enrolBtn);
-        this.add(coverBG);
         this.remove(manageRooms);
         this.remove(manageUsers);
         courseBrowser.userView();
+        this.add(coverBG);
     }
 
     public void instructorRefresh() {
         userRefresh();
-        enrolBtn.setBounds(490, 180, 218, 75);
-        settings.setBounds(490, 380, 218, 75);
+        enrolBtn.setBounds(64, 138, 672, 100);
         courseBrowser.instructorView();
+        this.add(coverBG);
     }
 
     public void adminRefresh() {
@@ -175,8 +139,7 @@ public class DashboardFrame extends JFrame implements ActionListener {
         this.add(manageRooms);
         this.add(manageUsers);
         this.add(coverBG);
-        enrolBtn.setBounds(413, 123, 280, 140);
-        settings.setBounds(413, 300, 280, 140);
+        enrolBtn.setBounds(64, 138, 672, 100);
         courseBrowser.adminView();
     }
 
@@ -194,7 +157,7 @@ public class DashboardFrame extends JFrame implements ActionListener {
             userInfoEdit.refreshShow();
         else if (e.getSource() == viewEntireSchedule)
             scheduleView.refreshShow();
-        else if (e.getSource() == logout_icon)
+        else if (e.getSource() == logout)
             App.logout();
         else if (e.getSource() == manageRooms)
             roomManager.refreshShow();

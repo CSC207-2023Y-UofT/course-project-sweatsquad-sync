@@ -7,6 +7,12 @@ import java.awt.geom.RoundRectangle2D;
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 
+// image icon imports for the genImageBtn
+import java.awt.image.*;
+import javax.swing.ImageIcon;
+import javax.imageio.ImageIO;
+import java.io.File;
+
 public class UI {
     public static Font
             A16  = new Font("Arial", Font.PLAIN, 16),
@@ -146,6 +152,66 @@ public class UI {
         roundedLabel.setOpaque(false);
 
         return roundedLabel;
+    }
+
+    // creates a hover-able icon button
+    public static JButton genImageButton(String pngFileName, int x, int y) {
+        JButton imageButton = new JButton();
+        imageButton.setPreferredSize(new Dimension(x, y));
+        imageButton.setContentAreaFilled(false);
+        imageButton.setBorderPainted(false);
+
+        try {
+            // Load and resize image
+            BufferedImage originalImage = ImageIO.read(new File(pngFileName));
+            Image resizedImage = originalImage.getScaledInstance(x, y, Image.SCALE_SMOOTH);
+            ImageIcon defaultIcon = new ImageIcon(resizedImage);
+
+            // Create a darker version for hover effect
+            BufferedImage darkenedImage = new BufferedImage(x, y, BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g2d = darkenedImage.createGraphics();
+            g2d.drawImage(resizedImage, 0, 0, null);
+
+            // Darken non-transparent parts
+            for (int i = 0; i < darkenedImage.getWidth(); i++) {
+                for (int j = 0; j < darkenedImage.getHeight(); j++) {
+                    int rgba = darkenedImage.getRGB(i, j);
+                    int alpha = (rgba >> 24) & 0xFF;
+                    if (alpha != 0) {  // if pixel is not transparent
+                        int darkColor = new Color(
+                                (rgba >> 16) & 0xFF,
+                                (rgba >> 8) & 0xFF,
+                                rgba & 0xFF).darker().getRGB();
+                        darkenedImage.setRGB(i, j, (alpha << 24) | (darkColor & 0x00FFFFFF));
+                    }
+                }
+            }
+
+            g2d.dispose();
+
+            ImageIcon darkIcon = new ImageIcon(darkenedImage);
+
+            imageButton.setIcon(defaultIcon);
+
+            imageButton.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    imageButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                    imageButton.setIcon(darkIcon);
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    imageButton.setCursor(Cursor.getDefaultCursor());
+                    imageButton.setIcon(defaultIcon);
+                }
+            });
+
+        } catch (Exception e) {
+            System.out.println("Image File \"" + pngFileName + "\" is missing.");
+        }
+
+        return imageButton;
     }
 
     // helper method for hover effects (creates MouseListener) for buttons
