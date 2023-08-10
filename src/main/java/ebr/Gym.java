@@ -2,20 +2,20 @@ package ebr;
 
 import java.io.*;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
+import java.util.ArrayList;
 
 public class Gym implements Serializable  {
     public String name;
-    private Set<Room> rooms;
-    private Set<User> members;
-    private Set<Workout> workouts;
+    private final List<Room> rooms;
+    private final List<User> members;
+    private final List<Workout> workouts;
 
     public Gym(String name) {
         this.name = name;
-        this.rooms = new HashSet<>();
-        this.members = new HashSet<>();
-        this.workouts = new HashSet<>();
+        this.rooms = new ArrayList<>();
+        this.members = new ArrayList<>();
+        this.workouts = new ArrayList<>();
     }
 
     public void addUser(User u) {
@@ -28,8 +28,8 @@ public class Gym implements Serializable  {
             u.removeWorkout(w);
     }
 
-    public Set<User> getUsers() {
-        return Collections.unmodifiableSet(this.members);
+    public List<User> getUsers() {
+        return Collections.unmodifiableList(this.members);
     }
 
     public void addWorkout(Workout u) {
@@ -42,8 +42,8 @@ public class Gym implements Serializable  {
             u.removeWorkout(w);
     }
 
-    public Set<Workout> getWorkouts() {
-        return Collections.unmodifiableSet(this.workouts);
+    public List<Workout> getWorkouts() {
+        return Collections.unmodifiableList(this.workouts);
     }
 
     public void addRoom(Room r) {
@@ -56,8 +56,8 @@ public class Gym implements Serializable  {
             w.offerings.removeIf(o -> o.room.equals(r));
     }
 
-    public Set<Room> getRooms() {
-        return Collections.unmodifiableSet(this.rooms);
+    public List<Room> getRooms() {
+        return Collections.unmodifiableList(this.rooms);
     }
 
     private void readObject(ObjectInputStream input) throws IOException, ClassNotFoundException {

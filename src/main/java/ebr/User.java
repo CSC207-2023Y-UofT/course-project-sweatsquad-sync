@@ -3,16 +3,14 @@ package ebr;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 public class User implements Serializable {
     protected String name;
     public String passHash, firstName, lastName, email;
-    private transient Set<Workout> workouts;
-
-    protected User() {}
+    private transient List<Workout> workouts;
 
     public User(String name, String passHash, String firstName, String lastName, String email) {
         this.name = name;
@@ -20,7 +18,7 @@ public class User implements Serializable {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.workouts = new HashSet<>();
+        this.workouts = new ArrayList<>();
     }
 
     public String getName() {
@@ -43,8 +41,8 @@ public class User implements Serializable {
         }
     }
 
-    public Set<Workout> getWorkouts() {
-        return Collections.unmodifiableSet(this.workouts);
+    public List<Workout> getWorkouts() {
+        return Collections.unmodifiableList(this.workouts);
     }
 
     @Override
@@ -54,6 +52,6 @@ public class User implements Serializable {
 
     private void readObject(ObjectInputStream input) throws IOException, ClassNotFoundException {
         input.defaultReadObject();
-        this.workouts = new HashSet<>();
+        this.workouts = new ArrayList<>();
     }
 }

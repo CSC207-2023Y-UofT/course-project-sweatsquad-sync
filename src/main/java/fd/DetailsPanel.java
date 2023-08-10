@@ -7,10 +7,13 @@ import java.awt.event.ActionListener;
 
 class DetailsPanel extends JPanel implements ActionListener {
 
-    public JTextField firstNameInfoField, lastNameInfoField, emailInfoField, userInfoField;
-    private JPasswordField passField;
-    private JButton saveChangesBtn;
-    private JLabel err1, err2, err3, err4, coverBG;
+    public final JTextField firstNameInfoField, lastNameInfoField, emailInfoField, userInfoField;
+    private final JPasswordField passField;
+    private final JButton saveChangesBtn;
+    private final JLabel err1;
+    private final JLabel err2;
+    private final JLabel err3;
+    private final JLabel err4;
 
     public DetailsPanel() {
         this.setLayout(null);
@@ -90,7 +93,7 @@ class DetailsPanel extends JPanel implements ActionListener {
         err4.setBounds(620, 385, 150, 40);
         this.add(err4);
 
-        coverBG = UI.genRoundLabel("", 20, "#FAFAF2");
+        JLabel coverBG = UI.genRoundLabel("", 20, "#FAFAF2");
         coverBG.setBounds(0, 88, 800, 522);
         this.add(coverBG);
     }

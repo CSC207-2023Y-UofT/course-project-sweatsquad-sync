@@ -8,8 +8,8 @@ import java.util.*;
 
 public class Workout implements Serializable {
     public String name;
-    public Set<String> requiredCerts;
-    private Set<User> users;
+    private final List<String> requiredCerts;
+    private final List<User> users;
     public final int capacity;
 
     static public class Offering implements Serializable {
@@ -29,18 +29,18 @@ public class Workout implements Serializable {
 
     public Workout(String name, int capacity) {
         this.name = name;
-        this.requiredCerts = new HashSet<>();
+        this.requiredCerts = new ArrayList<>();
         this.offerings = new ArrayList<>();
-        this.users = new HashSet<>();
+        this.users = new ArrayList<>();
         this.capacity = capacity;
     }
 
-    public Set<String> getRequiredCerts() {
+    public List<String> getRequiredCerts() {
         return requiredCerts;
     }
 
-    public boolean validateCerts(Set<String> certs) {
-        return certs.containsAll(requiredCerts);
+    public boolean validateCerts(List<String> certs) {
+        return new HashSet<>(certs).containsAll(requiredCerts);
     }
 
     public void requireCert(String cert) {
@@ -77,8 +77,8 @@ public class Workout implements Serializable {
         this.users.remove(u);
     }
 
-    public Set<User> getUsers() {
-        return Collections.unmodifiableSet(this.users);
+    public List<User> getUsers() {
+        return Collections.unmodifiableList(this.users);
     }
 
     @Override

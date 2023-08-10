@@ -1,14 +1,14 @@
 package ebr;
 
 import java.io.Serializable;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
-import java.util.Set;
 
 public class Instructor extends User implements Serializable {
     // N.B. Set code below to null when instructor account is claimed
     private String tempAuth;
-    public Set<String> certs;
+    public List<String> certs;
     private static final String ALPHA_NUM = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
 
     public Instructor() {
@@ -21,7 +21,7 @@ public class Instructor extends User implements Serializable {
 
         tempAuth = codeBuilder.toString();
 
-        certs = new HashSet<>();
+        certs = new ArrayList<>();
     }
     public String getAuthCode() {
         return tempAuth;
