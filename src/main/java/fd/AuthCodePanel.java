@@ -1,37 +1,41 @@
 package fd;
 
+import ia.EntryFramePresenter;
+import ia.View;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-class AuthCodePanel extends JPanel implements ActionListener {
+class AuthCodePanel extends JPanel implements ActionListener, View<EntryFramePresenter> {
     private JTextField authField;
     private JButton authenticateBtn, backButton;
+    private EntryFramePresenter presenter;
     AuthCodePanel() {
         this.setLayout(null);
         this.setOpaque(false);
 
         JLabel authCodeLabel = new JLabel("Enter Authentication Code                   (16 Characters)");
         authCodeLabel.setBounds(189, 140, 422, 25);
-        authCodeLabel.setFont(UI.MB15);
+        authCodeLabel.setFont(ComponentFactory.MB15);
         this.add(authCodeLabel);
 
-        authField = UI.genRoundTextField("", 20, "#FFFFFF", false);
+        authField = ComponentFactory.genRoundTextField("", 20, "#FFFFFF", false);
         authField.setBounds(189, 165, 422, 45);
-        authField.setFont(UI.CB18);
+        authField.setFont(ComponentFactory.CB18);
         authField.setHorizontalAlignment(SwingConstants.CENTER); // c-align
         this.add(authField);
 
-        backButton = UI.genRoundBtn("Back", 50, "#172A87", false);
-        backButton.setFont(UI.MB13);
+        backButton = ComponentFactory.genRoundBtn("Back", 50, "#172A87", false);
+        backButton.setFont(ComponentFactory.MB13);
         backButton.setForeground(Color.decode("#FFFFFF"));
         backButton.setBounds(189, 292, 196, 50);
         backButton.addActionListener(this);
         this.add(backButton);
 
-        authenticateBtn = UI.genRoundBtn("Authenticate", 50, "#172A87", false);
-        authenticateBtn.setFont(UI.MB13);
+        authenticateBtn = ComponentFactory.genRoundBtn("Authenticate", 50, "#172A87", false);
+        authenticateBtn.setFont(ComponentFactory.MB13);
         authenticateBtn.setForeground(Color.decode("#FFFFFF"));
         authenticateBtn.setBounds(413, 292, 196, 50);
         authenticateBtn.addActionListener(this);
@@ -42,16 +46,25 @@ class AuthCodePanel extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == authenticateBtn) {
             String inputCode = authField.getText(); // get the input from user
-            if (App.db.validateAuthCode(inputCode) != null) {
-                App.entry.instructorSignupCard(authField.getText());
-                authField.setText("");
-            }
-            else
-                JOptionPane.showMessageDialog(this,"Failure. Invalid code.");
-        }
-        else if (e.getSource() == backButton) {
-            App.entry.signupCard();
+            presenter.codeActivationAttempted(inputCode);
+        } else if (e.getSource() == backButton) {
+            presenter.switchToSignUp();
             authField.setText("");
         }
+    }
+
+    @Override
+    public void displayInfoMessage(String message) {
+
+    }
+
+    @Override
+    public void displayErrorMessage(String message) {
+
+    }
+
+    @Override
+    public void setPresenter(EntryFramePresenter presenter) {
+        this.presenter = presenter;
     }
 }

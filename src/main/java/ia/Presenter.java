@@ -1,4 +1,4 @@
 package ia;
 
-public class Presenter {
+public interface Presenter {
 }

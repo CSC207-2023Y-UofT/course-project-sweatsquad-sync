@@ -1,11 +1,16 @@
 package fd;
 
+import ia.UserInfoPresenter;
+import ia.View;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class UserInfoFrame extends JDialog implements ActionListener {
+public class UserInfoFrame extends JDialog implements ActionListener, View<UserInfoPresenter> {
+
+    private UserInfoPresenter presenter;
     private JButton detailsTab, passChangeTab;
     private JLabel signIndicator;
     private CardLayout cardLayout = new CardLayout();
@@ -14,7 +19,8 @@ public class UserInfoFrame extends JDialog implements ActionListener {
     public DetailsPanel detailsPanel = new DetailsPanel();
     public PassChangePanel passChangePanel = new PassChangePanel();
 
-    public UserInfoFrame() {
+    public UserInfoFrame(UserInfoPresenter presenter) {
+        setPresenter(presenter);
         setTitle("Details");
         setSize(800, 600);
         setResizable(false);
@@ -60,12 +66,12 @@ public class UserInfoFrame extends JDialog implements ActionListener {
         cardLayout.show(cards, "Change Details");
 
         detailsTab.setFocusable(false);
-        detailsTab.setFont(UI.MB16);
+        detailsTab.setFont(ComponentFactory.MB16);
         detailsTab.setForeground(Color.decode("#172A87"));
         this.add(detailsTab);
 
         passChangeTab.setFocusable(true);
-        passChangeTab.setFont(UI.MB14);
+        passChangeTab.setFont(ComponentFactory.MB14);
         passChangeTab.setForeground(Color.decode("#000000"));
         this.add(passChangeTab);
 
@@ -80,12 +86,12 @@ public class UserInfoFrame extends JDialog implements ActionListener {
         cardLayout.show(cards, "Change Passcode");
 
         detailsTab.setFocusable(true);
-        detailsTab.setFont(UI.MB14);
+        detailsTab.setFont(ComponentFactory.MB14);
         detailsTab.setForeground(Color.decode("#000000"));
         this.add(detailsTab);
 
         passChangeTab.setFocusable(false);
-        passChangeTab.setFont(UI.MB16);
+        passChangeTab.setFont(ComponentFactory.MB16);
         passChangeTab.setForeground(Color.decode("#172A87"));
         this.add(passChangeTab);
 
@@ -93,10 +99,10 @@ public class UserInfoFrame extends JDialog implements ActionListener {
     }
 
     public void textSetup() {
-        detailsPanel.firstNameInfoField.setText(App.db.getActiveUserFirstName());
-        detailsPanel.lastNameInfoField.setText(App.db.getActiveUserLastName());
-        detailsPanel.emailInfoField.setText(App.db.getActiveUserEmail());
-        detailsPanel.userInfoField.setText(App.db.getActiveUserUsername());
+        detailsPanel.firstNameInfoField.setText(presenter.getActiveUserFirstName());
+        detailsPanel.lastNameInfoField.setText(presenter.getActiveUserLastName());
+        detailsPanel.emailInfoField.setText(presenter.getActiveUserEmail());
+        detailsPanel.userInfoField.setText(presenter.getActiveUserUsername());
     }
 
     public void refreshShow() {
@@ -111,5 +117,22 @@ public class UserInfoFrame extends JDialog implements ActionListener {
         } else if (e.getSource() == passChangeTab){
             passChangeCard();
         }
+    }
+
+    @Override
+    public void displayInfoMessage(String message) {
+
+    }
+
+    @Override
+    public void displayErrorMessage(String message) {
+
+    }
+
+    @Override
+    public void setPresenter(UserInfoPresenter presenter) {
+            this.presenter = presenter;
+            passChangePanel.setPresenter(presenter);
+            detailsPanel.setPresenter(presenter);
     }
 }

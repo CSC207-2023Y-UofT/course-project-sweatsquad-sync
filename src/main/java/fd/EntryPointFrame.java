@@ -1,13 +1,15 @@
 package fd;
 
+import ia.EntryFramePresenter;
+import ia.EntryFrameView;
+import ia.RegisterErrorViewModel;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class EntryPointFrame extends JFrame implements ActionListener {
+public class EntryPointFrame extends JFrame implements EntryFrameView {
     private JButton loginTab, signupTab;
     private JLabel signIndicator, authCodeLabel;
     private CardLayout cardLayout = new CardLayout();
@@ -17,6 +19,7 @@ public class EntryPointFrame extends JFrame implements ActionListener {
     public SignupPanel signupPanel = new SignupPanel();
     public AuthCodePanel authCodePanel = new AuthCodePanel();
     public EntryPointFrame() {
+
         setTitle("Login"); // window title
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // ends program if x
         setSize(800, 600); // window dimensions
@@ -27,7 +30,7 @@ public class EntryPointFrame extends JFrame implements ActionListener {
 
         loginTab = new JButton("Sign In");
         loginTab.setBounds(180, 27, 225, 50);
-        loginTab.addActionListener(this);
+        loginTab.addActionListener((event) -> showLogin());
         loginTab.setOpaque(false);
         loginTab.setContentAreaFilled(false);
         loginTab.setBorderPainted(false);
@@ -36,7 +39,7 @@ public class EntryPointFrame extends JFrame implements ActionListener {
 
         signupTab = new JButton("Register");
         signupTab.setBounds(395, 27, 225, 50);
-        signupTab.addActionListener(this);
+        signupTab.addActionListener((event) -> showSignUp());
         signupTab.setOpaque(false);
         signupTab.setContentAreaFilled(false);
         signupTab.setBorderPainted(false);
@@ -48,7 +51,7 @@ public class EntryPointFrame extends JFrame implements ActionListener {
         add(signIndicator);
 
         authCodeLabel = new JLabel("Instructor Authentication", SwingConstants.CENTER);
-        authCodeLabel.setFont(UI.MB16);
+        authCodeLabel.setFont(ComponentFactory.MB16);
         authCodeLabel.setForeground(Color.decode("#172A87"));
         authCodeLabel.setBounds(189, 25, 422, 47);
         authCodePanel.add(authCodeLabel);
@@ -61,15 +64,20 @@ public class EntryPointFrame extends JFrame implements ActionListener {
         cardLayout.show(cards, "Login");
         add(cards);
 
-        loginCard();
+        showLogin();
+    }
+
+    @Override
+    public void displayRegistrationErrors(RegisterErrorViewModel model) {
+        signupPanel.displayErrors(model);
 
     }
 
-    public void loginCard() {
+    public void showLogin() {
         cardLayout.show(cards, "Login");
 
         loginTab.setFocusable(false);
-        loginTab.setFont(UI.MB16);
+        loginTab.setFont(ComponentFactory.MB16);
         loginTab.setForeground(Color.decode("#172A87"));
         // mouse event to revert mouse to default cursor
         dispatchEvent(new MouseEvent(signupTab, MouseEvent.MOUSE_MOVED, System.currentTimeMillis(), 0, 0, 0, 0, false));
@@ -83,7 +91,7 @@ public class EntryPointFrame extends JFrame implements ActionListener {
         this.add(loginTab);
 
         signupTab.setFocusable(true);
-        signupTab.setFont(UI.MB14);
+        signupTab.setFont(ComponentFactory.MB14);
         signupTab.setForeground(Color.decode("#FFFFFF"));
         signupTab.addMouseListener(new MouseAdapter() {
             @Override
@@ -103,13 +111,14 @@ public class EntryPointFrame extends JFrame implements ActionListener {
         signIndicator.setIcon(new ImageIcon("images/00101-sign-indicator.png"));
     }
 
-    public void signupCard() {
-        signupPanel.reset();
+    @Override
+    public void showSignUp() {
+        signupPanel.showBasicView();
 
         cardLayout.show(cards, "Signup");
 
         loginTab.setFocusable(true);
-        loginTab.setFont(UI.MB14);
+        loginTab.setFont(ComponentFactory.MB14);
         loginTab.setForeground(Color.decode("#FFFFFF"));
         loginTab.addMouseListener(new MouseAdapter() {
             @Override
@@ -125,7 +134,7 @@ public class EntryPointFrame extends JFrame implements ActionListener {
         this.add(loginTab);
 
         signupTab.setFocusable(false);
-        signupTab.setFont(UI.MB16);
+        signupTab.setFont(ComponentFactory.MB16);
         signupTab.setForeground(Color.decode("#172A87"));
         // mouse event to revert mouse to default cursor
         dispatchEvent(new MouseEvent(loginTab, MouseEvent.MOUSE_MOVED, System.currentTimeMillis(), 0, 0, 0, 0, false));
@@ -142,8 +151,8 @@ public class EntryPointFrame extends JFrame implements ActionListener {
 
         signIndicator.setIcon(new ImageIcon("images/00201-reg-indicator.png"));
     }
-
-    public void authCodeCard() {
+    @Override
+    public void showActivationPortal() {
         cardLayout.show(cards, "AuthCode");
 
         this.remove(loginTab);
@@ -154,8 +163,24 @@ public class EntryPointFrame extends JFrame implements ActionListener {
         signIndicator.setIcon(new ImageIcon("images/00301-auth-indicator.png"));
     }
 
-    public void instructorSignupCard(String auth) {
-        signupPanel.setInstructorView(auth);
+    @Override
+    public void showView() {
+        setVisible(true);
+    }
+
+    @Override
+    public void hideView() {
+        setVisible(false);
+    }
+
+    @Override
+    public void clearInputs() {
+
+    }
+
+    @Override
+    public void showInstructorSignUp() {
+        signupPanel.showInstructorView();
 
         cardLayout.show(cards, "Signup");
 
@@ -168,8 +193,9 @@ public class EntryPointFrame extends JFrame implements ActionListener {
         signIndicator.setIcon(new ImageIcon("images/00301-auth-indicator.png"));
     }
 
-    public void adminSignupCard() {
-        signupPanel.setAdminView();
+    @Override
+    public void showAdminSignUp() {
+        signupPanel.showAdminView();
 
         cardLayout.show(cards, "Signup");
 
@@ -183,10 +209,19 @@ public class EntryPointFrame extends JFrame implements ActionListener {
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == loginTab)
-            loginCard();
-        else if (e.getSource() == signupTab)
-            signupCard();
+    public void displayInfoMessage(String message) {
+        JOptionPane.showMessageDialog(this, message);
+    }
+
+    @Override
+    public void displayErrorMessage(String message) {
+        JOptionPane.showMessageDialog(this, message, "", JOptionPane.ERROR_MESSAGE);
+    }
+
+    @Override
+    public void setPresenter(EntryFramePresenter presenter) {
+        loginPanel.setPresenter(presenter);
+        signupPanel.setPresenter(presenter);
+        authCodePanel.setPresenter(presenter);
     }
 }

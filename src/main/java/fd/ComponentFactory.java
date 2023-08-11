@@ -7,7 +7,7 @@ import java.awt.geom.RoundRectangle2D;
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 
-public class UI {
+public class ComponentFactory {
     public static Font
             A16  = new Font("Arial", Font.PLAIN, 16),
     // MP12 = new Font("Monsterrat", Font.PLAIN, 12), unused

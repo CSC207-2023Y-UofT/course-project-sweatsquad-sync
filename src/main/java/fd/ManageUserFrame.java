@@ -1,5 +1,9 @@
 package fd;
 
+import ia.DashboardPresenter;
+import ia.ManagerUserPresenter;
+import ia.View;
+
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -10,16 +14,22 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
-public class ManageUserFrame extends JDialog implements ActionListener {
+public class ManageUserFrame extends JDialog implements ActionListener, View<ManagerUserPresenter> {
+
+    private ManagerUserPresenter presenter;
     private AbstractTableModel userTable = new AbstractTableModel() {
         private final String[] cols = {"Name", "Username", "Type", "Certs"};
+        @Override
         public int getColumnCount() { return cols.length; }
-        public int getRowCount() { return (int)App.db.getCurrentUsers().size(); }
+        @Override
+        public int getRowCount() { return (int)presenter.getCurrentUsers().size(); }
+        @Override
         public String getColumnName(int col) {
             return cols[col];
         }
+        @Override
         public Object getValueAt(int row, int col) {
-            List<String[]> users = App.db.getCurrentUsers();
+            List<String[]> users = presenter.getCurrentUsers();
             return users.get(row)[col];
         }
     };
@@ -40,9 +50,7 @@ public class ManageUserFrame extends JDialog implements ActionListener {
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         table.setRowSelectionAllowed(true);
         table.setColumnSelectionAllowed(false);
-        table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
+        table.getSelectionModel().addListSelectionListener((e) -> {
                 boolean sel = table.getSelectedRow() != -1;
                 delete.setEnabled(sel);
                 if (sel) {
@@ -54,7 +62,7 @@ public class ManageUserFrame extends JDialog implements ActionListener {
                     addCerts.setVisible(false);
                     copyCode.setVisible(false);
                 }
-            }
+
         });
         JScrollPane p = new JScrollPane(table);
         p.setBounds(0, 40, 800, 500);
@@ -95,29 +103,44 @@ public class ManageUserFrame extends JDialog implements ActionListener {
         if (e.getSource() == addInstructor) {
             Toolkit.getDefaultToolkit()
                     .getSystemClipboard()
-                    .setContents(new StringSelection(App.db.newInstructor()),null);
+                    .setContents(new StringSelection(presenter.newInstructor()),null);
             JOptionPane.showMessageDialog(this, "Registration code has been copied to clipboard!");
         }
         else if (e.getSource() == delete) {
             if (table.getValueAt(table.getSelectedRow(), 2).toString().equals("GymAdmin"))
                 JOptionPane.showMessageDialog(this, "Cannot delete admin!");
             else
-                App.db.removeUser(table.getSelectedRow());
+                presenter.removeUser(table.getSelectedRow());
         }
         else if (e.getSource() == addCerts) {
             String cert = JOptionPane.showInputDialog(this, "Cert name?", null);
             if ((cert != null) && (!cert.isEmpty()) && !cert.equals("None"))
-                App.db.instructorAddCert(table.getSelectedRow(), cert);
+                presenter.instructorAddCert(table.getSelectedRow(), cert);
             else
                 JOptionPane.showMessageDialog(this, "Invalid name!");
         }
         else if (e.getSource() == copyCode) {
             Toolkit.getDefaultToolkit()
                     .getSystemClipboard()
-                    .setContents(new StringSelection(App.db.adminReqInstructorAuthCode(table.getSelectedRow())),null);
+                    .setContents(new StringSelection(presenter.adminReqInstructorAuthCode(table.getSelectedRow())),null);
             JOptionPane.showMessageDialog(this, "Registration code has been copied to clipboard!");
         }
 
         userTable.fireTableDataChanged();
+    }
+
+    @Override
+    public void displayInfoMessage(String message) {
+
+    }
+
+    @Override
+    public void displayErrorMessage(String message) {
+
+    }
+
+    @Override
+    public void setPresenter(ManagerUserPresenter presenter) {
+        this.presenter = presenter;
     }
 }

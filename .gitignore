@@ -118,3 +118,5 @@ replay_pid*
 
 # Gym Dump
 gym.bin
+/gradlew
+/gradlew.bat

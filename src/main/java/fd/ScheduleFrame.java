@@ -1,12 +1,17 @@
 package fd;
 
+import ia.SchedulePresenter;
+import ia.View;
+
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.DayOfWeek;
 
-public class ScheduleFrame extends JDialog implements ActionListener {
+public class ScheduleFrame extends JDialog implements ActionListener, View<SchedulePresenter> {
+
+    SchedulePresenter presenter;
     private AbstractTableModel scheduleTable = new AbstractTableModel() {
         private final String[] cols = {
                 "",
@@ -27,7 +32,7 @@ public class ScheduleFrame extends JDialog implements ActionListener {
             if (col == 0)
                 return (8 + row) + ":00";
 
-            return App.db.getScheduleBlockAt(row - 1 + 8, col - 1);
+            return presenter.getScheduleBlockAt(row - 1 + 8, col - 1);
         }
     };
 
@@ -53,5 +58,20 @@ public class ScheduleFrame extends JDialog implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+    }
+
+    @Override
+    public void displayInfoMessage(String message) {
+
+    }
+
+    @Override
+    public void displayErrorMessage(String message) {
+
+    }
+
+    @Override
+    public void setPresenter(SchedulePresenter presenter) {
+        this.presenter = presenter;
     }
 }

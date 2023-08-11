@@ -1,5 +1,8 @@
 package fd;
 
+import ia.DashboardPresenter;
+import ia.View;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -8,18 +11,27 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
-public class DashboardFrame extends JFrame implements ActionListener {
+public class DashboardFrame extends JFrame implements ActionListener, View<DashboardPresenter> {
     private JButton viewEntireSchedule, enrolBtn, logout, logout_icon, settings, dailyWorkoutTips,
             manageRooms, manageUsers;
     private JLabel welcomeUser, upcomingC, upcomingC1, upcomingC2, upcomingC3;
 
-    private CourseFrame courseBrowser = new CourseFrame();
-    private ScheduleFrame scheduleView = new ScheduleFrame();
-    private UserInfoFrame userInfoEdit = new UserInfoFrame();
-    private ManageUserFrame userManager = new ManageUserFrame();
-    private ManageRoomFrame roomManager = new ManageRoomFrame();
+    private CourseEnrollmentFrame courseBrowser;
+    private ScheduleFrame scheduleView;
+    private UserInfoFrame userInfoEdit;
+    private ManageUserFrame userManager;
+    private ManageRoomFrame roomManager;
 
-    public DashboardFrame() {
+    private DashboardPresenter dashboardPresenter;
+
+    public DashboardFrame(ScheduleFrame scheduleView, CourseEnrollmentFrame courseBrowser, UserInfoFrame userInfoEdit, ManageUserFrame userManager, ManageRoomFrame roomManager) {
+
+        this.scheduleView = scheduleView;
+        this.courseBrowser = courseBrowser;
+        this.userInfoEdit = userInfoEdit;
+        this.userManager = userManager;
+        this.roomManager = roomManager;
+
         setTitle("Dashboard"); // window title
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // ends program if x
         setSize(800, 600); // window dimensions
@@ -28,7 +40,7 @@ public class DashboardFrame extends JFrame implements ActionListener {
         setLayout(null);
 
         welcomeUser = new JLabel("");
-        welcomeUser.setFont(UI.MB23);
+        welcomeUser.setFont(ComponentFactory.MB23);
         welcomeUser.setForeground(Color.decode("#172A87"));
         welcomeUser.setBounds(66, 24, 422, 47);
         this.add(welcomeUser);
@@ -53,39 +65,39 @@ public class DashboardFrame extends JFrame implements ActionListener {
         logout_icon.addActionListener(this);
         this.add(logout_icon);
 
-        logout = UI.genRoundBtn("", 23, "#172A87", false);
-        logout.setFont(UI.MB19);
+        logout = ComponentFactory.genRoundBtn("", 23, "#172A87", false);
+        logout.setFont(ComponentFactory.MB19);
         logout.setForeground(Color.decode("#FFFFFF"));
         logout.setBounds(640, 15, 40, 30);
         this.add(logout);
 
-        dailyWorkoutTips = UI.genRoundBtn("Daily Workout Tips", 30, "#172A87", false);
-        dailyWorkoutTips.setFont(UI.MB20);
+        dailyWorkoutTips = ComponentFactory.genRoundBtn("Daily Workout Tips", 30, "#172A87", false);
+        dailyWorkoutTips.setFont(ComponentFactory.MB20);
         dailyWorkoutTips.setForeground(Color.decode("#FFFFFF"));
         dailyWorkoutTips.setBounds(490, 295, 218, 75);
         dailyWorkoutTips.addActionListener(this);
 
-        settings = UI.genRoundBtn("Account Settings ⚙", 30, "#172A87", false);
-        settings.setFont(UI.MB20);
+        settings = ComponentFactory.genRoundBtn("Account Settings ⚙", 30, "#172A87", false);
+        settings.setFont(ComponentFactory.MB20);
         settings.setForeground(Color.decode("#FFFFFF"));
         settings.setBounds(413, 300, 280, 140);
         settings.addActionListener(this);
         this.add(settings);
 
         upcomingC = new JLabel("Upcoming Classes");
-        upcomingC.setFont(UI.MB20);
+        upcomingC.setFont(ComponentFactory.MB20);
         upcomingC.setForeground(Color.decode("#000000"));
         upcomingC.setBounds(66, 130, 422, 47);
 
         upcomingC1 = new JLabel("Class 1 Info");
-        upcomingC1.setFont(UI.MP16);
+        upcomingC1.setFont(ComponentFactory.MP16);
         upcomingC1.setForeground(Color.decode("#FFFFFF"));
         upcomingC1.setBackground(Color.decode("#40508a"));
         upcomingC1.setOpaque(true);
         upcomingC1.setBounds(66, 180, 320, 60);
 
         upcomingC2 = new JLabel("Class 2 Info");
-        upcomingC2.setFont(UI.MP16);
+        upcomingC2.setFont(ComponentFactory.MP16);
         upcomingC2.setForeground(Color.decode("#FFFFFF"));
         upcomingC2.setBackground(Color.decode("#40508a"));
         upcomingC2.setOpaque(true);
@@ -93,33 +105,33 @@ public class DashboardFrame extends JFrame implements ActionListener {
         upcomingC2.setOpaque(true);
 
         upcomingC3 = new JLabel("Class 3 Info");
-        upcomingC3.setFont(UI.MP16);
+        upcomingC3.setFont(ComponentFactory.MP16);
         upcomingC3.setForeground(Color.decode("#FFFFFF"));
         upcomingC3.setBackground(Color.decode("#40508a"));
         upcomingC3.setOpaque(true);
         upcomingC3.setBounds(66, 370, 320, 60);
 
-        viewEntireSchedule = UI.genRoundBtn("View Entire Schedule", 30,
+        viewEntireSchedule = ComponentFactory.genRoundBtn("View Entire Schedule", 30,
                 "#172A87", false);
-        viewEntireSchedule.setFont(UI.MB20);
+        viewEntireSchedule.setFont(ComponentFactory.MB20);
         viewEntireSchedule.setForeground(Color.decode("#FFFFFF"));
         viewEntireSchedule.setBounds(66, 445, 315, 45);
         viewEntireSchedule.addActionListener(this);
 
-        enrolBtn = UI.genRoundBtn("Manage Classes", 30, "#172A87", false);
-        enrolBtn.setFont(UI.MB23);
+        enrolBtn = ComponentFactory.genRoundBtn("Manage Classes", 30, "#172A87", false);
+        enrolBtn.setFont(ComponentFactory.MB23);
         enrolBtn.setForeground(Color.decode("#FFFFFF"));
         enrolBtn.setBounds(413, 123, 280, 140);
         enrolBtn.addActionListener(this);
 
-        manageRooms = UI.genRoundBtn("Manage Rooms", 30, "#172A87", false);
-        manageRooms.setFont(UI.MB23);
+        manageRooms = ComponentFactory.genRoundBtn("Manage Rooms", 30, "#172A87", false);
+        manageRooms.setFont(ComponentFactory.MB23);
         manageRooms.setForeground(Color.decode("#FFFFFF"));
         manageRooms.setBounds(107, 123, 280, 140);
         manageRooms.addActionListener(this);
 
-        manageUsers = UI.genRoundBtn("Manage Users", 30, "#172A87", false);
-        manageUsers.setFont(UI.MB23);
+        manageUsers = ComponentFactory.genRoundBtn("Manage Users", 30, "#172A87", false);
+        manageUsers.setFont(ComponentFactory.MB23);
         manageUsers.setForeground(Color.decode("#FFFFFF"));
         manageUsers.setBounds(107, 300, 280, 140);
         manageUsers.addActionListener(this);
@@ -130,7 +142,7 @@ public class DashboardFrame extends JFrame implements ActionListener {
         dailyWorkoutTips.setBounds(490, 280, 218, 75);
         settings.setBounds(490, 380, 218, 75);
 
-        List<String[]> next = App.db.getNextThreeOfferings();
+        List<String[]> next = dashboardPresenter.getNextThreeOfferings();
         if (!next.isEmpty()) {
             this.add(upcomingC);
             this.add(upcomingC1);
@@ -179,10 +191,13 @@ public class DashboardFrame extends JFrame implements ActionListener {
         courseBrowser.adminView();
     }
 
-    public void refreshShow() {
-        welcomeUser.setText("Welcome back, " + App.db.getActiveUserFirstName() + "!");
+    public void showDashboard() {
+
         this.setVisible(true);
-        App.db.dashRefresh(this);
+    }
+
+    public void setGreetingMessage(String message) {
+        welcomeUser.setText(message);
     }
 
     @Override
@@ -196,11 +211,25 @@ public class DashboardFrame extends JFrame implements ActionListener {
         else if (e.getSource() == viewEntireSchedule)
             scheduleView.refreshShow();
         else if (e.getSource() == logout_icon)
-            App.logout();
+            dashboardPresenter.logoutRequested();
         else if (e.getSource() == manageRooms)
             roomManager.refreshShow();
         else if (e.getSource() == manageUsers)
             userManager.refreshShow();
     }
 
+    @Override
+    public void displayInfoMessage(String message) {
+        JOptionPane.showMessageDialog(this, message);
+    }
+
+    @Override
+    public void displayErrorMessage(String message) {
+        JOptionPane.showMessageDialog(this, message, "", JOptionPane.ERROR_MESSAGE);
+    }
+
+    @Override
+    public void setPresenter(DashboardPresenter presenter) {
+        this.dashboardPresenter = presenter;
+    }
 }

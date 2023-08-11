@@ -1,5 +1,10 @@
 package fd;
 
+import ia.RefreshRequestListener;
+import ia.RefreshRequester;
+import ia.View;
+import ia.WorkoutUsersPresenter;
+
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -10,7 +15,11 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.List;
 
-public class WorkoutUsersFrame extends JDialog implements ActionListener {
+public class WorkoutUsersFrame extends JDialog implements ActionListener, RefreshRequester, View<WorkoutUsersPresenter> {
+
+    private RefreshRequestListener dashboard;
+
+    private WorkoutUsersPresenter presenter;
     private JButton remove;
     private AbstractTableModel userTable = new AbstractTableModel() {
         private final String[] cols = {"Name", "Username", "Type", "Certs"};
@@ -20,7 +29,7 @@ public class WorkoutUsersFrame extends JDialog implements ActionListener {
         }
 
         public int getRowCount() {
-            return (int) App.db.getCurrentWorkoutUsers(courseIndex).size();
+            return (int) presenter.getCurrentWorkoutUsers(courseIndex).size();
         }
 
         public String getColumnName(int col) {
@@ -28,7 +37,7 @@ public class WorkoutUsersFrame extends JDialog implements ActionListener {
         }
 
         public Object getValueAt(int row, int col) {
-            List<String[]> users = App.db.getCurrentWorkoutUsers(courseIndex);
+            List<String[]> users = presenter.getCurrentWorkoutUsers(courseIndex);
             return users.get(row)[col];
         }
     };
@@ -66,7 +75,7 @@ public class WorkoutUsersFrame extends JDialog implements ActionListener {
 
         this.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
-                App.dashboard.refreshShow();
+                dashboard.refresh();
             }
         });
     }
@@ -81,9 +90,31 @@ public class WorkoutUsersFrame extends JDialog implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == remove) {
-            App.db.removeUserFromWorkout(courseIndex, (String) userTable.getValueAt(table.getSelectedRow(), 1));
+            presenter.removeUserFromWorkout(courseIndex, (String) userTable.getValueAt(table.getSelectedRow(), 1));
             userTable.fireTableDataChanged();
         }
+
+    }
+
+    @Override
+    public void addRefreshRequestListener(RefreshRequestListener rrl) {
+        this.dashboard = rrl;
+    }
+
+    @Override
+    public void displayInfoMessage(String message) {
+
+    }
+
+    @Override
+    public void displayErrorMessage(String message) {
+
+    }
+
+    @Override
+    public void setPresenter(WorkoutUsersPresenter presenter) {
+
+        this.presenter = presenter;
 
     }
 }
