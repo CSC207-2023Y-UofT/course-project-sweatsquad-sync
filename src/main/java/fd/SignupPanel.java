@@ -133,6 +133,7 @@ class SignupPanel extends JPanel implements ActionListener, View<EntryFramePrese
         coverBG.setBounds(0, 88, 800, 522);
         this.add(coverBG);
 
+
     }
 
     private EntryFramePresenter presenter;
@@ -166,22 +167,24 @@ class SignupPanel extends JPanel implements ActionListener, View<EntryFramePrese
     public void showBasicView() {
         clearFields();
         registrationDispatch = presenter::regularRegistrationAttempted;
-        this.add(haveCodeLabel);
+        haveCodeLabel.setVisible(true);
     }
 
     public void showInstructorView() {
         registrationDispatch = presenter::instructorRegistrationAttempted;
-        this.remove(haveCodeLabel);
+        haveCodeLabel.setVisible(false);
     }
 
     public void showAdminView() {
         registrationDispatch = presenter::adminRegistrationAttempted;
-        this.remove(haveCodeLabel);
+        haveCodeLabel.setVisible(false);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == registerButton) { // register logic
+
+            haveCodeLabel.setVisible(true);
             String firstName = firstNameField.getText(),
                     lastName = lastNameField.getText(),
                     username = userField.getText().trim(),
