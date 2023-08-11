@@ -1,18 +1,16 @@
 package fd;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class WorkoutCertsFrame extends JDialog implements ActionListener {
-    private JButton add, remove;
-    private AbstractTableModel certsTable = new AbstractTableModel() {
+    private final JButton add, remove;
+    private final AbstractTableModel certsTable = new AbstractTableModel() {
         private final String[] cols = {"Name"};
         public int getColumnCount() { return cols.length; }
-        public int getRowCount() { return (int)App.db.getCurrentWorkoutCerts(courseIndex).length; }
+        public int getRowCount() { return App.db.getCurrentWorkoutCerts(courseIndex).length; }
         public String getColumnName(int col) {
             return cols[col];
         }
@@ -21,7 +19,7 @@ public class WorkoutCertsFrame extends JDialog implements ActionListener {
             return certs[row];
         }
     };
-    private JTable table = new JTable(certsTable);
+    private final JTable table = new JTable(certsTable);
     private int courseIndex = -1;
     public WorkoutCertsFrame() {
         setTitle("Certifications"); // window title
@@ -47,12 +45,7 @@ public class WorkoutCertsFrame extends JDialog implements ActionListener {
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         table.setRowSelectionAllowed(true);
         table.setColumnSelectionAllowed(false);
-        table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                remove.setEnabled(table.getSelectedRow() != -1);
-            }
-        });
+        table.getSelectionModel().addListSelectionListener(e -> remove.setEnabled(table.getSelectedRow() != -1));
         JScrollPane p = new JScrollPane(table);
         p.setBounds(0, 40, 600, 500);
         this.add(p);

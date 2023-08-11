@@ -1,8 +1,6 @@
 package fd;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,11 +11,11 @@ import java.time.Duration;
 import java.util.List;
 
 public class WorkoutOfferingFrame extends JDialog implements ActionListener {
-    private JButton add, edit, remove;
-    private AbstractTableModel offeringTable = new AbstractTableModel() {
+    private final JButton add, edit, remove;
+    private final AbstractTableModel offeringTable = new AbstractTableModel() {
         private final String[] cols = {"Time", "Duration (Hour)", "Room"};
         public int getColumnCount() { return cols.length; }
-        public int getRowCount() { return (int)App.db.getCurrentOfferings(courseIndex).size(); }
+        public int getRowCount() { return App.db.getCurrentOfferings(courseIndex).size(); }
         public String getColumnName(int col) {
             return cols[col];
         }
@@ -26,7 +24,7 @@ public class WorkoutOfferingFrame extends JDialog implements ActionListener {
             return offerings.get(row)[col].isEmpty() ? "TBD" : offerings.get(row)[col];
         }
     };
-    private JTable table = new JTable(offeringTable);
+    private final JTable table = new JTable(offeringTable);
     private int courseIndex = -1;
     public WorkoutOfferingFrame() {
         setTitle("Offerings"); // window title
@@ -59,12 +57,9 @@ public class WorkoutOfferingFrame extends JDialog implements ActionListener {
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         table.setRowSelectionAllowed(true);
         table.setColumnSelectionAllowed(false);
-        table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                edit.setEnabled(table.getSelectedRow() != -1);
-                remove.setEnabled(table.getSelectedRow() != -1);
-            }
+        table.getSelectionModel().addListSelectionListener(e -> {
+            edit.setEnabled(table.getSelectedRow() != -1);
+            remove.setEnabled(table.getSelectedRow() != -1);
         });
         JScrollPane p = new JScrollPane(table);
         p.setBounds(0, 40, 600, 500);

@@ -8,14 +8,15 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 class SignupPanel extends JPanel implements ActionListener {
-    private JTextField firstNameField, lastNameField, emailField, userField;
-    private JPasswordField passField, confirmPassField;
-    private JButton registerButton;
-    private JLabel err1, err2, err3, err4, haveCodeLabel;
+    private final JTextField firstNameField, lastNameField, emailField, userField;
+    private final JPasswordField passField, confirmPassField;
+    private final JButton registerButton;
+    private final JLabel err1, err2, err3, err4, haveCodeLabel;
+    private final JLabel coverBG;
 
     @FunctionalInterface
     public interface RegisterMethod {
-        public boolean apply(String firstName, String lastName, String username, String email, String password);
+        boolean apply(String firstName, String lastName, String username, String email, String password);
     }
     private RegisterMethod registerDispatch;
 
@@ -30,7 +31,7 @@ class SignupPanel extends JPanel implements ActionListener {
         firstNameLabel.setBounds(189, 98, 422, 25);
         this.add(firstNameLabel);
 
-        firstNameField = UI.genRoundTextField("", 20, "#FFFFFF", false);
+        firstNameField = UI.genRoundTextField("", 20, "#FFFFFF");
         firstNameField.setBounds(189, 123, 198, 45);
         firstNameField.setFont(UI.CB18);
         this.add(firstNameField);
@@ -40,7 +41,7 @@ class SignupPanel extends JPanel implements ActionListener {
         lastNameLabel.setBounds(413, 98, 422, 25);
         this.add(lastNameLabel);
 
-        lastNameField = UI.genRoundTextField("", 20, "#FFFFFF", false);
+        lastNameField = UI.genRoundTextField("", 20, "#FFFFFF");
         lastNameField.setBounds(413, 123, 198, 45);
         lastNameField.setFont(UI.CB18);
         this.add(lastNameField);
@@ -50,7 +51,7 @@ class SignupPanel extends JPanel implements ActionListener {
         emailLabel.setBounds(189, 185, 422, 25);
         this.add(emailLabel);
 
-        emailField = UI.genRoundTextField("", 20, "#FFFFFF", false);
+        emailField = UI.genRoundTextField("", 20, "#FFFFFF");
         emailField.setBounds(189, 210, 422, 45);
         emailField.setFont(UI.CB18);
         this.add(emailField);
@@ -60,7 +61,7 @@ class SignupPanel extends JPanel implements ActionListener {
         signupUsernameLabel.setBounds(189, 272, 422, 25);
         this.add(signupUsernameLabel);
 
-        userField = UI.genRoundTextField("", 20, "#FFFFFF", false);
+        userField = UI.genRoundTextField("", 20, "#FFFFFF");
         userField.setBounds(189, 297, 422, 45);
         userField.setFont(UI.CB18);
         this.add(userField);
@@ -70,22 +71,27 @@ class SignupPanel extends JPanel implements ActionListener {
         signupPasswordLabel.setBounds(189, 359, 422, 25);
         this.add(signupPasswordLabel);
 
-        passField = UI.genRoundPasswordField("", 20, "#FFFFFF", false);
+        passField = UI.genRoundPasswordField("", 20, "#FFFFFF");
         passField.setBounds(189, 384, 198, 45);
         passField.setFont(UI.CB18);
         this.add(passField);
 
-        JLabel confirmPasswordLabel = new JLabel("Password");
+        JLabel confirmPasswordLabel = new JLabel("Confirm Password");
         confirmPasswordLabel.setFont(UI.MB15);
-        confirmPasswordLabel.setBounds(189, 359, 422, 25);
+        confirmPasswordLabel.setBounds(413, 359, 422, 25);
         this.add(confirmPasswordLabel);
 
-        confirmPassField = UI.genRoundPasswordField("", 20, "#FFFFFF", false);
+        JLabel confirmPassLabel = new JLabel("Password");
+        confirmPassLabel.setFont(UI.MB15);
+        confirmPassLabel.setBounds(189, 359, 422, 25);
+        this.add(signupPasswordLabel);
+
+        confirmPassField = UI.genRoundPasswordField("", 20, "#FFFFFF");
         confirmPassField.setBounds(413, 384, 198, 45);
         confirmPassField.setFont(UI.CB18);
         this.add(confirmPassField);
 
-        registerButton = UI.genRoundBtn("Register", 50, "#001561", false);
+        registerButton = UI.genRoundBtn("Register", 50, "#172A87", false);
         registerButton.setFont(UI.MB13);
         registerButton.setForeground(Color.decode("#FFFFFF"));
         registerButton.setBounds(189, 450, 422, 50);
@@ -121,6 +127,11 @@ class SignupPanel extends JPanel implements ActionListener {
         err4.setFont(UI.MB12);
         err4.setBounds(620, 385, 150, 40);
         this.add(err4);
+
+        coverBG = UI.genRoundLabel("", 20, "#FAFAF2");
+        coverBG.setBounds(0, 88, 800, 522);
+        this.add(coverBG);
+
     }
 
     private void clearFields() {
@@ -138,6 +149,7 @@ class SignupPanel extends JPanel implements ActionListener {
         clearFields();
         registerDispatch = App.db::registerBasicUser;
         this.add(haveCodeLabel);
+        this.add(coverBG);
     }
 
     public void setInstructorView(String auth) {

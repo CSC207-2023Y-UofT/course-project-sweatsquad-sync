@@ -6,36 +6,43 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 class AuthCodePanel extends JPanel implements ActionListener {
-    private JTextField authField;
-    private JButton authenticateBtn, backButton;
+    private final JTextField authField;
+    private final JButton authenticateBtn, backButton;
+
     AuthCodePanel() {
         this.setLayout(null);
         this.setOpaque(false);
 
-        JLabel authCodeLabel = new JLabel("Enter Authentication Code                   (16 Characters)");
+        JLabel authCodeLabel = new JLabel("Enter Authentication Code" +
+                "                   (16 Characters)");
         authCodeLabel.setBounds(189, 140, 422, 25);
         authCodeLabel.setFont(UI.MB15);
         this.add(authCodeLabel);
 
-        authField = UI.genRoundTextField("", 20, "#FFFFFF", false);
+        authField = UI.genRoundTextField("", 20, "#FFFFFF");
         authField.setBounds(189, 165, 422, 45);
         authField.setFont(UI.CB18);
         authField.setHorizontalAlignment(SwingConstants.CENTER); // c-align
         this.add(authField);
 
-        backButton = UI.genRoundBtn("Back", 50, "#001561", false);
+        backButton = UI.genRoundBtn("Back", 50, "#172A87", false);
         backButton.setFont(UI.MB13);
         backButton.setForeground(Color.decode("#FFFFFF"));
         backButton.setBounds(189, 292, 196, 50);
         backButton.addActionListener(this);
         this.add(backButton);
 
-        authenticateBtn = UI.genRoundBtn("Authenticate", 50, "#001561", false);
+        authenticateBtn = UI.genRoundBtn("Authenticate", 50, "#172A87", false);
         authenticateBtn.setFont(UI.MB13);
         authenticateBtn.setForeground(Color.decode("#FFFFFF"));
         authenticateBtn.setBounds(413, 292, 196, 50);
         authenticateBtn.addActionListener(this);
         this.add(authenticateBtn);
+
+        JLabel coverBG = UI.genRoundLabel("", 20, "#FAFAF2");
+        coverBG.setBounds(0, 88, 800, 522);
+        this.add(coverBG);
+
     }
 
     @Override

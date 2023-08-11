@@ -6,9 +6,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 class PassChangePanel extends JPanel implements ActionListener {
-    private JPasswordField oldPasscode,newPasscode, confirmNewPasscode;
-    private JButton savePasscodeBtn;
-    private JLabel err1, err2, err3;
+    private final JPasswordField oldPasscode,newPasscode, confirmNewPasscode;
+    private final JButton savePasscodeBtn;
+    private final JLabel err1;
+    private final JLabel err2;
+    private final JLabel err3;
 
     public PassChangePanel() {
         this.setLayout(null);
@@ -19,7 +21,7 @@ class PassChangePanel extends JPanel implements ActionListener {
         oldPassLabel.setBounds(189, 98, 422, 25);
         this.add(oldPassLabel);
 
-        oldPasscode = UI.genRoundPasswordField("", 20, "#FFFFFF", false);
+        oldPasscode = UI.genRoundPasswordField("", 20, "#FFFFFF");
         oldPasscode.setBounds(189, 123, 422, 45);
         oldPasscode.setFont(UI.CB18);
         this.add(oldPasscode);
@@ -29,7 +31,7 @@ class PassChangePanel extends JPanel implements ActionListener {
         newPassLabel.setBounds(189, 185, 422, 25);
         this.add(newPassLabel);
 
-        newPasscode = UI.genRoundPasswordField("", 20, "#FFFFFF", false);
+        newPasscode = UI.genRoundPasswordField("", 20, "#FFFFFF");
         newPasscode.setBounds(189, 210, 422, 45);
         newPasscode.setFont(UI.CB18);
         this.add(newPasscode);
@@ -39,12 +41,12 @@ class PassChangePanel extends JPanel implements ActionListener {
         confirmNewPassLabel.setBounds(189, 272, 422, 25);
         this.add(confirmNewPassLabel);
 
-        confirmNewPasscode = UI.genRoundPasswordField("", 20, "#FFFFFF", false);
+        confirmNewPasscode = UI.genRoundPasswordField("", 20, "#FFFFFF");
         confirmNewPasscode.setBounds(189, 297, 422, 45);
         confirmNewPasscode.setFont(UI.CB18);
         this.add(confirmNewPasscode);
 
-        savePasscodeBtn = UI.genRoundBtn("Update Password", 50, "#001561", false);
+        savePasscodeBtn = UI.genRoundBtn("Update Password", 50, "#172A87", false);
         savePasscodeBtn.setFont(UI.MB13);
         savePasscodeBtn.setForeground(Color.decode("#FFFFFF"));
         savePasscodeBtn.setBounds(189, 450, 422, 50);
@@ -63,6 +65,17 @@ class PassChangePanel extends JPanel implements ActionListener {
         err3.setFont(UI.MB12);
         err3.setBounds(620, 298, 150, 40);
         this.add(err3);
+
+        JLabel coverBG = UI.genRoundLabel("", 20, "#FAFAF2");
+        coverBG.setBounds(0, 88, 800, 522);
+        this.add(coverBG);
+
+    }
+
+    public void clearFields() {
+        oldPasscode.setText("");
+        newPasscode.setText("");
+        confirmNewPasscode.setText("");
     }
 
     @Override

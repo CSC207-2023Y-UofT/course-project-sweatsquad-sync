@@ -119,7 +119,7 @@ public class EBRTest {
     public void adminAddTest() {
         Workout w = new Workout("w", 20);
         GymAdmin a = new GymAdmin("a", "", "", "", "");
-        UnsupportedOperationException thrown = Assertions.assertThrows(
+        Assertions.assertThrows(
                 UnsupportedOperationException.class,
                 () -> a.addWorkout(w),
                 "Expected addWorkout() to throw, but it didn't"
