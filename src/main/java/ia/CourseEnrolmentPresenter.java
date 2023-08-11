@@ -26,8 +26,8 @@ public class CourseEnrolmentPresenter implements Presenter {
                 w.name,
                 w.offerings.stream().map(o -> o.room.name).collect(Collectors.joining(", ")),
                 w.offerings.stream().map(o -> o.start.toString()).collect(Collectors.joining(", ")),
-                w.getUsers().stream().filter(u -> u instanceof Instructor).map(Object::toString).collect(Collectors.joining(", ")),
-                w.getUsers().size() + "/" + w.capacity,
+                w.getUsers().stream().filter(u -> u instanceof Instructor).map(i -> i.firstName + " " + i.lastName).collect(Collectors.joining(", ")),
+                w.getNonStaffUserCount() + "/" + w.capacity,
                 gymManager.getActiveUser() instanceof Instructor ? "Teach" : (w.getUsers().contains(gymManager.getActiveUser()) ? "Drop" : "Enrol")
         }).collect(Collectors.toList());
     }
@@ -65,7 +65,8 @@ public class CourseEnrolmentPresenter implements Presenter {
             if (w.getUsers().contains(gymManager.getActiveUser()))
                 gymManager.getActiveUser().removeWorkout(w);
             else
-                gymManager.getActiveUser().addWorkout(w);
+                if (!gymManager.getActiveUser().addWorkout(w))
+                    return "This class is full!";
             return null;
         }
     }

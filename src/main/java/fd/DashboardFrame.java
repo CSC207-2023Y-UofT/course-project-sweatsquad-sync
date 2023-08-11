@@ -129,7 +129,6 @@ public class DashboardFrame extends JFrame implements ActionListener, View<Dashb
         upcomingC = new JLabel("Upcoming Classes");
         upcomingC.setIcon(new ImageIcon("images/upcoming_classes.png"));
         upcomingC.setBounds(64, 263, 672, 175);
-
         this.add(upcomingC);
 
         viewFullScheduleCover = new JLabel("");
@@ -232,7 +231,7 @@ public class DashboardFrame extends JFrame implements ActionListener, View<Dashb
     }
 
     public void adminRefresh() {
-        this.remove(upcomingC);
+        upcomingC.setVisible(false);
         c1name.setVisible(false);
         c1time.setVisible(false);
         c1room.setVisible(false);
