@@ -10,7 +10,7 @@ import java.util.Set;
 public class User implements Serializable {
     protected String name;
     public String passHash, firstName, lastName, email;
-    private transient Set<Workout> workouts;
+    protected transient Set<Workout> workouts;
 
     protected User() {}
 
