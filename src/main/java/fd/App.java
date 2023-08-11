@@ -68,7 +68,10 @@ public class App {
         //Tying ABR and presenters together
         gymManager.addLoginListener(dashboardPresenter);
         gymManager.setAuthenticationListener(entryFramePresenter.getAuthenticationHandler());
-        gymManager.setLogoutListener(entryFramePresenter.getLogoutHandler());
+        gymManager.setLogoutListener(rm -> {
+            entryFramePresenter.getLogoutHandler().receiveResponse(rm);
+            dashboardFrame.setVisible(false);
+        });
         entryFrameView.showView();
         if (gymManager.getGym().getUsers().isEmpty())
             entryFrameView.showAdminSignUp();

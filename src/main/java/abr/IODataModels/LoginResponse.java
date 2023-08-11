@@ -7,6 +7,4 @@ public class LoginResponse extends AuthenticationResponseModel<LoginField> {
     public LoginResponse(boolean success, IssueList<LoginField> issues) {
         super(success, issues);
     }
-
-
 }

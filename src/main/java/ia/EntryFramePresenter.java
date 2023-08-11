@@ -148,7 +148,7 @@ public class EntryFramePresenter implements Presenter {
         if (acr.isSuccessful()) {
             entryFrameView.displayInfoMessage("Activation code found. Register to create an Instructor account");
 
-            entryFrameView.showSignUp();
+            entryFrameView.showInstructorSignUp();
         } else {
 
             entryFrameView.displayInfoMessage("Activation code not found");
