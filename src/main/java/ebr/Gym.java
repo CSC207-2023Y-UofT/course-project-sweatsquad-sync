@@ -72,7 +72,7 @@ public class Gym implements Serializable  {
                     if (uu.equals(u)) {
                         w.removeUser(u);
                         w.addUser(uu);
-                        uu.addWorkout(w);
+                        uu.workouts.add(w);
                         break eachUser;
                     }
     }
