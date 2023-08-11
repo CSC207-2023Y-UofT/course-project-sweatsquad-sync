@@ -20,6 +20,7 @@ public class App {
         entry.setVisible(true);
         dashboard.setVisible(false);
     }
+
     public static void main(String[] args) {
         entry.setVisible(true);
         if (db.isEmpty())
