@@ -3,33 +3,26 @@ package ebr;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class Instructor extends User implements Serializable {
     // N.B. Set code below to null when instructor account is claimed
     private String tempAuth;
     public List<String> certs;
-    private static final String ALPHA_NUM = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
 
-    public Instructor() {
+    public Instructor(String tempAuth) {
         super(null, null, null, null, null);
 
-        StringBuilder codeBuilder = new StringBuilder();
-        Random rnd = new Random();
-        while (codeBuilder.length() < 16)
-            codeBuilder.append(ALPHA_NUM.charAt((int)(rnd.nextFloat() * ALPHA_NUM.length())));
-
-        tempAuth = codeBuilder.toString();
+        this.tempAuth = tempAuth;
 
         certs = new ArrayList<>();
     }
     public String getAuthCode() {
         return tempAuth;
     }
-    public void claim(String name, String passHash, String firstName, String lastName, String email) {
+    public void claim(String username, String passHash, String firstName, String lastName, String email) {
         if (tempAuth != null) {
             tempAuth = null;
-            this.name = name;
+            this.username = username;
             this.passHash = passHash;
             this.firstName = firstName;
             this.lastName = lastName;
@@ -38,18 +31,18 @@ public class Instructor extends User implements Serializable {
     }
 
     @Override
-    public String getName() {
-        return this.name == null ? "UNCLAIMED INSTRUCTOR" : this.name;
+    public String getUsername() {
+        return this.username == null ? "UNCLAIMED INSTRUCTOR" : this.username;
     }
 
     @Override
-    public void setName(String name) {
-        if (this.name != null)
-            this.name = name;
+    public void setUsername(String name) {
+        if (this.username != null)
+            this.username = name;
     }
 
     @Override
     public int hashCode() {
-        return tempAuth != null ? tempAuth.hashCode() : name.hashCode();
+        return tempAuth != null ? tempAuth.hashCode() : username.hashCode();
     }
 }

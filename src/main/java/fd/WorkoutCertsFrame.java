@@ -1,21 +1,26 @@
 package fd;
 
+import ia.View;
+import ia.WorkoutCertsPresenter;
+
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class WorkoutCertsFrame extends JDialog implements ActionListener {
+public class WorkoutCertsFrame extends JDialog implements ActionListener, View<WorkoutCertsPresenter> {
     private final JButton add, remove;
+
+    private WorkoutCertsPresenter presenter;
     private final AbstractTableModel certsTable = new AbstractTableModel() {
         private final String[] cols = {"Name"};
         public int getColumnCount() { return cols.length; }
-        public int getRowCount() { return App.db.getCurrentWorkoutCerts(courseIndex).length; }
+        public int getRowCount() { return presenter.getCurrentWorkoutCerts(courseIndex).length; }
         public String getColumnName(int col) {
             return cols[col];
         }
         public Object getValueAt(int row, int col) {
-            String[] certs = App.db.getCurrentWorkoutCerts(courseIndex);
+            String[] certs = presenter.getCurrentWorkoutCerts(courseIndex);
             return certs[row];
         }
     };
@@ -63,7 +68,7 @@ public class WorkoutCertsFrame extends JDialog implements ActionListener {
             String cert = JOptionPane.showInputDialog(this, "Cert name?", null);
             if (cert != null) {
                 if (!cert.isEmpty()) {
-                    String msg = App.db.requireCert(courseIndex, cert);
+                    String msg = presenter.requireCert(courseIndex, cert);
                     if (!(msg == null))
                         JOptionPane.showMessageDialog(this, msg);
                 }
@@ -73,10 +78,21 @@ public class WorkoutCertsFrame extends JDialog implements ActionListener {
             certsTable.fireTableDataChanged();
         }
         else if (e.getSource() == remove) {
-            App.db.removeCurrentCert(courseIndex, (String)table.getValueAt(table.getSelectedRow(),0));
+            presenter.removeCurrentCert(courseIndex, (String)table.getValueAt(table.getSelectedRow(),0));
             certsTable.fireTableDataChanged();
         }
 
+    }
+
+    @Override
+    public void displayInfoMessage(String message) {}
+
+    @Override
+    public void displayErrorMessage(String message) {}
+
+    @Override
+    public void setPresenter(WorkoutCertsPresenter presenter) {
+        this.presenter = presenter;
     }
 }
 

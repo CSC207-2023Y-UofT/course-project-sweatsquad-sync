@@ -13,7 +13,7 @@ import javax.swing.ImageIcon;
 import javax.imageio.ImageIO;
 import java.io.File;
 
-public class UI {
+public class ComponentFactory {
     public static Font
             A16  = new Font("Arial", Font.PLAIN, 16),
             MB12 = new Font("Montserrat", Font.BOLD, 12),

@@ -8,12 +8,12 @@ import java.util.Collections;
 import java.util.List;
 
 public class User implements Serializable {
-    protected String name;
+    protected String username;
     public String passHash, firstName, lastName, email;
     private transient List<Workout> workouts;
 
-    public User(String name, String passHash, String firstName, String lastName, String email) {
-        this.name = name;
+    public User(String username, String passHash, String firstName, String lastName, String email) {
+        this.username = username;
         this.passHash = passHash;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -21,12 +21,12 @@ public class User implements Serializable {
         this.workouts = new ArrayList<>();
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String name) {
+        this.username = name;
     }
 
     // Enrol (RegisteredUser) or Teach (Instructor) cert check is done in Workout.addUser
@@ -47,7 +47,7 @@ public class User implements Serializable {
 
     @Override
     public int hashCode() {
-        return name.hashCode();
+        return username.hashCode();
     }
 
     private void readObject(ObjectInputStream input) throws IOException, ClassNotFoundException {

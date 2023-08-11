@@ -1,5 +1,7 @@
 package fd;
 
+import ia.*;
+
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import java.awt.event.ActionEvent;
@@ -10,17 +12,23 @@ import java.time.DayOfWeek;
 import java.time.Duration;
 import java.util.List;
 
-public class WorkoutOfferingFrame extends JDialog implements ActionListener {
+public class WorkoutOfferingFrame extends JDialog implements ActionListener, View<WorkoutOfferingPresenter>, RefreshRequester {
+
+    private WorkoutOfferingPresenter presenter;
+
+    private RefreshRequestListener refreshRequestListener;
+
+
     private final JButton add, edit, remove;
     private final AbstractTableModel offeringTable = new AbstractTableModel() {
         private final String[] cols = {"Time", "Duration (Hour)", "Room"};
         public int getColumnCount() { return cols.length; }
-        public int getRowCount() { return App.db.getCurrentOfferings(courseIndex).size(); }
+        public int getRowCount() { return presenter.getCurrentOfferings(courseIndex).size(); }
         public String getColumnName(int col) {
             return cols[col];
         }
         public Object getValueAt(int row, int col) {
-            List<String[]> offerings = App.db.getCurrentOfferings(courseIndex);
+            List<String[]> offerings = presenter.getCurrentOfferings(courseIndex);
             return offerings.get(row)[col].isEmpty() ? "TBD" : offerings.get(row)[col];
         }
     };
@@ -67,7 +75,7 @@ public class WorkoutOfferingFrame extends JDialog implements ActionListener {
 
         this.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
-                App.dashboard.refreshShow();
+                refreshRequestListener.refresh();
             }
         });
     }
@@ -79,7 +87,7 @@ public class WorkoutOfferingFrame extends JDialog implements ActionListener {
     }
 
     private void prompt(int offering) {
-        List<String> rooms = App.db.getCurrentRooms();
+        List<String> rooms = presenter.getCurrentRooms();
         if (rooms.isEmpty()) {
             JOptionPane.showMessageDialog(this, "There are no rooms in the gym!");
             return;
@@ -116,7 +124,7 @@ public class WorkoutOfferingFrame extends JDialog implements ActionListener {
         };
 
         if (offering != -1) {
-            String[] s = App.db.getCurrentOfferings(courseIndex).get(offering);
+            String[] s = presenter.getCurrentOfferings(courseIndex).get(offering);
             day.setSelectedItem(DayOfWeek.valueOf(s[0].split(" ")[0].toUpperCase()));
             start.setSelectedItem(s[0].split(" ")[1]);
             duration.setSelectedItem(Duration.ofHours(Integer.parseInt(s[1])));
@@ -124,7 +132,7 @@ public class WorkoutOfferingFrame extends JDialog implements ActionListener {
         }
         int option = JOptionPane.showConfirmDialog(null, message, "Add Offering", JOptionPane.OK_CANCEL_OPTION);
         if (option == JOptionPane.OK_OPTION)
-            if (!App.db.editOffering(courseIndex, offering, dayData[day.getSelectedIndex()], startData[start.getSelectedIndex()],
+            if (!presenter.editOffering(courseIndex, offering, dayData[day.getSelectedIndex()], startData[start.getSelectedIndex()],
                     durationData[duration.getSelectedIndex()], rooms.get(room.getSelectedIndex())))
                 JOptionPane.showMessageDialog(this, "This collides with another offering of this course!");
     }
@@ -140,9 +148,29 @@ public class WorkoutOfferingFrame extends JDialog implements ActionListener {
             offeringTable.fireTableDataChanged();
         }
         else if (e.getSource() == remove) {
-            App.db.removeOffering(courseIndex, table.getSelectedRow());
+            presenter.removeOffering(courseIndex, table.getSelectedRow());
             offeringTable.fireTableDataChanged();
         }
 
+    }
+
+    @Override
+    public void displayInfoMessage(String message) {
+
+    }
+
+    @Override
+    public void displayErrorMessage(String message) {
+
+    }
+
+    @Override
+    public void setPresenter(WorkoutOfferingPresenter presenter) {
+        this.presenter = presenter;
+    }
+
+    @Override
+    public void addRefreshRequestListener(RefreshRequestListener rrl) {
+        this.refreshRequestListener = rrl;
     }
 }

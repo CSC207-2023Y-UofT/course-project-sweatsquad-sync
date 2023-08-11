@@ -1,21 +1,37 @@
 package fd;
 
+import ia.ManageRoomPresenter;
+import ia.View;
+
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
-public class ManageRoomFrame extends JDialog implements ActionListener {
+public class ManageRoomFrame extends JDialog implements ActionListener, View<ManageRoomPresenter> {
+    private ManageRoomPresenter presenter;
     private final AbstractTableModel roomTable = new AbstractTableModel() {
         private final String[] cols = {"Room"};
-        public int getColumnCount() { return cols.length; }
-        public int getRowCount() { return App.db.getCurrentRooms().size(); }
+
+        @Override
+        public int getColumnCount() {
+            return cols.length;
+        }
+
+        @Override
+        public int getRowCount() {
+            return presenter.getCurrentRooms().size();
+        }
+
+        @Override
         public String getColumnName(int col) {
             return cols[col];
         }
+
+        @Override
         public Object getValueAt(int row, int col) {
-            List<String> rooms = App.db.getCurrentRooms();
+            List<String> rooms = presenter.getCurrentRooms();
             return rooms.get(row);
         }
     };
@@ -64,16 +80,32 @@ public class ManageRoomFrame extends JDialog implements ActionListener {
             String name = JOptionPane.showInputDialog(this, "Room name?", null);
             if (name != null) {
                 if (!name.isEmpty()) {
-                    if (!App.db.addRoom(name))
+                    if (!presenter.addRoom(name))
                         JOptionPane.showMessageDialog(this, "Room already exists!");
                 }
                 else
                     JOptionPane.showMessageDialog(this, "Invalid name!");
             }
-        }
-        else if (e.getSource() == removeRoom)
-            App.db.removeRoom(roomTable.getValueAt(table.getSelectedRow(), table.getSelectedColumn()).toString());
+        } else if (e.getSource() == removeRoom)
+            presenter.removeRoom(roomTable.getValueAt(table.getSelectedRow(), table.getSelectedColumn()).toString());
 
         roomTable.fireTableDataChanged();
     }
+
+    @Override
+    public void displayInfoMessage(String message) {
+
+    }
+
+    @Override
+    public void displayErrorMessage(String message) {
+
+    }
+
+    @Override
+    public void setPresenter(ManageRoomPresenter presenter) {
+        this.presenter = presenter;
+
+    }
 }
+
