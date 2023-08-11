@@ -10,7 +10,7 @@ import java.util.List;
 public class User implements Serializable {
     protected String name;
     public String passHash, firstName, lastName, email;
-    private transient List<Workout> workouts;
+    protected transient List<Workout> workouts;
 
     public User(String name, String passHash, String firstName, String lastName, String email) {
         this.name = name;
