@@ -5,9 +5,9 @@ import javax.swing.*;
 import javax.swing.UIManager.*;
 
 public class App {
-    static public Database db;
-    static public EntryPointFrame entry;
-    static public DashboardFrame dashboard;
+    static public Database db = new Database();
+    static public EntryPointFrame entry = new EntryPointFrame();
+    static public DashboardFrame dashboard = new DashboardFrame();
     static boolean login(String user, String pass) {
         if (db.validateLogin(user, pass)) {
             entry.setVisible(false);
@@ -23,22 +23,7 @@ public class App {
         dashboard.setVisible(false);
     }
 
-    public static void setNimbus() throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException {
-        for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels())
-            if ("Nimbus".equals(info.getName())) {
-                UIManager.setLookAndFeel(info.getClassName());
-                break;
-            }
-    }
-
     public static void main(String[] args) {
-        try { setNimbus(); }
-        catch (Exception ignored) {}
-
-        db = new Database();
-        entry = new EntryPointFrame();
-        dashboard = new DashboardFrame();
-
         entry.setVisible(true);
         if (db.isEmpty())
             entry.adminSignupCard();
