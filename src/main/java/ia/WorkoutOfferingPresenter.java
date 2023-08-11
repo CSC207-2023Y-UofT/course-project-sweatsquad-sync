@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 public class WorkoutOfferingPresenter implements Presenter {
 
 
-    private GymManager gymManager;
+    private final GymManager gymManager;
 
     public WorkoutOfferingPresenter(GymManager gymManager) {
         this.gymManager = gymManager;

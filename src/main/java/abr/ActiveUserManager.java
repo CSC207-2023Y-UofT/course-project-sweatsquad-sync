@@ -6,10 +6,10 @@ import ebr.User;
 
 public class ActiveUserManager {
 
-    private PasswordHashStrategy passwordHashStrategy;
+    private final PasswordHashStrategy passwordHashStrategy;
 
     private User activeUser;
-    private UserManager uam;
+    private final UserManager uam;
 
     public ActiveUserManager(UserManager uam, PasswordHashStrategy passwordHashStrategy) {
         this.uam = uam;

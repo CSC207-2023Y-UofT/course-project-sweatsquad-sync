@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 public class CourseEnrolmentPresenter implements Presenter {
 
-    private GymManager gymManager;
+    private final GymManager gymManager;
 
     public CourseEnrolmentPresenter(GymManager gymManager) {
         this.gymManager = gymManager;

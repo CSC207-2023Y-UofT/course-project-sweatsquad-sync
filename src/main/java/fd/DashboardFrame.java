@@ -12,13 +12,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class DashboardFrame extends JFrame implements ActionListener, View<DashboardPresenter> {
-    private final JButton viewEntireSchedule, enrolBtn, logout, settings,
-            manageRooms, manageUsers;
-    private final JLabel welcomeUser; // basically title label (Welcome back, [User Name]!)
-    private final JLabel c1box, c2box, c3box; // used to contain info for upcoming 3 classes
-    private final JLabel c1name, c1time, c1room, c2name, c2time, c2room, c3name, c3time, c3room;
-    private final JLabel upcomingC, no_classes;
-    private final JLabel coverBG, userEnrolBtnCover, viewFullScheduleCover;
+    private final JButton viewEntireSchedule, enrolBtn, logout, settings, manageRooms, manageUsers;
+    private final JLabel welcomeUser, c1box, c2box, c3box, c1name, c1time, c1room, c2name, c2time, c2room, c3name, c3time, c3room, upcomingC, no_classes, userEnrolBtnCover, viewFullScheduleCover;
 
     private final CourseEnrollmentFrame courseBrowser;
     private final ScheduleFrame scheduleView;
@@ -170,7 +165,7 @@ public class DashboardFrame extends JFrame implements ActionListener, View<Dashb
         manageUsers.addActionListener(this);
         this.add(manageUsers);
 
-        coverBG = ComponentFactory.genRoundLabel("", 20, "#FAFAF2");
+        JLabel coverBG = ComponentFactory.genRoundLabel("", 20, "#FAFAF2");
         coverBG.setBounds(0, 88, 800, 522);
         this.add(coverBG);
     }

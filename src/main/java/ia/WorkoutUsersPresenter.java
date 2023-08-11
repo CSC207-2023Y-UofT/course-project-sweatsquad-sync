@@ -11,7 +11,7 @@ public class WorkoutUsersPresenter implements Presenter {
 
 
 
-    private GymManager gymManager;
+    private final GymManager gymManager;
 
     public WorkoutUsersPresenter(GymManager gymManager) {
         this.gymManager = gymManager;
@@ -33,7 +33,7 @@ public class WorkoutUsersPresenter implements Presenter {
     public void removeUserFromWorkout(int i, String name) {
         for (User u : gymManager.getGym().getUsers())
             if (u.getUsername().equals(name))
-                u.removeWorkout(gymManager.getGym().getWorkouts().stream().collect(Collectors.toList()).get(i));
+                u.removeWorkout(gymManager.getGym().getWorkouts().get(i));
     }
 
 }

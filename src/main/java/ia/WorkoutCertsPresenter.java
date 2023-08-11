@@ -4,16 +4,13 @@ import abr.GymManager;
 import ebr.Instructor;
 import ebr.User;
 import ebr.Workout;
-import fd.WorkoutCertsFrame;
-
-import java.util.stream.Collectors;
 
 public class WorkoutCertsPresenter implements Presenter {
     public WorkoutCertsPresenter(GymManager gymManager) {
         this.gymManager = gymManager;
     }
 
-    private GymManager gymManager;
+    private final GymManager gymManager;
 
     public String[] getCurrentWorkoutCerts(int index) {
         return gymManager.getGym().getWorkouts().get(index).getRequiredCerts().toArray(new String[]{});

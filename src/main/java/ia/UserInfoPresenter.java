@@ -12,8 +12,8 @@ import java.awt.event.WindowEvent;
 public class UserInfoPresenter implements Presenter {
 
 
-    private PasswordHashStrategy passwordHashStrategy;
-    private GymManager gymManager;
+    private final PasswordHashStrategy passwordHashStrategy;
+    private final GymManager gymManager;
 
     private UserInfoFrame userInfoFrame;
 

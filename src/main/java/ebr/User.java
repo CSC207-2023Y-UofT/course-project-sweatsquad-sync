@@ -2,6 +2,7 @@ package ebr;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -50,6 +51,7 @@ public class User implements Serializable {
         return username.hashCode();
     }
 
+    @Serial
     private void readObject(ObjectInputStream input) throws IOException, ClassNotFoundException {
         input.defaultReadObject();
         this.workouts = new ArrayList<>();

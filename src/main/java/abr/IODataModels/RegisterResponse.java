@@ -5,7 +5,7 @@ import abr.IODataModels.authenticationFields.RegisterField;
 
 public class RegisterResponse extends AuthenticationResponseModel<RegisterField> {
 
-    public RegisterResponse(boolean success, IssueList<RegisterField> issues, String comment) {
+    public RegisterResponse(boolean success, IssueList<RegisterField> issues) {
         super(success, issues);
     }
 

@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 
 public class ManagerUserPresenter implements Presenter {
 
-    private GymManager gymManager;
+    private final GymManager gymManager;
     private ActivationCodeGenerationStrategy generationStrategy;
 
     public ManagerUserPresenter(GymManager gymManager) {

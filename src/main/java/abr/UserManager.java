@@ -21,17 +21,9 @@ public class UserManager {
     public void register(RegisterDetails d) {
         switch (d.accountType()) {
 
-            case INSTRUCTOR -> {
-                instructorToActivate.claim(d.username(), hashPassword(d.password()), d.firstName(), d.lastName(), d.email());
-            }
-            case REGULAR -> {
-
-                gym.addUser(new User(d.username(), hashPassword(d.password()), d.firstName(), d.lastName(), d.email()));
-            }
-            case ADMIN -> {
-
-                gym.addUser(new GymAdmin(d.username(), hashPassword(d.password()), d.firstName(), d.lastName(), d.email()));
-            }
+            case INSTRUCTOR -> instructorToActivate.claim(d.username(), hashPassword(d.password()), d.firstName(), d.lastName(), d.email());
+            case REGULAR -> gym.addUser(new User(d.username(), hashPassword(d.password()), d.firstName(), d.lastName(), d.email()));
+            case ADMIN -> gym.addUser(new GymAdmin(d.username(), hashPassword(d.password()), d.firstName(), d.lastName(), d.email()));
         }
 
     }

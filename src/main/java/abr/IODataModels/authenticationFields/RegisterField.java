@@ -12,7 +12,7 @@ public enum RegisterField implements Field {
     LAST_NAME("last name"),
     EMAIL("email");
 
-    private String name;
+    private final String name;
 
     RegisterField(String name) {
         this.name = name;

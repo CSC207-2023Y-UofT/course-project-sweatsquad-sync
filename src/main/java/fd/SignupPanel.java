@@ -168,7 +168,7 @@ class SignupPanel extends JPanel implements ActionListener, View<EntryFramePrese
     public void showBasicView() {
         clearFields();
         registrationDispatch = presenter::regularRegistrationAttempted;
-        haveCodeLabel.setVisible(true);;
+        haveCodeLabel.setVisible(true);
     }
 
     public void showInstructorView() {
