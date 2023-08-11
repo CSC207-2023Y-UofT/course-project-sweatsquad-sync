@@ -84,14 +84,14 @@ public class EBRTest {
 
         Assertions.assertTrue(gg.getWorkouts().contains(w));
         Assertions.assertEquals(2, gg.getUsers().size());
-        Assertions.assertTrue(gg.getWorkouts().stream().allMatch(ww -> ww.getUsers().stream().allMatch(u -> u.name.equals(u1.name))));
+        Assertions.assertTrue(gg.getWorkouts().stream().allMatch(ww -> ww.getUsers().stream().allMatch(u -> u.username.equals(u1.username))));
     }
 
     @Test
     public void certTest() {
         Workout w = new Workout("w",  20);
         w.requireCert("d");
-        Instructor i = new Instructor();
+        Instructor i = new Instructor("hash");
         i.claim("i", "", "", "", "");
         i.addWorkout(w);
         Assertions.assertEquals(w.getUsers().size(), 0);
@@ -107,7 +107,7 @@ public class EBRTest {
         Workout w = new Workout("w", 20);
         User u1 = new User("u1", "", "", "", "");
         User u2 = new User("u2", "", "", "", "");
-        Instructor i = new Instructor();
+        Instructor i = new Instructor("hash");
         i.claim("i", "", "", "", "");
         u1.addWorkout(w);
         u2.addWorkout(w);
