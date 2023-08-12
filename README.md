@@ -31,25 +31,25 @@ This project intricately streamlines gym operations and the interactive interfac
 
 - **Admin Dashboard**
 
-> Our main dashboard is the hub of all your system manager's gym management needs. Navigate seamlessly between scheduling, course enrollment, user information, room management, and more.
+  > Our main dashboard is the hub of all your system manager's gym management needs. Navigate seamlessly between scheduling, course enrollment, user information, room management, and more.
 
 [Admin Dashboard Screenshot]
 
 - Instructor/User -Friendly Dashboard
 
-> Enrol and drop classes, access account settings, and check out your upcoming schedule from our user-friendly dashboard designed with simplicity and efficiency in mind.
+  > Enrol and drop classes, access account settings, and check out your upcoming schedule from our user-friendly dashboard designed with simplicity and efficiency in mind.
 
 [User-Friendly Dashboard Screenshot]
 
 - Easy Registration Process
 
-> Joining us is a breeze! Our signup panel has clear fields for all your credentials and an easy-to-spot registration button to get you started in no time.
+  > Joining us is a breeze! Our signup panel has clear fields for all your credentials and an easy-to-spot registration button to get you started in no time.
 
 [Signup Panel Screenshot]
 
 - Manage Your Workouts
 
-> View and manage the list of attendees for each workout session. Our app provides a clear and organized view to help you keep track of every member attending your classes.
+  > View and manage the list of attendees for each workout session. Our app provides a clear and organized view to help you keep track of every member attending your classes.
 
 [Workout Users View Screenshot]
 
@@ -83,26 +83,26 @@ Before you begin, it is highly recommended that you meet the following requireme
 
 ### Breakdown of Different Accounts
 
-_Admin Usage_
+#### Administrators
 - Login
-  > Admins can use the dedicated login button on the main screen.
+> Admins can use the dedicated login button on the main screen.
 - Manage Users
-  > Navigate to the Users tab to add, delete, or update user details.
+> Navigate to the Users tab to add, delete, or update user details.
 - Manage Classes
-  > Use the Classes tab to manage class information.
+> Use the Classes tab to manage class information.
 
-_Instructors Usage_
+#### Instructors
 - View Classes
-  > Instructors can view all the classes assigned to them on their dashboard.
+> Instructors can view all the classes assigned to them on their dashboard.
 - Add Classes
-  > New class offerings can be added or removed with timings and other details (capacity, day of the week, etc.).
+> New class offerings can be added or removed with timings and other details (capacity, day of the week, etc.).
 
-_Users Usage_
+#### Users
 - Register
-  > Users can sign up using the registration form.
+> Users can sign up using the registration form.
 - Enrol
-  > After logging in, users can view and enrol in their preferred classes.
+> After logging in, users can view and enrol in their preferred classes.
 - Withdraw
-  > Once enrolled in a class, users can view and drop classes they are already taking.
+> Once enrolled in a class, users can view and drop classes they are already taking.
 
 _Note: Search features for classes has been incorporated for all account types._
