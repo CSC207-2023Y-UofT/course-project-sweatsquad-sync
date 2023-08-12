@@ -84,17 +84,25 @@ Before you begin, it is highly recommended that you meet the following requireme
 ### Breakdown of Different Accounts
 
 _Admin Usage_
-- Login: admins can use the dedicated login button on the main screen.
-- Manage Users: navigate to the Users tab to add, delete, or update user details.
-- Manage Classes: use the Classes tab to manage class information.
+- Login
+  > Admins can use the dedicated login button on the main screen.
+- Manage Users
+  > Navigate to the Users tab to add, delete, or update user details.
+- Manage Classes
+  > Use the Classes tab to manage class information.
 
 _Instructors Usage_
-- View Classes: instructors can view all the classes assigned to them on their dashboard.
-- Add Classes: new class offerings can be added or removed with timings and other details (capacity, day of the week, etc.)
+- View Classes
+  > Instructors can view all the classes assigned to them on their dashboard.
+- Add Classes
+  > New class offerings can be added or removed with timings and other details (capacity, day of the week, etc.).
 
 _Users Usage_
-- Register: Users can sign up using the registration form.
-- Enrol: After logging in, users can view and enrol in their preferred classes.
-- Withdraw: Once enrolled in a class, users can view and drop classes they are already taking.
+- Register
+  > Users can sign up using the registration form.
+- Enrol
+  > After logging in, users can view and enrol in their preferred classes.
+- Withdraw
+  > Once enrolled in a class, users can view and drop classes they are already taking.
 
 _Note: Search features for classes has been incorporated for all account types._
