@@ -106,3 +106,16 @@ Before you begin, it is highly recommended that you meet the following requireme
 > Once enrolled in a class, users can view and drop classes they are already taking.
 
 _Note: Search features for classes has been incorporated for all account types._
+
+- - -
+
+### Directory Breakdown
+#### Directories
+- fd (frameworks and drivers)
+  > This directory contains the various frames and panels that make up the user interface of the application. It also contains the application's main entry point (App.java) and the database classes (GymDatabase.java, FileDatabase.java). This direcotry also contains a 'component factory' which is primarily responsible for stylizing Swing components to be in line with a more modern aesthetic, and can be called as needed in other screens (whehther they be JFrames or JPanels).
+- ia (interface adapters)
+  > This directory contains the various presenters and view models for the application. Presenters handle the application logic, while view models represent the data that will be displayed in the view.
+- abr (application business rules)
+  > This directory contains the business rules of the application. It contains classes to manage the users (UserManager.java, ActiveUserManager.java) and the gym (GymManager.java), as well as classes for the authentication process (Authenticator.java, ActivationCodeGenerationStrategy.java, PasswordHashSHA256.java). It also contains data models for input and output (IODataModels).
+- ebr (enterprise business rules)
+  > This directory contains the entities that represent the different types of users (User.java, Instructor.java, GymAdmin.java) and other entities like Room.java and Workout.java.
