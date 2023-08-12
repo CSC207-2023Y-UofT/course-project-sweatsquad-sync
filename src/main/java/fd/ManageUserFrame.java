@@ -1,12 +1,9 @@
 package fd;
 
-import ia.DashboardPresenter;
 import ia.ManagerUserPresenter;
 import ia.View;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
@@ -15,14 +12,13 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 public class ManageUserFrame extends JDialog implements ActionListener, View<ManagerUserPresenter> {
-
     private ManagerUserPresenter presenter;
-    private AbstractTableModel userTable = new AbstractTableModel() {
+    private final AbstractTableModel userTable = new AbstractTableModel() {
         private final String[] cols = {"Name", "Username", "Type", "Certs"};
         @Override
         public int getColumnCount() { return cols.length; }
         @Override
-        public int getRowCount() { return (int)presenter.getCurrentUsers().size(); }
+        public int getRowCount() { return presenter.getCurrentUsers().size(); }
         @Override
         public String getColumnName(int col) {
             return cols[col];
@@ -34,7 +30,10 @@ public class ManageUserFrame extends JDialog implements ActionListener, View<Man
         }
     };
 
-    private JButton delete, addInstructor, addCerts, copyCode;
+    private final JButton delete = new JButton("Remove"),
+            addInstructor = new JButton("Add Instructor"),
+            addCerts = new JButton("Add Cert"),
+            copyCode = new JButton("Copy AuthCode");
     JTable table;
     public ManageUserFrame() {
         setTitle("Manage Users"); // window title
@@ -50,7 +49,7 @@ public class ManageUserFrame extends JDialog implements ActionListener, View<Man
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         table.setRowSelectionAllowed(true);
         table.setColumnSelectionAllowed(false);
-        table.getSelectionModel().addListSelectionListener((e) -> {
+        table.getSelectionModel().addListSelectionListener(e -> {
                 boolean sel = table.getSelectedRow() != -1;
                 delete.setEnabled(sel);
                 if (sel) {
@@ -68,24 +67,20 @@ public class ManageUserFrame extends JDialog implements ActionListener, View<Man
         p.setBounds(0, 40, 800, 500);
         this.add(p);
 
-        addInstructor = new JButton("Add Instructor");
         addInstructor.setBounds(0, 0, 150, 40);
         addInstructor.addActionListener(this);
         this.add(addInstructor);
 
-        delete = new JButton("Remove");
         delete.setBounds(150, 0, 100, 40);
         delete.addActionListener(this);
         delete.setEnabled(false);
         this.add(delete);
 
-        addCerts = new JButton("Add Cert");
         addCerts.setBounds(250, 0, 100, 40);
         addCerts.addActionListener(this);
         addCerts.setVisible(false);
         this.add(addCerts);
 
-        copyCode = new JButton("Copy AuthCode");
         copyCode.setBounds(350, 0, 150, 40);
         copyCode.addActionListener(this);
         copyCode.setVisible(false);

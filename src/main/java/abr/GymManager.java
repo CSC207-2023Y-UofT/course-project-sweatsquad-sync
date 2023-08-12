@@ -17,23 +17,21 @@ public class GymManager {
     private final Authenticator authenticator;
     private final ActiveUserManager activeUserManager;
     private final UserManager userAccountManager;
-    private final GymDatabase database;
 
     private final Gym gym;
 
     private OutputBoundary<AuthenticationResponseModel<? extends Field>> authenticationListener;
-    private List<OutputBoundary<LoginEvent>> loginEventListeners;
+    private final List<OutputBoundary<LoginEvent>> loginEventListeners;
 
     private OutputBoundary<LogoutEvent> logoutListener;
 
 
     public GymManager(GymDatabase database, PasswordHashStrategy passwordHashStrategy) {
         Gym gym1;
-        this.database = database;
         try {
             gym1 = database.load();
         } catch (Exception e) {
-            gym1 = new Gym("Sweatsquad Gym");
+            gym1 = new Gym("Gym");
         }
 
         this.gym = gym1;
@@ -59,11 +57,7 @@ public class GymManager {
     public boolean verifyLoginDetails(LoginDetails ld) {
 
         LoginResponse response = authenticator.authenticateLogin(ld);
-        if (response.isSuccessful()) {
-            return true;
-        } else {
-            return false;
-        }
+        return response.isSuccessful();
     }
 
     public InputBoundary<AuthenticationRequestModel> getAuthenticationRequestHandler() {
@@ -89,14 +83,11 @@ public class GymManager {
                         User activeUser = activeUserManager.getActiveUser();
                         for (OutputBoundary<LoginEvent> loginListener: loginEventListeners) {
                             if (activeUser instanceof Instructor) {
-
-                                loginListener.receiveResponse(createLoginEvent(AccountType.REGULAR, activeUser));
+                                loginListener.receiveResponse(createLoginEvent(AccountType.INSTRUCTOR, activeUser));
                             } else if (activeUser instanceof GymAdmin) {
-
                                 loginListener.receiveResponse(createLoginEvent(AccountType.ADMIN, activeUser));
                             } else {
-
-                                loginListener.receiveResponse(createLoginEvent(AccountType.INSTRUCTOR, activeUser));
+                                loginListener.receiveResponse(createLoginEvent(AccountType.REGULAR, activeUser));
                             }
                         }
 

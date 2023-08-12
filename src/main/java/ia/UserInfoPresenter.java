@@ -12,8 +12,8 @@ import java.awt.event.WindowEvent;
 public class UserInfoPresenter implements Presenter {
 
 
-    private PasswordHashStrategy passwordHashStrategy;
-    private GymManager gymManager;
+    private final PasswordHashStrategy passwordHashStrategy;
+    private final GymManager gymManager;
 
     private UserInfoFrame userInfoFrame;
 
@@ -62,13 +62,9 @@ public class UserInfoPresenter implements Presenter {
         getActiveUser().firstName = newEmail;
     }
 
-    public boolean updateActiveUserUsername(String newUsername) {
-        for (User u : gymManager.getGym().getUsers())
-            if (u.getUsername().equals(newUsername))
-                return false;
-
+    public void updateActiveUserUsername(String newUsername) {
+        // Assume name collision has been taken care of
         getActiveUser().setUsername(newUsername);
-        return true;
     }
 
     public void updateActiveUserPasscode(String user, String newPasscode) {

@@ -15,15 +15,18 @@ interface RegistrationDispatch {
 }
 
 class SignupPanel extends JPanel implements ActionListener, View<EntryFramePresenter> {
-    private JTextField firstNameField, lastNameField, emailField, userField;
-    private JPasswordField passField, confirmPassField;
-    private JButton registerButton;
-    private JLabel err1, err2, err3, err4, haveCodeLabel, coverBG;
+    private final JTextField firstNameField, lastNameField, emailField, userField;
+    private final JPasswordField passField, confirmPassField;
+    private final JButton registerButton;
+    private final JLabel err1;
+    private final JLabel err2;
+    private final JLabel err3;
+    private final JLabel err4;
+    private final JLabel haveCodeLabel;
 
     private RegistrationDispatch registrationDispatch;
 
     SignupPanel() {
-
         this.setLayout(null);
         this.setOpaque(false);
 
@@ -32,7 +35,7 @@ class SignupPanel extends JPanel implements ActionListener, View<EntryFramePrese
         firstNameLabel.setBounds(189, 98, 422, 25);
         this.add(firstNameLabel);
 
-        firstNameField = ComponentFactory.genRoundTextField("", 20, "#FFFFFF", false);
+        firstNameField = ComponentFactory.genRoundTextField("", 20, "#FFFFFF");
         firstNameField.setBounds(189, 123, 198, 45);
         firstNameField.setFont(ComponentFactory.CB18);
         this.add(firstNameField);
@@ -42,7 +45,7 @@ class SignupPanel extends JPanel implements ActionListener, View<EntryFramePrese
         lastNameLabel.setBounds(413, 98, 422, 25);
         this.add(lastNameLabel);
 
-        lastNameField = ComponentFactory.genRoundTextField("", 20, "#FFFFFF", false);
+        lastNameField = ComponentFactory.genRoundTextField("", 20, "#FFFFFF");
         lastNameField.setBounds(413, 123, 198, 45);
         lastNameField.setFont(ComponentFactory.CB18);
         this.add(lastNameField);
@@ -52,7 +55,7 @@ class SignupPanel extends JPanel implements ActionListener, View<EntryFramePrese
         emailLabel.setBounds(189, 185, 422, 25);
         this.add(emailLabel);
 
-        emailField = ComponentFactory.genRoundTextField("", 20, "#FFFFFF", false);
+        emailField = ComponentFactory.genRoundTextField("", 20, "#FFFFFF");
         emailField.setBounds(189, 210, 422, 45);
         emailField.setFont(ComponentFactory.CB18);
         this.add(emailField);
@@ -62,7 +65,7 @@ class SignupPanel extends JPanel implements ActionListener, View<EntryFramePrese
         signupUsernameLabel.setBounds(189, 272, 422, 25);
         this.add(signupUsernameLabel);
 
-        userField = ComponentFactory.genRoundTextField("", 20, "#FFFFFF", false);
+        userField = ComponentFactory.genRoundTextField("", 20, "#FFFFFF");
         userField.setBounds(189, 297, 422, 45);
         userField.setFont(ComponentFactory.CB18);
         this.add(userField);
@@ -129,11 +132,9 @@ class SignupPanel extends JPanel implements ActionListener, View<EntryFramePrese
         err4.setBounds(620, 385, 150, 40);
         this.add(err4);
 
-        coverBG = ComponentFactory.genRoundLabel("", 20, "#FAFAF2");
+        JLabel coverBG = ComponentFactory.genRoundLabel("", 20, "#FAFAF2");
         coverBG.setBounds(0, 88, 800, 522);
         this.add(coverBG);
-
-
     }
 
     private EntryFramePresenter presenter;
@@ -183,10 +184,8 @@ class SignupPanel extends JPanel implements ActionListener, View<EntryFramePrese
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == registerButton) { // register logic
-
-            haveCodeLabel.setVisible(true);
-            String firstName = firstNameField.getText(),
-                    lastName = lastNameField.getText(),
+            String firstName = ComponentFactory.capitalizeRemoveTrailingSpaces(firstNameField.getText()),
+                    lastName = ComponentFactory.capitalizeRemoveTrailingSpaces(lastNameField.getText()),
                     username = userField.getText().trim(),
                     email = emailField.getText().trim(),
                     password = new String(passField.getPassword()),

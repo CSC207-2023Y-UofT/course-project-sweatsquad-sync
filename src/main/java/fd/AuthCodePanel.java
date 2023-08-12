@@ -9,19 +9,20 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 class AuthCodePanel extends JPanel implements ActionListener, View<EntryFramePresenter> {
-    private JTextField authField;
-    private JButton authenticateBtn, backButton;
+    private final JTextField authField;
+    private final JButton authenticateBtn, backButton;
     private EntryFramePresenter presenter;
     AuthCodePanel() {
         this.setLayout(null);
         this.setOpaque(false);
 
-        JLabel authCodeLabel = new JLabel("Enter Authentication Code                   (16 Characters)");
+        JLabel authCodeLabel = new JLabel("Enter Authentication Code" +
+                "                   (16 Characters)");
         authCodeLabel.setBounds(189, 140, 422, 25);
         authCodeLabel.setFont(ComponentFactory.MB15);
         this.add(authCodeLabel);
 
-        authField = ComponentFactory.genRoundTextField("", 20, "#FFFFFF", false);
+        authField = ComponentFactory.genRoundTextField("", 20, "#FFFFFF");
         authField.setBounds(189, 165, 422, 45);
         authField.setFont(ComponentFactory.CB18);
         authField.setHorizontalAlignment(SwingConstants.CENTER); // c-align
@@ -40,6 +41,11 @@ class AuthCodePanel extends JPanel implements ActionListener, View<EntryFramePre
         authenticateBtn.setBounds(413, 292, 196, 50);
         authenticateBtn.addActionListener(this);
         this.add(authenticateBtn);
+
+        JLabel coverBG = ComponentFactory.genRoundLabel("", 20, "#FAFAF2");
+        coverBG.setBounds(0, 88, 800, 522);
+        this.add(coverBG);
+
     }
 
     @Override

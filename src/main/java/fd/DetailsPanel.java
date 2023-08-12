@@ -12,10 +12,13 @@ class DetailsPanel extends JPanel implements ActionListener, View<UserInfoPresen
 
     private UserInfoPresenter presenter;
 
-    public JTextField firstNameInfoField, lastNameInfoField, emailInfoField, userInfoField;
-    private JPasswordField passField;
-    private JButton saveChangesBtn;
-    private JLabel err1, err2, err3, err4;
+    public final JTextField firstNameInfoField, lastNameInfoField, emailInfoField, userInfoField;
+    private final JPasswordField passField;
+    private final JButton saveChangesBtn;
+    private final JLabel err1;
+    private final JLabel err2;
+    private final JLabel err3;
+    private final JLabel err4;
 
     public DetailsPanel() {
         this.setLayout(null);
@@ -26,7 +29,7 @@ class DetailsPanel extends JPanel implements ActionListener, View<UserInfoPresen
         firstNameLabel.setBounds(189, 98, 422, 25);
         this.add(firstNameLabel);
 
-        firstNameInfoField = ComponentFactory.genRoundTextField("", 20, "#FFFFFF", false);
+        firstNameInfoField = ComponentFactory.genRoundTextField("", 20, "#FFFFFF");
         firstNameInfoField.setBounds(189, 123, 198, 45);
         firstNameInfoField.setFont(ComponentFactory.CB18);
         this.add(firstNameInfoField);
@@ -36,7 +39,7 @@ class DetailsPanel extends JPanel implements ActionListener, View<UserInfoPresen
         lastNameLabel.setBounds(413, 98, 422, 25);
         this.add(lastNameLabel);
 
-        lastNameInfoField = ComponentFactory.genRoundTextField("", 20, "#FFFFFF", false);
+        lastNameInfoField = ComponentFactory.genRoundTextField("", 20, "#FFFFFF");
         lastNameInfoField.setBounds(413, 123, 198, 45);
         lastNameInfoField.setFont(ComponentFactory.CB18);
         this.add(lastNameInfoField);
@@ -46,7 +49,7 @@ class DetailsPanel extends JPanel implements ActionListener, View<UserInfoPresen
         emailLabel.setBounds(189, 185, 422, 25);
         this.add(emailLabel);
 
-        emailInfoField = ComponentFactory.genRoundTextField("", 20, "#FFFFFF", false);
+        emailInfoField = ComponentFactory.genRoundTextField("", 20, "#FFFFFF");
         emailInfoField.setBounds(189, 210, 422, 45);
         emailInfoField.setFont(ComponentFactory.CB18);
         this.add(emailInfoField);
@@ -56,7 +59,7 @@ class DetailsPanel extends JPanel implements ActionListener, View<UserInfoPresen
         signupUsernameLabel.setBounds(189, 272, 422, 25);
         this.add(signupUsernameLabel);
 
-        userInfoField = ComponentFactory.genRoundTextField("", 20, "#FFFFFF", false);
+        userInfoField = ComponentFactory.genRoundTextField("", 20, "#FFFFFF");
         userInfoField.setBounds(189, 297, 422, 45);
         userInfoField.setFont(ComponentFactory.CB18);
         this.add(userInfoField);
@@ -94,6 +97,14 @@ class DetailsPanel extends JPanel implements ActionListener, View<UserInfoPresen
         err4.setFont(ComponentFactory.MB12);
         err4.setBounds(620, 385, 150, 40);
         this.add(err4);
+
+        JLabel coverBG = ComponentFactory.genRoundLabel("", 20, "#FAFAF2");
+        coverBG.setBounds(0, 88, 800, 522);
+        this.add(coverBG);
+    }
+
+    public void clearPass () {
+        passField.setText("");
     }
 
     @Override
@@ -157,7 +168,6 @@ class DetailsPanel extends JPanel implements ActionListener, View<UserInfoPresen
                 return;
             }
 
-
             // all checks have passed (valid inputs)
             if (!presenter.verifyUserDetails(presenter.getActiveUserUsername(), new String(passField.getPassword()))) {
                 JOptionPane.showMessageDialog(this, "Invalid credentials, try again.");
@@ -166,7 +176,7 @@ class DetailsPanel extends JPanel implements ActionListener, View<UserInfoPresen
                 passField.setText("");
             }
 
-            JOptionPane.showMessageDialog(this, "Changes were successful");
+            JOptionPane.showMessageDialog(this, "Changes saved!");
             presenter.requestCloseFrame();
 
             // login is successful -updates user details

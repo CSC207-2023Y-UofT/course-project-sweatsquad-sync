@@ -1,23 +1,20 @@
 package ebr;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
-
+import java.util.ArrayList;
+import java.util.List;
 
 public class Instructor extends User implements Serializable {
     // N.B. Set code below to null when instructor account is claimed
     private String tempAuth;
-    public Set<String> certs;
+    public List<String> certs;
 
     public Instructor(String tempAuth) {
         super(null, null, null, null, null);
 
         this.tempAuth = tempAuth;
 
-        certs = new HashSet<>();
-
+        certs = new ArrayList<>();
     }
     public String getAuthCode() {
         return tempAuth;
@@ -38,7 +35,8 @@ public class Instructor extends User implements Serializable {
         return this.username == null ? "UNCLAIMED INSTRUCTOR" : this.username;
     }
 
-    public void setName(String name) {
+    @Override
+    public void setUsername(String name) {
         if (this.username != null)
             this.username = name;
     }

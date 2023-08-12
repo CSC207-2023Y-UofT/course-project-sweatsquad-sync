@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 
 public class ManagerUserPresenter implements Presenter {
 
-    private GymManager gymManager;
+    private final GymManager gymManager;
     private ActivationCodeGenerationStrategy generationStrategy;
 
     public ManagerUserPresenter(GymManager gymManager) {
@@ -40,15 +40,15 @@ public class ManagerUserPresenter implements Presenter {
     }
 
     public void removeUser(int i) {
-        gymManager.getGym().removeUser(gymManager.getGym().getUsers().stream().collect(Collectors.toList()).get(i));
+        gymManager.getGym().removeUser(gymManager.getGym().getUsers().get(i));
     }
 
     public void instructorAddCert(int i, String cert) {
-        ((Instructor)gymManager.getGym().getUsers().stream().collect(Collectors.toList()).get(i)).certs.add(cert);
+        ((Instructor)gymManager.getGym().getUsers().get(i)).certs.add(cert);
     }
 
     public String adminReqInstructorAuthCode(int i) {
-        return ((Instructor)gymManager.getGym().getUsers().stream().collect(Collectors.toList()).get(i)).getAuthCode();
+        return ((Instructor)gymManager.getGym().getUsers().get(i)).getAuthCode();
     }
 
 }

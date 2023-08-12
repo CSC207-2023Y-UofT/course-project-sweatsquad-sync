@@ -4,20 +4,18 @@ import ia.View;
 import ia.WorkoutCertsPresenter;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class WorkoutCertsFrame extends JDialog implements ActionListener, View<WorkoutCertsPresenter> {
-    private JButton add, remove;
+    private final JButton add, remove;
 
     private WorkoutCertsPresenter presenter;
-    private AbstractTableModel certsTable = new AbstractTableModel() {
+    private final AbstractTableModel certsTable = new AbstractTableModel() {
         private final String[] cols = {"Name"};
         public int getColumnCount() { return cols.length; }
-        public int getRowCount() { return (int)presenter.getCurrentWorkoutCerts(courseIndex).length; }
+        public int getRowCount() { return presenter.getCurrentWorkoutCerts(courseIndex).length; }
         public String getColumnName(int col) {
             return cols[col];
         }
@@ -26,7 +24,7 @@ public class WorkoutCertsFrame extends JDialog implements ActionListener, View<W
             return certs[row];
         }
     };
-    private JTable table = new JTable(certsTable);
+    private final JTable table = new JTable(certsTable);
     private int courseIndex = -1;
     public WorkoutCertsFrame() {
         setTitle("Certifications"); // window title
@@ -52,12 +50,7 @@ public class WorkoutCertsFrame extends JDialog implements ActionListener, View<W
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         table.setRowSelectionAllowed(true);
         table.setColumnSelectionAllowed(false);
-        table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                remove.setEnabled(table.getSelectedRow() != -1);
-            }
-        });
+        table.getSelectionModel().addListSelectionListener(e -> remove.setEnabled(table.getSelectedRow() != -1));
         JScrollPane p = new JScrollPane(table);
         p.setBounds(0, 40, 600, 500);
         this.add(p);
@@ -100,7 +93,6 @@ public class WorkoutCertsFrame extends JDialog implements ActionListener, View<W
     @Override
     public void setPresenter(WorkoutCertsPresenter presenter) {
         this.presenter = presenter;
-
     }
 }
 

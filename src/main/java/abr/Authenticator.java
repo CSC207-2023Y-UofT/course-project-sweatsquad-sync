@@ -36,9 +36,9 @@ public class Authenticator  {
         }
 
         if (!issues.isEmpty()) {
-            return new LoginResponse(false, issues, "");
+            return new LoginResponse(false, issues);
         } else {
-            return new LoginResponse(true, new IssueList<>(), "User record successfully found");
+            return new LoginResponse(true, new IssueList<>());
         }
 
     }
@@ -48,45 +48,33 @@ public class Authenticator  {
         String[] fieldValues = {rd.username(), rd.password(), rd.confirmPassword(), rd.firstName(), rd.lastName(), rd.email()};
         RegisterField[] fields = RegisterField.values();
 
-        boolean anyBlank = false;
-        for (int i = 0; i < fields.length; i++) {
-
-            if (fieldValues[i].isEmpty()) {
-                anyBlank = true;
+        for (int i = 0; i < fields.length; i++)
+            if (fieldValues[i].isEmpty())
                 issues.add(new FieldIssue<>(fields[i], isLeftBlankMessage(fields[i])));
-            }
-        }
 
 
-        if (!rd.correctEmailFormat()) {
+        if (!rd.correctEmailFormat())
             issues.add(new FieldIssue<>(RegisterField.EMAIL, "Invalid email format"));
-        }
 
-        if (!correctCharacterTypes(rd.username())) {
+        if (!correctCharacterTypes(rd.username()))
             issues.add(new FieldIssue<>(RegisterField.USERNAME, "Can only consist of letters, digits and underscores."));
-        }
 
-        if (rd.username().length() < 3) {
+        if (rd.username().length() < 3)
             issues.add(new FieldIssue<>(RegisterField.USERNAME, "Username must be at least 3 characters long"));
-        }
 
-        if (!correctCharacterTypes(rd.password())) {
+        if (!correctCharacterTypes(rd.password()))
             issues.add(new FieldIssue<>(RegisterField.PASSWORD, "Can only consist of letters, digits and underscores."));
-        }
 
-        if (!rd.password().equals(rd.confirmPassword())) {
+        if (!rd.password().equals(rd.confirmPassword()))
             issues.add(new FieldIssue<>(RegisterField.PASSWORD, "Passwords must match"));
-        }
 
-        if (userManager.usernameExists(rd.username())) {
-
+        if (userManager.usernameExists(rd.username()))
             issues.add(new FieldIssue<>(RegisterField.USERNAME, "Username already exists"));
-        }
 
-        if (!issues.isEmpty()) {
-            return new RegisterResponse(false, issues, "");
-        }
-        return new RegisterResponse(true, new IssueList<>(), "Registration details valid");
+        if (!issues.isEmpty())
+            return new RegisterResponse(false, issues);
+
+        return new RegisterResponse(true, new IssueList<>());
 
     }
 
@@ -101,9 +89,9 @@ public class Authenticator  {
             issues.add(new FieldIssue<>(ActivationCodeField.ACTIVATION_CODE, "Activation code was not found"));
         }
         if (!issues.isEmpty()) {
-            return new ActivationCodeResponse(false, issues, "");
+            return new ActivationCodeResponse(false, issues);
         }
-        return new ActivationCodeResponse(true, new IssueList<>(), "Activation details verified");
+        return new ActivationCodeResponse(true, new IssueList<>());
     }
 
 

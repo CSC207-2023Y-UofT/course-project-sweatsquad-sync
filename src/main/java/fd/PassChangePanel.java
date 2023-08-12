@@ -9,9 +9,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 class PassChangePanel extends JPanel implements ActionListener, View<UserInfoPresenter> {
-    private JPasswordField oldPasscode,newPasscode, confirmNewPasscode;
-    private JButton savePasscodeBtn;
-    private JLabel err1, err2, err3;
+    private final JPasswordField oldPasscode,newPasscode, confirmNewPasscode;
+    private final JButton savePasscodeBtn;
+    private final JLabel err1, err2, err3;
 
     private UserInfoPresenter presenter;
 
@@ -68,6 +68,17 @@ class PassChangePanel extends JPanel implements ActionListener, View<UserInfoPre
         err3.setFont(ComponentFactory.MB12);
         err3.setBounds(620, 298, 150, 40);
         this.add(err3);
+
+        JLabel coverBG = ComponentFactory.genRoundLabel("", 20, "#FAFAF2");
+        coverBG.setBounds(0, 88, 800, 522);
+        this.add(coverBG);
+
+    }
+
+    public void clearFields() {
+        oldPasscode.setText("");
+        newPasscode.setText("");
+        confirmNewPasscode.setText("");
     }
 
     @Override

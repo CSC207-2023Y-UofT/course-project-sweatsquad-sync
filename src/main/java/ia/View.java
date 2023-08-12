@@ -2,7 +2,7 @@ package ia;
 
 public interface View<P extends Presenter> {
 
-    public void displayInfoMessage(String message);
-    public void displayErrorMessage(String message);
-    public void setPresenter(P presenter);
+    void displayInfoMessage(String message);
+    void displayErrorMessage(String message);
+    void setPresenter(P presenter);
 }

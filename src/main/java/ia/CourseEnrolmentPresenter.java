@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 public class CourseEnrolmentPresenter implements Presenter {
 
-    private GymManager gymManager;
+    private final GymManager gymManager;
 
     public CourseEnrolmentPresenter(GymManager gymManager) {
         this.gymManager = gymManager;
@@ -26,8 +26,9 @@ public class CourseEnrolmentPresenter implements Presenter {
                 w.name,
                 w.offerings.stream().map(o -> o.room.name).collect(Collectors.joining(", ")),
                 w.offerings.stream().map(o -> o.start.toString()).collect(Collectors.joining(", ")),
-                w.getUsers().stream().filter(u -> u instanceof Instructor).map(Object::toString).collect(Collectors.joining(", ")),
-                w.getUsers().size() + "/" + w.capacity
+                w.getUsers().stream().filter(u -> u instanceof Instructor).map(i -> i.firstName + " " + i.lastName).collect(Collectors.joining(", ")),
+                w.getNonStaffUserCount() + "/" + w.capacity,
+                gymManager.getActiveUser() instanceof Instructor ? "Teach" : (w.getUsers().contains(gymManager.getActiveUser()) ? "Drop" : "Enrol")
         }).collect(Collectors.toList());
     }
 
@@ -41,16 +42,16 @@ public class CourseEnrolmentPresenter implements Presenter {
     }
 
     public void removeWorkout(int i) {
-        getGym().removeWorkout(getGym().getWorkouts().stream().collect(Collectors.toList()).get(i));
+        getGym().removeWorkout(getGym().getWorkouts().get(i));
     }
 
     public boolean canEditCourse(int course) {
-        return course != -1 && (!(gymManager.getActiveUser() instanceof Instructor) || getGym().getWorkouts().stream().collect(Collectors.toList()).get(course).getUsers().contains(gymManager.getActiveUser()));
+        return course != -1 && (!(gymManager.getActiveUser() instanceof Instructor) || getGym().getWorkouts().get(course).getUsers().contains(gymManager.getActiveUser()));
     }
 
     public String toggleEnrol(int i) {
 
-        Workout w = getGym().getWorkouts().stream().collect(Collectors.toList()).get(i);
+        Workout w = getGym().getWorkouts().get(i);
         if (gymManager.getActiveUser() instanceof Instructor)
             if (w.getUsers().contains(gymManager.getActiveUser()))
                 return "You already teach this class!";
@@ -64,7 +65,8 @@ public class CourseEnrolmentPresenter implements Presenter {
             if (w.getUsers().contains(gymManager.getActiveUser()))
                 gymManager.getActiveUser().removeWorkout(w);
             else
-                gymManager.getActiveUser().addWorkout(w);
+                if (!gymManager.getActiveUser().addWorkout(w))
+                    return "This class is full!";
             return null;
         }
     }
@@ -74,7 +76,7 @@ public class CourseEnrolmentPresenter implements Presenter {
             if (w.name.equals(name))
                 return false;
 
-        getGym().getWorkouts().stream().collect(Collectors.toList()).get(workout).name = name;
+        getGym().getWorkouts().get(workout).name = name;
         return true;
     }
 

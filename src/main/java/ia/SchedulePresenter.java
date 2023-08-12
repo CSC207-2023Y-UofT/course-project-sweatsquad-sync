@@ -19,10 +19,10 @@ public class SchedulePresenter implements Presenter {
     public String getScheduleBlockAt(int hr, int day) {
         DayOfWeek[] day_jump = new DayOfWeek[]{ DayOfWeek.SUNDAY,  DayOfWeek.MONDAY,  DayOfWeek.TUESDAY,  DayOfWeek.WEDNESDAY,  DayOfWeek.THURSDAY,  DayOfWeek.FRIDAY,  DayOfWeek.SATURDAY};
         class R {
-            LocalTime t;
-            DayOfWeek day;
-            Duration d;
-            String name, room;
+            final LocalTime t;
+            final DayOfWeek day;
+            final Duration d;
+            final String name, room;
             R(LocalTime t, DayOfWeek day, Duration d, String n, String room) { this.t = t; this.day = day; this.d = d; this.name = n; this.room = room; }
         }
         return "<HTML>" + gymManager.getGym().getWorkouts().stream().flatMap(w -> w.offerings.stream()

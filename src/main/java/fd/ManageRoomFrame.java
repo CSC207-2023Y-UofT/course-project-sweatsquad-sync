@@ -4,17 +4,14 @@ import ia.ManageRoomPresenter;
 import ia.View;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
 public class ManageRoomFrame extends JDialog implements ActionListener, View<ManageRoomPresenter> {
-
     private ManageRoomPresenter presenter;
-    private AbstractTableModel roomTable = new AbstractTableModel() {
+    private final AbstractTableModel roomTable = new AbstractTableModel() {
         private final String[] cols = {"Room"};
 
         @Override
@@ -24,7 +21,7 @@ public class ManageRoomFrame extends JDialog implements ActionListener, View<Man
 
         @Override
         public int getRowCount() {
-            return (int) presenter.getCurrentRooms().size();
+            return presenter.getCurrentRooms().size();
         }
 
         @Override
@@ -39,9 +36,8 @@ public class ManageRoomFrame extends JDialog implements ActionListener, View<Man
         }
     };
 
-    private JButton addRoom, removeRoom;
-    private JTable table;
-
+    private final JButton addRoom, removeRoom;
+    private final JTable table;
     public ManageRoomFrame() {
         setTitle("Manage Rooms"); // window title
         setSize(800, 600); // window dimensions
@@ -66,12 +62,7 @@ public class ManageRoomFrame extends JDialog implements ActionListener, View<Man
         table.getTableHeader().setReorderingAllowed(false);
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-        table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                removeRoom.setEnabled(table.getSelectedRow() != -1);
-            }
-        });
+        table.getSelectionModel().addListSelectionListener(e -> removeRoom.setEnabled(table.getSelectedRow() != -1));
 
         JScrollPane p = new JScrollPane(table);
         p.setBounds(0, 40, 800, 500);

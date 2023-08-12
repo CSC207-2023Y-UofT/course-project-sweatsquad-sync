@@ -7,14 +7,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class UserInfoFrame extends JDialog implements ActionListener, View<UserInfoPresenter> {
-
     private UserInfoPresenter presenter;
-    private JButton detailsTab, passChangeTab;
-    private JLabel signIndicator;
-    private CardLayout cardLayout = new CardLayout();
-    private JPanel cards = new JPanel(cardLayout);
+    private final JButton detailsTab, passChangeTab;
+    private final JLabel signIndicator;
+    private final CardLayout cardLayout = new CardLayout();
+    private final JPanel cards = new JPanel(cardLayout);
 
     public DetailsPanel detailsPanel = new DetailsPanel();
     public PassChangePanel passChangePanel = new PassChangePanel();
@@ -26,7 +27,7 @@ public class UserInfoFrame extends JDialog implements ActionListener, View<UserI
         setResizable(false);
         setLocationRelativeTo(null);
         setLayout(null);
-        setBackground(Color.decode("#8F98FF"));
+        getContentPane().setBackground(Color.decode("#8F98FF"));
         setModal(true);
 
         detailsTab = new JButton("Account Details");
@@ -62,17 +63,36 @@ public class UserInfoFrame extends JDialog implements ActionListener, View<UserI
     }
 
     public void detailsCard() {
+        passChangePanel.clearFields();
         textSetup();
         cardLayout.show(cards, "Change Details");
 
         detailsTab.setFocusable(false);
         detailsTab.setFont(ComponentFactory.MB16);
         detailsTab.setForeground(Color.decode("#172A87"));
+        detailsTab.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                // no longer shows that the button area's clickable
+                setCursor(Cursor.getDefaultCursor());
+            }
+        });
         this.add(detailsTab);
 
         passChangeTab.setFocusable(true);
         passChangeTab.setFont(ComponentFactory.MB14);
         passChangeTab.setForeground(Color.decode("#000000"));
+        passChangeTab.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                setCursor(Cursor.getDefaultCursor());
+            }
+        });
         this.add(passChangeTab);
 
         // Assuming some indicator for the DetailsPanel
@@ -80,19 +100,36 @@ public class UserInfoFrame extends JDialog implements ActionListener, View<UserI
     }
 
     public void passChangeCard() {
-        //refreshShow();
-        //this.setVisible(true);
+        detailsPanel.clearPass();
 
         cardLayout.show(cards, "Change Passcode");
 
         detailsTab.setFocusable(true);
         detailsTab.setFont(ComponentFactory.MB14);
         detailsTab.setForeground(Color.decode("#000000"));
+        detailsTab.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                setCursor(Cursor.getDefaultCursor());
+            }
+        });
         this.add(detailsTab);
 
         passChangeTab.setFocusable(false);
         passChangeTab.setFont(ComponentFactory.MB16);
         passChangeTab.setForeground(Color.decode("#172A87"));
+        passChangeTab.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                // no longer shows that the button area's clickable
+                setCursor(Cursor.getDefaultCursor());
+            }
+        });
         this.add(passChangeTab);
 
         signIndicator.setIcon(new ImageIcon("images/00201-reg-indicator.png"));

@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 public class WorkoutOfferingPresenter implements Presenter {
 
 
-    private GymManager gymManager;
+    private final GymManager gymManager;
 
     public WorkoutOfferingPresenter(GymManager gymManager) {
         this.gymManager = gymManager;
@@ -23,7 +23,7 @@ public class WorkoutOfferingPresenter implements Presenter {
 
 
     public List<String[]> getCurrentOfferings(int idx) {
-        return gymManager.getGym().getWorkouts().stream().collect(Collectors.toList()).get(idx).offerings.stream().map(o -> new String[]{
+        return gymManager.getGym().getWorkouts().get(idx).offerings.stream().map(o -> new String[]{
                 o.day.toString() + " " + o.start.format(DateTimeFormatter.ofPattern("HH:mm")),
                 Long.toString(o.duration.toHours()),
                 o.room.name
@@ -38,9 +38,10 @@ public class WorkoutOfferingPresenter implements Presenter {
         LocalTime s = LocalTime.parse(start, DateTimeFormatter.ofPattern("HH:mm"));
         Duration d = Duration.ofHours(duration);
 
-        Workout w = gymManager.getGym().getWorkouts().stream().collect(Collectors.toList()).get(course);
-        for (Workout.Offering o : w.offerings) {
-            if (o.day == day && ((!o.start.isAfter(s) && s.isBefore(o.start.plus(o.duration)))
+        Workout w = gymManager.getGym().getWorkouts().get(course);
+        for (int i = 0; i < w.offerings.size(); i++) {
+            Workout.Offering o = w.offerings.get(i);
+            if (i != offering && o.day == day && ((!o.start.isAfter(s) && s.isBefore(o.start.plus(o.duration)))
                     || (o.start.isAfter(s) && o.start.isBefore(s.plus(d)))))
                 return false;
         }
@@ -65,6 +66,6 @@ public class WorkoutOfferingPresenter implements Presenter {
     }
 
     public void removeOffering(int i, int j) {
-        gymManager.getGym().getWorkouts().stream().collect(Collectors.toList()).get(i).offerings.remove(j);
+        gymManager.getGym().getWorkouts().get(i).offerings.remove(j);
     }
 }

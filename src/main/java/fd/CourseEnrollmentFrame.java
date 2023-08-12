@@ -8,8 +8,6 @@ import ia.View;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.event.ActionEvent;
@@ -24,12 +22,12 @@ public class CourseEnrollmentFrame extends JDialog implements ActionListener, Vi
 
     private RefreshRequestListener dashboard;
 
-    private JButton addCourse, editCourse, removeCourse, enrolCourse, editCerts, editUsers, editName;
-    private JTextField search;
-    private AbstractTableModel courseTable = new AbstractTableModel() {
+    private final JButton addCourse, editCourse, removeCourse, enrolCourse, editCerts, editUsers, editName;
+    private final JTextField search;
+    private final AbstractTableModel courseTable = new AbstractTableModel() {
         private final String[] enrolTableCols = {"Workout", "Room", "Time", "Instructor", "Status", "ButtonText"};
         public int getColumnCount() { return enrolTableCols.length - 1; }
-        public int getRowCount() { return (int)presenter.getCurrentWorkouts().size(); }
+        public int getRowCount() { return presenter.getCurrentWorkouts().size(); }
         public String getColumnName(int col) {
             return enrolTableCols[col];
         }
@@ -38,11 +36,15 @@ public class CourseEnrollmentFrame extends JDialog implements ActionListener, Vi
             return workouts.get(row)[col].isEmpty() ? "TBD" : workouts.get(row)[col];
         }
     };
-    private JTable enrolTable;
-    private WorkoutOfferingFrame workoutOfferingFrame;
-    private WorkoutCertsFrame workoutCertsFrame;
-    private WorkoutUsersFrame workoutUsersFrame;
+    private final JTable enrolTable;
+    private final WorkoutOfferingFrame workoutOfferingFrame;
+    private final WorkoutCertsFrame workoutCertsFrame;
+    private final WorkoutUsersFrame workoutUsersFrame;
     public CourseEnrollmentFrame(WorkoutOfferingFrame workoutOfferingFrame, WorkoutCertsFrame workoutCertsFrame, WorkoutUsersFrame workoutUsersFrame) {
+        this.workoutOfferingFrame = workoutOfferingFrame;
+        this.workoutCertsFrame = workoutCertsFrame;
+        this.workoutUsersFrame = workoutUsersFrame;
+
         setTitle("Courses"); // window title
         setSize(800, 600); // window dimensions
         setResizable(false); // disables resizing
@@ -115,18 +117,15 @@ public class CourseEnrollmentFrame extends JDialog implements ActionListener, Vi
         enrolTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         enrolTable.setRowSelectionAllowed(true);
         enrolTable.setColumnSelectionAllowed(false);
-        enrolTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                removeCourse.setEnabled(enrolTable.getSelectedRow() != -1);
-                editCourse.setEnabled(enrolTable.getSelectedRow() != -1);
-                editCerts.setEnabled(enrolTable.getSelectedRow() != -1);
-                editUsers.setEnabled(enrolTable.getSelectedRow() != -1);
-                editName.setEnabled(enrolTable.getSelectedRow() != -1);
-                enrolCourse.setVisible(enrolTable.getSelectedRow() != -1);
-                if (enrolTable.getSelectedRow() != -1)
-                    enrolCourse.setText(courseTable.getValueAt(enrolTable.getSelectedRow(), 5).toString());
-            }
+        enrolTable.getSelectionModel().addListSelectionListener(e -> {
+            removeCourse.setEnabled(enrolTable.getSelectedRow() != -1);
+            editCourse.setEnabled(enrolTable.getSelectedRow() != -1);
+            editCerts.setEnabled(enrolTable.getSelectedRow() != -1);
+            editUsers.setEnabled(enrolTable.getSelectedRow() != -1);
+            editName.setEnabled(enrolTable.getSelectedRow() != -1);
+            enrolCourse.setVisible(enrolTable.getSelectedRow() != -1);
+            if (enrolTable.getSelectedRow() != -1)
+                enrolCourse.setText(courseTable.getValueAt(enrolTable.getSelectedRow(), 5).toString());
         });
         JScrollPane p = new JScrollPane(enrolTable);
         p.setBounds(0, 65, 800, 500);
@@ -178,7 +177,7 @@ public class CourseEnrollmentFrame extends JDialog implements ActionListener, Vi
     private void addCoursePrompt() {
         JTextField name = new JTextField();
         JTextField cap = new JTextField();
-        cap.setText("50");
+        cap.setText("15");
         Object[] message = {
                 "Name:", name,
                 "Capacity:", cap
@@ -202,21 +201,9 @@ public class CourseEnrollmentFrame extends JDialog implements ActionListener, Vi
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == addCourse) {
-            String name = JOptionPane.showInputDialog(this, "Course name?", null);
-            if ((name != null) && (!name.isEmpty())) {
-                String capacity = JOptionPane.showInputDialog(this, "Capacity?", "50");
-                if ((capacity != null) && (!capacity.isEmpty())) {
-                    try {
-                        presenter.addWorkout(name, Integer.parseInt(capacity));
-                        courseTable.fireTableDataChanged();
-                    }
-                    catch (NumberFormatException exp) {
-                        JOptionPane.showMessageDialog(this, "Workout already exists or invalid capacity!");
-                    }
-                }
-            }
-        } else if (e.getSource() == removeCourse)
+        if (e.getSource() == addCourse)
+            addCoursePrompt();
+        else if (e.getSource() == removeCourse)
             presenter.removeWorkout(enrolTable.getSelectedRow());
         else if (e.getSource() == editCourse) {
             if (presenter.canEditCourse(enrolTable.getSelectedRow()))
@@ -238,14 +225,17 @@ public class CourseEnrollmentFrame extends JDialog implements ActionListener, Vi
                 String name = JOptionPane.showInputDialog(this, "New name?", null);
                 if (name != null) {
                     if (!name.isEmpty()) {
-                        if (presenter.changeWorkoutName(enrolTable.getSelectedRow(), name))
+                        if (!presenter.changeWorkoutName(enrolTable.getSelectedRow(), name))
                             JOptionPane.showMessageDialog(this, "There is already a workout with that name!");
-                    } else
+                    }
+                    else
                         JOptionPane.showMessageDialog(this, "Invalid cert name!");
                 }
-            } else
+            }
+            else
                 JOptionPane.showMessageDialog(this, "You don't teach this class!");
         }
+
         courseTable.fireTableDataChanged();
     }
 

@@ -6,8 +6,6 @@ import ia.View;
 import ia.WorkoutUsersPresenter;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,8 +18,8 @@ public class WorkoutUsersFrame extends JDialog implements ActionListener, Refres
     private RefreshRequestListener dashboard;
 
     private WorkoutUsersPresenter presenter;
-    private JButton remove;
-    private AbstractTableModel userTable = new AbstractTableModel() {
+    private final JButton remove;
+    private final AbstractTableModel userTable = new AbstractTableModel() {
         private final String[] cols = {"Name", "Username", "Type", "Certs"};
 
         public int getColumnCount() {
@@ -29,7 +27,7 @@ public class WorkoutUsersFrame extends JDialog implements ActionListener, Refres
         }
 
         public int getRowCount() {
-            return (int) presenter.getCurrentWorkoutUsers(courseIndex).size();
+            return presenter.getCurrentWorkoutUsers(courseIndex).size();
         }
 
         public String getColumnName(int col) {
@@ -41,7 +39,7 @@ public class WorkoutUsersFrame extends JDialog implements ActionListener, Refres
             return users.get(row)[col];
         }
     };
-    private JTable table = new JTable(userTable);
+    private final JTable table = new JTable(userTable);
     private int courseIndex = -1;
 
     public WorkoutUsersFrame() {
@@ -63,12 +61,7 @@ public class WorkoutUsersFrame extends JDialog implements ActionListener, Refres
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         table.setRowSelectionAllowed(true);
         table.setColumnSelectionAllowed(false);
-        table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                remove.setEnabled(table.getSelectedRow() != -1);
-            }
-        });
+        table.getSelectionModel().addListSelectionListener(e -> remove.setEnabled(table.getSelectedRow() != -1));
         JScrollPane p = new JScrollPane(table);
         p.setBounds(0, 40, 600, 500);
         this.add(p);

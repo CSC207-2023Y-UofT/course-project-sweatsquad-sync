@@ -2,5 +2,5 @@ package ia;
 
 public interface RefreshRequester {
 
-    public void addRefreshRequestListener(RefreshRequestListener rrl);
+    void addRefreshRequestListener(RefreshRequestListener rrl);
 }

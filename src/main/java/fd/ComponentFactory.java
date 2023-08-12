@@ -7,19 +7,22 @@ import java.awt.geom.RoundRectangle2D;
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 
+// image icon imports for the genImageBtn
+import java.awt.image.*;
+import javax.swing.ImageIcon;
+import javax.imageio.ImageIO;
+import java.io.File;
+
 public class ComponentFactory {
     public static Font
             A16  = new Font("Arial", Font.PLAIN, 16),
-    // MP12 = new Font("Monsterrat", Font.PLAIN, 12), unused
-    MP16 = new Font("Monsterrat", Font.PLAIN, 16),
-            MB12 = new Font("Monsterrat", Font.BOLD, 12),
-            MB13 = new Font("Monsterrat", Font.BOLD, 13),
-            MB14 = new Font("Monsterrat", Font.BOLD, 14),
-            MB15 = new Font("Monsterrat", Font.BOLD, 15),
-            MB16 = new Font("Monsterrat", Font.BOLD, 16),
-            MB19 = new Font("Monsterrat", Font.BOLD, 19),
-            MB20 = new Font("Monsterrat", Font.BOLD, 20),
-            MB23 = new Font("Monsterrat", Font.BOLD, 23),
+            MB12 = new Font("Montserrat", Font.BOLD, 12),
+            MB13 = new Font("Montserrat", Font.BOLD, 13),
+            MB14 = new Font("Montserrat", Font.BOLD, 14),
+            MB15 = new Font("Montserrat", Font.BOLD, 15),
+            MB16 = new Font("Montserrat", Font.BOLD, 16),
+            MB18 = new Font("Montserrat", Font.BOLD, 18),
+            MB23 = new Font("Montserrat", Font.BOLD, 23),
             CB13 = new Font("Comfortaa", Font.BOLD, 13),
             CB18 = new Font("Comfortaa", Font.BOLD, 18);
 
@@ -63,13 +66,13 @@ public class ComponentFactory {
         roundedButton.setContentAreaFilled(false);
         roundedButton.setOpaque(false);
 
-        roundedButton.addMouseListener(createHoverEffectMouseListener(roundedButton, getHoverColor(defaultColor, true, light)));
+        roundedButton.addMouseListener(createHoverEffectMouseListener(roundedButton));
 
         return roundedButton;
     }
 
     // refactored genRoundTextField method -removed code smells
-    public static JTextField genRoundTextField(String text, int roundness, String colorHex, boolean light) {
+    public static JTextField genRoundTextField(String text, int roundness, String colorHex) {
         JTextField roundedField = new JTextField(text) {
             @Override
             protected void paintComponent(Graphics g) {
@@ -90,7 +93,7 @@ public class ComponentFactory {
             protected void paintBorder(Graphics g) {}
         };
 
-        configureRoundField(roundedField, colorHex, Cursor.TEXT_CURSOR);
+        configureRoundField(roundedField);
 
         return roundedField;
     }
@@ -117,7 +120,7 @@ public class ComponentFactory {
             protected void paintBorder(Graphics g) {}
         };
 
-        configureRoundField(roundedField, colorHex, Cursor.TEXT_CURSOR);
+        configureRoundField(roundedField);
 
         return roundedField;
     }
@@ -148,13 +151,73 @@ public class ComponentFactory {
         return roundedLabel;
     }
 
+    // creates a hover-able icon button
+    public static JButton genImageButton(String pngFileName, int x, int y) {
+        JButton imageButton = new JButton();
+        imageButton.setPreferredSize(new Dimension(x, y));
+        imageButton.setContentAreaFilled(false);
+        imageButton.setBorderPainted(false);
+
+        try {
+            // Load and resize image
+            BufferedImage originalImage = ImageIO.read(new File(pngFileName));
+            Image resizedImage = originalImage.getScaledInstance(x, y, Image.SCALE_SMOOTH);
+            ImageIcon defaultIcon = new ImageIcon(resizedImage);
+
+            // Create a darker version for hover effect
+            BufferedImage darkenedImage = new BufferedImage(x, y, BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g2d = darkenedImage.createGraphics();
+            g2d.drawImage(resizedImage, 0, 0, null);
+
+            // Darken non-transparent parts
+            for (int i = 0; i < darkenedImage.getWidth(); i++) {
+                for (int j = 0; j < darkenedImage.getHeight(); j++) {
+                    int rgba = darkenedImage.getRGB(i, j);
+                    int alpha = (rgba >> 24) & 0xFF;
+                    if (alpha != 0) {  // if pixel is not transparent
+                        int darkColor = new Color(
+                                (rgba >> 16) & 0xFF,
+                                (rgba >> 8) & 0xFF,
+                                rgba & 0xFF).darker().getRGB();
+                        darkenedImage.setRGB(i, j, (alpha << 24) | (darkColor & 0x00FFFFFF));
+                    }
+                }
+            }
+
+            g2d.dispose();
+
+            ImageIcon darkIcon = new ImageIcon(darkenedImage);
+
+            imageButton.setIcon(defaultIcon);
+
+            imageButton.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    imageButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                    imageButton.setIcon(darkIcon);
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    imageButton.setCursor(Cursor.getDefaultCursor());
+                    imageButton.setIcon(defaultIcon);
+                }
+            });
+
+        } catch (Exception e) {
+            System.out.println("Image File \"" + pngFileName + "\" is missing.");
+        }
+
+        return imageButton;
+    }
+
     // helper method for hover effects (creates MouseListener) for buttons
-    private static MouseAdapter createHoverEffectMouseListener(JComponent component, Color hoverColor) {
-        return createHoverEffectMouseListener(component, hoverColor, Cursor.HAND_CURSOR);
+    private static MouseAdapter createHoverEffectMouseListener(JComponent component) {
+        return createHoverEffectMouseListener(component, Cursor.HAND_CURSOR);
     }
 
     // helper method for hover effects, MouseListener for text/pass fields
-    private static MouseAdapter createHoverEffectMouseListener(JComponent component, Color hoverColor, int cursorType) {
+    private static MouseAdapter createHoverEffectMouseListener(JComponent component, int cursorType) {
         return new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -189,11 +252,9 @@ public class ComponentFactory {
     }
 
     // common functionality; genRoundTextField + genRoundPasswordField
-    private static void configureRoundField(JTextComponent field, String colorHex, int cursorType) {
-        Color defaultColor = Color.decode(colorHex);
-
+    private static void configureRoundField(JTextComponent field) {
         field.setOpaque(false);
-        field.addMouseListener(createHoverEffectMouseListener(field, defaultColor, cursorType));
+        field.addMouseListener(createHoverEffectMouseListener(field, Cursor.TEXT_CURSOR));
         field.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
@@ -203,7 +264,7 @@ public class ComponentFactory {
 
         field.setOpaque(false);
 
-        field.addMouseListener(createHoverEffectMouseListener(field, defaultColor, cursorType));
+        field.addMouseListener(createHoverEffectMouseListener(field, Cursor.TEXT_CURSOR));
     }
 
 }

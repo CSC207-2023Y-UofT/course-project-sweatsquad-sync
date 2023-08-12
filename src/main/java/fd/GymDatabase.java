@@ -6,9 +6,9 @@ import java.io.IOException;
 
 public interface GymDatabase {
 
-    public void save(Gym g) throws IOException;
+    void save(Gym g) throws IOException;
 
-    public Gym load() throws IOException, ClassNotFoundException;
+    Gym load() throws IOException, ClassNotFoundException;
 
 }
 

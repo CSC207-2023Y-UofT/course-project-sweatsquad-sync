@@ -4,14 +4,11 @@ import abr.IODataModels.RegisterDetails;
 import abr.IODataModels.ActivationCodeDetails;
 import abr.IODataModels.LoginDetails;
 import ebr.*;
-import org.jetbrains.annotations.NotNull;
-
-import java.security.NoSuchAlgorithmException;
 
 public class UserManager {
 
     private final Gym gym;
-    private PasswordHashStrategy hashStrategy;
+    private final PasswordHashStrategy hashStrategy;
 
     private Instructor instructorToActivate;
 
@@ -19,30 +16,19 @@ public class UserManager {
     public UserManager(Gym gym, PasswordHashStrategy hashStrategy) {
         this.gym = gym;
         this.hashStrategy = hashStrategy;
-
     }
 
-    public void register(@NotNull RegisterDetails d) {
-
+    public void register(RegisterDetails d) {
         switch (d.accountType()) {
 
-            case INSTRUCTOR -> {
-                instructorToActivate.claim(d.username(), hashPassword(d.password()), d.firstName(), d.lastName(), d.email());
-            }
-            case REGULAR -> {
-
-                gym.addUser(new User(d.username(), hashPassword(d.password()), d.firstName(), d.lastName(), d.email()));
-            }
-            case ADMIN -> {
-
-                gym.addUser(new GymAdmin(d.username(), hashPassword(d.password()), d.firstName(), d.lastName(), d.email()));
-            }
+            case INSTRUCTOR -> instructorToActivate.claim(d.username(), hashPassword(d.password()), d.firstName(), d.lastName(), d.email());
+            case REGULAR -> gym.addUser(new User(d.username(), hashPassword(d.password()), d.firstName(), d.lastName(), d.email()));
+            case ADMIN -> gym.addUser(new GymAdmin(d.username(), hashPassword(d.password()), d.firstName(), d.lastName(), d.email()));
         }
 
     }
 
     // method to check if user login exists in database
-
     public boolean verifyLogin(LoginDetails ld) {
         for (User u : gym.getUsers())
             if (u.getUsername().equals(ld.username()))
@@ -80,6 +66,7 @@ public class UserManager {
         return false;
 
     }
+
     // method to check if auth code is valid
     public boolean validateAuthCode(ActivationCodeDetails inputCode) {
         for (User u : gym.getUsers())
@@ -95,7 +82,7 @@ public class UserManager {
     }
 
 
-    private @NotNull String hashPassword(@NotNull String password) {
+    private String hashPassword(String password) {
         return hashStrategy.hashPassword(password);
     }
 

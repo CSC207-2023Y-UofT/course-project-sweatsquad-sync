@@ -4,7 +4,6 @@ import abr.*;
 import abr.IODataModels.*;
 import abr.IODataModels.authenticationFields.Field;
 import abr.IODataModels.authenticationFields.FieldIssue;
-import abr.IODataModels.authenticationFields.LoginField;
 import abr.IODataModels.authenticationFields.RegisterField;
 
 public class EntryFramePresenter implements Presenter {
@@ -50,9 +49,7 @@ public class EntryFramePresenter implements Presenter {
     }
 
     public OutputBoundary<LoginEvent> getLoginHandler() {
-        return rm -> {
-            entryFrameView.hideView();
-        };
+        return rm -> entryFrameView.hideView();
     }
 
 
@@ -65,7 +62,6 @@ public class EntryFramePresenter implements Presenter {
 
     private RegisterRequestViewModel formatDetails(RegisterRequestViewModel rrvm) {
         return new RegisterRequestViewModel(
-                // TODO: implement a document filter to prevent leading and trailing spaces from being typed instead. Or simply reject such inputs in EBR
                 capitalizeRemoveTrailingSpaces(rrvm.firstName()),
                 capitalizeRemoveTrailingSpaces(rrvm.lastName()),
                 rrvm.username().trim(),
@@ -125,17 +121,10 @@ public class EntryFramePresenter implements Presenter {
             for (FieldIssue<RegisterField> fi : rr.getIssues()) {
                 switch (fi.field()) {
 
-                    case USERNAME -> {
-                        usernameError = formatFieldError(fi.issue());
-                    }
-                    case FIRST_NAME, LAST_NAME -> {
-                        namesError = formatFieldError(fi.issue());
-                    }
-                    case EMAIL -> {
-                        emailError = formatFieldError(fi.issue());
-                    } case PASSWORD -> {
-                        passwordsError = formatFieldError(fi.issue());
-                    }
+                    case USERNAME -> usernameError = formatFieldError(fi.issue());
+                    case FIRST_NAME, LAST_NAME -> namesError = formatFieldError(fi.issue());
+                    case EMAIL -> emailError = formatFieldError(fi.issue());
+                    case PASSWORD -> passwordsError = formatFieldError(fi.issue());
                 }
             }
 
@@ -159,7 +148,7 @@ public class EntryFramePresenter implements Presenter {
         if (acr.isSuccessful()) {
             entryFrameView.displayInfoMessage("Activation code found. Register to create an Instructor account");
 
-            entryFrameView.showSignUp();
+            entryFrameView.showInstructorSignUp();
         } else {
 
             entryFrameView.displayInfoMessage("Activation code not found");

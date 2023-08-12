@@ -9,10 +9,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class LoginPanel extends JPanel implements ActionListener, View<EntryFramePresenter> {
-    private JButton loginButton;
-    private JTextField usernameField;
-    private JPasswordField passcodeField;
-    private JLabel coverBG;
+    private final JButton loginButton;
+    private final JTextField usernameField;
+    private final JPasswordField passcodeField;
 
     private EntryFramePresenter presenter;
     LoginPanel() {
@@ -24,7 +23,7 @@ public class LoginPanel extends JPanel implements ActionListener, View<EntryFram
         usernameLabel.setBounds(189, 98, 422, 25);
         this.add(usernameLabel);
 
-        usernameField = ComponentFactory.genRoundTextField("", 20, "#FFFFFF", false);
+        usernameField = ComponentFactory.genRoundTextField("", 20, "#FFFFFF");
         usernameField.setBounds(189, 123, 422, 45);
         usernameField.setFont(ComponentFactory.CB18);
         this.add(usernameField);
@@ -46,7 +45,7 @@ public class LoginPanel extends JPanel implements ActionListener, View<EntryFram
         loginButton.addActionListener(this);
         this.add(loginButton);
 
-        coverBG = ComponentFactory.genRoundLabel("", 20, "#FAFAF2");
+        JLabel coverBG = ComponentFactory.genRoundLabel("", 20, "#FAFAF2");
         coverBG.setBounds(0, 88, 800, 522);
         this.add(coverBG);
 
@@ -69,7 +68,6 @@ public class LoginPanel extends JPanel implements ActionListener, View<EntryFram
     @Override
     public void displayInfoMessage(String message) {
         JOptionPane.showMessageDialog(this, message);
-
     }
 
     @Override

@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ManageRoomPresenter implements Presenter {
-    private GymManager gymManager;
+    private final GymManager gymManager;
 
     public ManageRoomPresenter(GymManager gymManager) {
         this.gymManager = gymManager;

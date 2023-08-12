@@ -23,13 +23,13 @@ interface DashboardDispatch {
 
 public class DashboardPresenter implements Presenter, OutputBoundary<LoginEvent>, RefreshRequestListener  {
 
-    private DashboardFrame dashboardFrame;
+    private final DashboardFrame dashboardFrame;
 
     private DashboardDispatch dashboardDispatch;
 
-    private InputBoundary<LogoutRequest> logoutRequestInputBoundary;
+    private final InputBoundary<LogoutRequest> logoutRequestInputBoundary;
 
-    private GymManager gymManager;
+    private final GymManager gymManager;
 
 
     public DashboardPresenter(DashboardFrame dashboardFrame, InputBoundary<LogoutRequest> logoutRequestHandler, GymManager gymManager) {
@@ -45,16 +45,9 @@ public class DashboardPresenter implements Presenter, OutputBoundary<LoginEvent>
         dashboardFrame.setGreetingMessage("Welcome back, " + rm.firstName() + "!");
         switch (rm.accountType()) {
 
-            case INSTRUCTOR -> {
-
-                dashboardDispatch = dashboardFrame::instructorRefresh;
-            }
-            case REGULAR -> {
-                dashboardDispatch = dashboardFrame::userRefresh;
-            }
-            case ADMIN -> {
-                dashboardDispatch = dashboardFrame::adminRefresh;
-            }
+            case INSTRUCTOR -> dashboardDispatch = dashboardFrame::instructorRefresh;
+            case REGULAR -> dashboardDispatch = dashboardFrame::userRefresh;
+            case ADMIN -> dashboardDispatch = dashboardFrame::adminRefresh;
 
         }
         dashboardFrame.showDashboard();
@@ -64,11 +57,6 @@ public class DashboardPresenter implements Presenter, OutputBoundary<LoginEvent>
 
     public void dashBoardRequested() {
         dashboardDispatch.apply();
-    }
-
-    public String[] nextClasses() {
-//    todo    activeUser.getWorkouts().stream().flatMap(w -> w.offerings.stream()).map(o -> o.start);
-        return new String[]{};
     }
 
     public void logoutRequested() {
@@ -84,23 +72,18 @@ public class DashboardPresenter implements Presenter, OutputBoundary<LoginEvent>
 
     public List<String[]> getNextThreeOfferings() {
         class R {
-            LocalDateTime t;
-            String name, room;
+            final LocalDateTime t;
+            final String name, room;
             R(LocalDateTime t, String n, String room) { this.t = t; this.name = n; this.room = room; }
         }
         List<R> rs = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
             LocalDate wk = LocalDate.now().with(DayOfWeek.SUNDAY).plusWeeks(i);
-            for (Workout w : gymManager.getGym().getWorkouts())
+            for (Workout w : gymManager.getActiveUser().getWorkouts())
                 for (Workout.Offering o : w.offerings)
                     rs.add(new R(wk.with(o.day).atTime(o.start), w.name, o.room.name));
         }
-        rs.sort(new Comparator<R>() {
-            @Override
-            public int compare(R o1, R o2) {
-                return o1.t.compareTo(o2.t);
-            }
-        });
+        rs.sort(Comparator.comparing(o -> o.t));
         return rs.stream().filter(r -> r.t.isAfter(LocalDateTime.now())).map(r -> new String[]{
                 r.name,
                 r.room,
