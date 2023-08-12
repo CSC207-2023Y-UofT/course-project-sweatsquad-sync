@@ -33,25 +33,25 @@ This project intricately streamlines gym operations and the interactive interfac
 
   > Our main dashboard is the hub of all your system manager's gym management needs. Navigate seamlessly between scheduling, course enrollment, user information, room management, and more.
 
-[Admin Dashboard Screenshot]
+![Admin Dashboard Screenshot](images/1.png)
 
 - Instructor/User -Friendly Dashboard
 
   > Enrol and drop classes, access account settings, and check out your upcoming schedule from our user-friendly dashboard designed with simplicity and efficiency in mind.
 
-[User-Friendly Dashboard Screenshot]
+![User-Friendly Dashboard Screenshot](images/2.png)
 
 - Easy Registration Process
 
   > Joining us is a breeze! Our signup panel has clear fields for all your credentials and an easy-to-spot registration button to get you started in no time.
 
-[Signup Panel Screenshot]
+![Signup Panel Screenshot](images/3.png)
 
 - Manage Your Workouts
 
   > View and manage the list of attendees for each workout session. Our app provides a clear and organized view to help you keep track of every member attending your classes.
 
-[Workout Users View Screenshot]
+![Workout Users View Screenshot](images/4.png)
 
 - - -
 
@@ -123,8 +123,8 @@ _Note: Search features for classes has been incorporated for all account types._
 The dependencies in the architecture are designed to point inward with respect to their directories, from fd → ia → abr → ebr. Each layer is expected to only interact with adjacent layers, layers cannot be skipped. This design strategy ensures a separation of concerns where each layer has a specific job, making the system more modular, maintainable, testable, and extendable for future development.
 
 ### Design Patterns
-- Model-View Controller (MVC)
-> The application seems to adopt the MVC pattern in its design. The Controller files handle the application logic, the 'Model', and the Presenter files are responsible for rendering the UI, or the 'View'.
+- Model-View Presenter (MVP)
+> The application adopts the MVP pattern in its design. The Presenter files handle the application logic, the 'Model', and the Presenter files are responsible for rendering the UI, or the 'View'.
 - Data Access Object (DAO)
 > The database classes implement the DAO pattern, which provides an abstract interface to the database. This allows the application to switch out the underlying database without changing the application code.
 - Factory Pattern
