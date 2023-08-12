@@ -119,3 +119,15 @@ _Note: Search features for classes has been incorporated for all account types._
   > This directory contains the business rules of the application. It contains classes to manage the users (UserManager.java, ActiveUserManager.java) and the gym (GymManager.java), as well as classes for the authentication process (Authenticator.java, ActivationCodeGenerationStrategy.java, PasswordHashSHA256.java). It also contains data models for input and output (IODataModels).
 - ebr (enterprise business rules)
   > This directory contains the entities that represent the different types of users (User.java, Instructor.java, GymAdmin.java) and other entities like Room.java and Workout.java.
+  
+The dependencies in the architecture are designed to point inward with respect to their directories, from fd → ia → abr → ebr. Each layer is expected to only interact with adjacent layers, layers cannot be skipped. This design strategy ensures a separation of concerns where each layer has a specific job, making the system more modular, maintainable, testable, and extendable for future development.
+
+### Design Patterns
+- Model-View Controller (MVC)
+> The application seems to adopt the MVC pattern in its design. The Controller files handle the application logic, the 'Model', and the Presenter files are responsible for rendering the UI, or the 'View'.
+- Data Access Object (DAO)
+> The database classes implement the DAO pattern, which provides an abstract interface to the database. This allows the application to switch out the underlying database without changing the application code.
+- Factory Pattern
+> Different types of User objects (User, RegisteredUser, Instructor, GymAdmin) are created without exposing the instantiation logic to the client.
+- Composite Pattern
+> The Gym class makes use of the Composite Pattern. It represents part-whole hierarchies, mainly given how it references to User, Instructor, Room, and Class objects.
