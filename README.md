@@ -62,7 +62,7 @@ Before you begin, it is highly recommended that you meet the following requireme
   > The project is best imported into the IntelliJ editor (although it is also compatible with others, e.g., Eclipse). Upon import, IntelliJ will automatically recognize this as a Gradle repository.
   > Java JDK/SDK Version: The project's starter code was developed with SDK version 11.0.1. Make sure you're using this version or a later one to ensure compatibility. Note that JDK 16 or newer is also supported.
 - Gradle
-  > This project utilizes Gradle as its build environment. Ensure that you have Gradle properly set up and functional on your machine.
+  > This project utilizes Gradle as its build environment. Ensure that you have Gradle properly set up (with JUnit Jupiter, JUnit/AssertJ Swing, and Mockito) and functional on your machine.
 
 - - -
 
@@ -149,3 +149,6 @@ The SOLID principles have been considered and applied throughout the SweatSquad 
 
 - Dependency Inversion Principle (DIP)
   > This principle is adhered to in the system's layered architecture, which ensures that higher-leveled modules do not depend on lower-leveled modules. Both depend on abstractions, as all dependencies point inward and each layer only interacts with adjacent layers.
+
+### Testing
+Entity-specific methods that are responsible for the ‘ebr’ directory’s interactions are extensively tested in EBRTest.java. As of present, it guarantees that function calls are working as intended for a variety of edge cases. For other architectural layers, GUI tests (FDTestIA.java) allows for composite layer testing, where outer and intermediate layer testing (frameworks/ drivers +interface/adapters respectively) is achieved concurrently. Additional methods specific to the interface and adapters layer have also been included in IATest.java.
