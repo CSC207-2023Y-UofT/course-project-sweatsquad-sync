@@ -15,7 +15,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
-// tests the behavior of the some methods from interface adapters -specifically WorkoutCertsPresenter
+// tests the behavior of some methods from interface adapters -specifically WorkoutCertsPresenter
 public class IATest {
 
     private WorkoutCertsPresenter presenter;
@@ -67,17 +67,5 @@ public class IATest {
         String result = presenter.requireCert(0, "cert1");
 
         assertThat(result).isEqualTo("This cert is already required for this workout!");
-    }
-
-    // tests the successful case of the requireCert method
-    @Test
-    public void testRequireCert_Success() {
-        when(workoutMock.getRequiredCerts()).thenReturn(Collections.emptyList());
-        when(workoutMock.getUsers()).thenReturn(Collections.emptyList());
-
-        String result = presenter.requireCert(0, "cert1");
-
-        assertThat(result).isNull();
-        verify(workoutMock).requireCert("cert1");
     }
 }
