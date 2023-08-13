@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -18,15 +19,13 @@ import static org.assertj.core.api.Assertions.*;
 public class IATest {
 
     private WorkoutCertsPresenter presenter;
-    private GymManager gymManagerMock;
-    private Gym gymMock;
     private Workout workoutMock;
 
     // initialize + mocks GymManager, Gym, and Workout
     @BeforeEach
     public void setup() {
-        gymManagerMock = mock(GymManager.class);
-        gymMock = mock(Gym.class);
+        GymManager gymManagerMock = mock(GymManager.class);
+        Gym gymMock = mock(Gym.class);
         workoutMock = mock(Workout.class);
 
         when(gymManagerMock.getGym()).thenReturn(gymMock);
@@ -63,7 +62,7 @@ public class IATest {
     // tests testRequireCert_WithCertAlreadyRequired method
     @Test
     public void testRequireCert_WithCertAlreadyRequired() {
-        when(workoutMock.getRequiredCerts()).thenReturn(Arrays.asList("cert1"));
+        when(workoutMock.getRequiredCerts()).thenReturn(List.of("cert1"));
 
         String result = presenter.requireCert(0, "cert1");
 

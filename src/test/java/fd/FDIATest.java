@@ -12,13 +12,12 @@ import javax.swing.*;
 
 public class FDIATest extends AssertJSwingJUnitTestCase {
 
-    private Robot robot;
     private FrameFixture window;
 
     @BeforeEach
     @Override
     protected void onSetUp() {
-        robot = BasicRobot.robotWithNewAwtHierarchy();
+        Robot robot = BasicRobot.robotWithNewAwtHierarchy();
 
         // launches App.java's main method on the event dispatch thread
         EntryPointFrame entryPointFrame = org.assertj.swing.edt.GuiActionRunner.execute(() -> {
