@@ -131,3 +131,21 @@ The dependencies in the architecture are designed to point inward with respect t
 > Different types of User objects (User, RegisteredUser, Instructor, GymAdmin) are created without exposing the instantiation logic to the client.
 - Composite Pattern
 > The Gym class makes use of the Composite Pattern. It represents part-whole hierarchies, mainly given how it references to User, Instructor, Room, and Class objects.
+
+### SOLID
+The SOLID principles have been considered and applied throughout the SweatSquad Sync system design and implementation. Here are some of the ways we have applied each principle:
+
+- Single Responsibility Principle (SRP)
+  >Each class in the system has a single responsibility and thus only one reason to change. For instance, the gym classes are solely responsible for managing the gym's attributes, users, and workouts. Similarly, the workout classes are responsible only for managing the details of a workout.
+
+- Open-Closed Principle (OCP)
+  > The system is designed to be open for extension but closed for modification. This principle is applied in the gym classes where the addUser, removeUser, addWorkout, removeWorkout, addRoom, and removeRooms methods allow functionality to be extended without modifying the existing code.
+
+- Liskov Substitution Principle (LSP)
+  > The system design has been made sure that in any extension would allow for it to be followed. Any future subclasses of Users would be able to substitute for User without affecting the correctness of the program.
+
+- Interface Segregation Principle (ISP)
+  > The system uses interfaces to define specific contracts for different types of users.
+
+- Dependency Inversion Principle (DIP)
+  > This principle is adhered to in the system's layered architecture, which ensures that higher-leveled modules do not depend on lower-leveled modules. Both depend on abstractions, as all dependencies point inward and each layer only interacts with adjacent layers.
