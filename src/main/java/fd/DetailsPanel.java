@@ -10,8 +10,10 @@ import java.awt.event.ActionListener;
 
 class DetailsPanel extends JPanel implements ActionListener, View<UserInfoPresenter> {
 
+    // presenter declaration
     private UserInfoPresenter presenter;
 
+    // component declaration
     public final JTextField firstNameInfoField, lastNameInfoField, emailInfoField, userInfoField;
     private final JPasswordField passField;
     private final JButton saveChangesBtn;
@@ -20,10 +22,13 @@ class DetailsPanel extends JPanel implements ActionListener, View<UserInfoPresen
     private final JLabel err3;
     private final JLabel err4;
 
+    // constructor
     public DetailsPanel() {
+        // displayed 'on top' of the EntryPointFrame
         this.setLayout(null);
         this.setOpaque(false);
 
+        // component initialization
         JLabel firstNameLabel = new JLabel("First Name");
         firstNameLabel.setFont(ComponentFactory.MB15);
         firstNameLabel.setBounds(189, 98, 422, 25);

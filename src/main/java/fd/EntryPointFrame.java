@@ -10,15 +10,22 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class EntryPointFrame extends JFrame implements EntryFrameView {
+    // component declaration
     private final JButton loginTab, signupTab;
     private final JLabel signIndicator, authCodeLabel;
+
+    // layout setup
     private final CardLayout cardLayout = new CardLayout();
     private final JPanel cards = new JPanel(cardLayout);
 
+    // panel setup / generation
     public LoginPanel loginPanel = new LoginPanel();
     public SignupPanel signupPanel = new SignupPanel();
     public AuthCodePanel authCodePanel = new AuthCodePanel();
+
+    // constructor
     public EntryPointFrame() {
+        // frame setup
         setTitle("Login"); // window title
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // ends program if x
         setSize(800, 600); // window dimensions
@@ -27,6 +34,7 @@ public class EntryPointFrame extends JFrame implements EntryFrameView {
         setLayout(null);
         getContentPane().setBackground(Color.decode("#8F98FF"));
 
+        // component setup
         loginTab = new JButton("Sign In");
         loginTab.setBounds(180, 27, 225, 50);
         loginTab.addActionListener((event) -> showLogin());
@@ -66,12 +74,14 @@ public class EntryPointFrame extends JFrame implements EntryFrameView {
         showLogin();
     }
 
+    // error display
     @Override
     public void displayRegistrationErrors(RegisterErrorViewModel model) {
         signupPanel.displayErrors(model);
 
     }
 
+    // switch panel display
     public void showLogin() {
         cardLayout.show(cards, "Login");
         loginPanel.clearPass();
@@ -111,6 +121,7 @@ public class EntryPointFrame extends JFrame implements EntryFrameView {
         signIndicator.setIcon(new ImageIcon("images/00101-sign-indicator.png"));
     }
 
+    // switch panel display
     @Override
     public void showSignUp() {
         signupPanel.showBasicView();
@@ -178,6 +189,7 @@ public class EntryPointFrame extends JFrame implements EntryFrameView {
 
     }
 
+    // instructor signup panel
     @Override
     public void showInstructorSignUp() {
         signupPanel.showInstructorView();
@@ -193,6 +205,7 @@ public class EntryPointFrame extends JFrame implements EntryFrameView {
         signIndicator.setIcon(new ImageIcon("images/00301-auth-indicator.png"));
     }
 
+    // admin signup (for no gym.bin scenario)
     @Override
     public void showAdminSignUp() {
         signupPanel.showAdminView();

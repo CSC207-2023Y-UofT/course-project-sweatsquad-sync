@@ -18,10 +18,11 @@ import java.util.List;
 
 public class CourseEnrollmentFrame extends JDialog implements ActionListener, View<CourseEnrolmentPresenter>, RefreshRequester {
 
-    private CourseEnrolmentPresenter presenter;
+    private CourseEnrolmentPresenter presenter; // presenter declaration
 
     private RefreshRequestListener dashboard;
 
+    // component declaration
     private final JButton addCourse, editCourse, removeCourse, enrolCourse, editCerts, editUsers, editName;
     private final JTextField search;
     private final AbstractTableModel courseTable = new AbstractTableModel() {
@@ -40,11 +41,14 @@ public class CourseEnrollmentFrame extends JDialog implements ActionListener, Vi
     private final WorkoutOfferingFrame workoutOfferingFrame;
     private final WorkoutCertsFrame workoutCertsFrame;
     private final WorkoutUsersFrame workoutUsersFrame;
+
+    // constructor
     public CourseEnrollmentFrame(WorkoutOfferingFrame workoutOfferingFrame, WorkoutCertsFrame workoutCertsFrame, WorkoutUsersFrame workoutUsersFrame) {
         this.workoutOfferingFrame = workoutOfferingFrame;
         this.workoutCertsFrame = workoutCertsFrame;
         this.workoutUsersFrame = workoutUsersFrame;
 
+        // frame setup
         setTitle("Courses"); // window title
         setSize(800, 600); // window dimensions
         setResizable(false); // disables resizing
@@ -52,6 +56,7 @@ public class CourseEnrollmentFrame extends JDialog implements ActionListener, Vi
         setLayout(null);
         setModal(true);
 
+        // component init
         addCourse = new JButton("Add");
         addCourse.setBounds(0, 0, 100, 40);
         addCourse.addActionListener(this);
@@ -111,6 +116,7 @@ public class CourseEnrollmentFrame extends JDialog implements ActionListener, Vi
         this.add(searchL);
         this.add(search);
 
+        // table setup
         enrolTable = new JTable(courseTable);
         enrolTable.getTableHeader().setResizingAllowed(false);
         enrolTable.getTableHeader().setReorderingAllowed(false);
@@ -142,6 +148,7 @@ public class CourseEnrollmentFrame extends JDialog implements ActionListener, Vi
         courseTable.fireTableDataChanged();
     }
 
+    // user view setup
     public void userView() {
         this.add(enrolCourse);
         enrolCourse.setText("Enrol");
@@ -153,6 +160,7 @@ public class CourseEnrollmentFrame extends JDialog implements ActionListener, Vi
         this.remove(editName);
     }
 
+    // instructor view setup
     public void instructorView() {
         this.add(enrolCourse);
         enrolCourse.setText("Teach");
@@ -164,6 +172,7 @@ public class CourseEnrollmentFrame extends JDialog implements ActionListener, Vi
         this.remove(editName);
     }
 
+    // admin view setup
     public void adminView() {
         this.remove(enrolCourse);
         this.add(addCourse);

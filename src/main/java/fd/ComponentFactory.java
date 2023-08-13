@@ -13,6 +13,7 @@ import javax.swing.ImageIcon;
 import javax.imageio.ImageIO;
 import java.io.File;
 
+// sets up standardized aspects of our UI -mainly for customized Swing components
 public class ComponentFactory {
     public static Font
             A16  = new Font("Arial", Font.PLAIN, 16),

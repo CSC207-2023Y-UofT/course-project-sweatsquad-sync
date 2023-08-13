@@ -9,13 +9,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 class AuthCodePanel extends JPanel implements ActionListener, View<EntryFramePresenter> {
+
+    // component declarations
     private final JTextField authField;
     private final JButton authenticateBtn, backButton;
+
+    // presenter declaration
     private EntryFramePresenter presenter;
     AuthCodePanel() {
         this.setLayout(null);
         this.setOpaque(false);
 
+    // components are set up as required for the screen
         JLabel authCodeLabel = new JLabel("Enter Authentication Code" +
                 "                   (16 Characters)");
         authCodeLabel.setBounds(189, 140, 422, 25);
@@ -48,6 +53,7 @@ class AuthCodePanel extends JPanel implements ActionListener, View<EntryFramePre
 
     }
 
+    // button control has been set up for this screen
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == authenticateBtn) {
