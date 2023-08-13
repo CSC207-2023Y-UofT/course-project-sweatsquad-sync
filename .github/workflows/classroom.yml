@@ -17,4 +17,6 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: '16'
+      - name: Install dummy display
+        run: sudo apt install -y xvfb
       - uses: education/autograding@v1
