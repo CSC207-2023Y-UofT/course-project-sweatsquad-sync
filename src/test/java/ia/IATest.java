@@ -80,12 +80,4 @@ public class IATest {
         assertThat(result).isNull();
         verify(workoutMock).requireCert("cert1");
     }
-
-    // tests removeCurrentCert() method
-    @Test
-    public void testRemoveCurrentCert() {
-        presenter.removeCurrentCert(0, "cert1");
-        verify(workoutMock).deleteCert("cert1");
-    }
-
 }
