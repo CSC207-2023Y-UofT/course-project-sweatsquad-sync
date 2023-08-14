@@ -12,6 +12,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class DashboardFrame extends JFrame implements ActionListener, View<DashboardPresenter> {
+
+    // component declaration
     private final JButton viewEntireSchedule, enrolBtn, logout, settings, manageRooms, manageUsers;
     private final JLabel welcomeUser, c1box, c2box, c3box, c1name, c1time, c1room, c2name, c2time, c2room, c3name, c3time, c3room, upcomingC, no_classes, userEnrolBtnCover, viewFullScheduleCover;
 
@@ -21,8 +23,10 @@ public class DashboardFrame extends JFrame implements ActionListener, View<Dashb
     private final ManageUserFrame userManager;
     private final ManageRoomFrame roomManager;
 
+    // presenter declaration
     private DashboardPresenter dashboardPresenter;
 
+    // dashboard constructor
     public DashboardFrame(ScheduleFrame scheduleView, CourseEnrollmentFrame courseBrowser, UserInfoFrame userInfoEdit, ManageUserFrame userManager, ManageRoomFrame roomManager) {
         this.scheduleView = scheduleView;
         this.courseBrowser = courseBrowser;
@@ -30,6 +34,7 @@ public class DashboardFrame extends JFrame implements ActionListener, View<Dashb
         this.userManager = userManager;
         this.roomManager = roomManager;
 
+        // frame setup
         setTitle("Dashboard"); // window title
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // ends program if x
         setSize(800, 600); // window dimensions
@@ -38,6 +43,7 @@ public class DashboardFrame extends JFrame implements ActionListener, View<Dashb
         setLayout(null); // absolute layout
         getContentPane().setBackground(Color.decode("#8F98FF")); // bg colour
 
+        // component initialization
         welcomeUser = new JLabel("");
         welcomeUser.setFont(ComponentFactory.MB23);
         welcomeUser.setForeground(Color.decode("#FFFFFF"));
